@@ -1,0 +1,66 @@
+{
+    "name": "@loopring/pay",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "start": "HTTPS=true react-scripts start",
+        "build": "react-scripts build && copy _redirects ./build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "lint:commit-message": "commitlint -e"
+    },
+    "dependencies": {
+        "@fortawesome/fontawesome-svg-core": "^1.2.27",
+        "@fortawesome/free-solid-svg-icons": "^5.12.1",
+        "@fortawesome/react-fontawesome": "^0.1.8",
+        "@mondora/env": "^1.3.0",
+        "@walletconnect/web3-provider": "^1.0.0-beta.47",
+        "async-validator": "^3.3.0",
+        "axios": "^0.19.2",
+        "bignumber.js": "^9.0.0",
+        "blake-hash": "2.0.0",
+        "blake2b": "^2.1.3",
+        "crypto-js": "^4.0.0",
+        "ethereumjs-abi": "^0.6.8",
+        "ethereumjs-util": "5.2.0",
+        "moment": "^2.26.0",
+        "react": "^16.12.0",
+        "react-dom": "^16.12.0",
+        "react-intl": "^3.12.0",
+        "react-redux": "^7.2.0",
+        "react-router-dom": "^5.1.2",
+        "react-scripts": "3.4.0",
+        "react-spinners": "^0.8.0",
+        "react-swipeable-views": "^0.13.9",
+        "redux": "^4.0.5",
+        "redux-thunk": "^2.3.0",
+        "reflexbox": "^4.0.6",
+        "snarkjs": "0.1.20",
+        "styled-components": "^5.0.1",
+        "use-debounce": "^3.4.2",
+        "web3": "^1.2.6",
+        "web3modal": "^1.7.0"
+    },
+    "eslintConfig": {
+        "extends": "react-app"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^8.3.5",
+        "@commitlint/config-conventional": "^8.3.4",
+        "copy": "^0.3.2",
+        "husky": "^4.2.5",
+        "rimraf": "^3.0.2"
+    }
+}
