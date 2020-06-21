@@ -57,7 +57,7 @@ export const Transactions = ({ asset, transactions, loading, onChange }) => {
                 alignItems="center"
                 justifyContent="center"
             >
-                <BounceLoader size={60} color={selectedTheme.text} />
+                <BounceLoader size={60} color={selectedTheme.loader} loading />
             </Flex>
         );
     }

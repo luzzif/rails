@@ -185,7 +185,7 @@ export const Send = ({ onConfirm, asset }) => {
                 alignItems="center"
                 open={loadingAddressFromEns}
             >
-                <BounceLoader size={60} color={selectedTheme.text} />
+                <BounceLoader size={60} color={selectedTheme.loader} loading />
             </OverlayBox>
         </Flex>
     );

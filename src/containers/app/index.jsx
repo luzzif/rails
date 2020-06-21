@@ -27,6 +27,7 @@ const light = {
     shadow: "rgba(0, 0, 0, 0.4)",
     border: "#e0e0e0",
     placeholder: "#b3b3b3",
+    loader: "#a6a6a6",
 };
 
 const dark = {
@@ -37,6 +38,7 @@ const dark = {
     shadow: "rgba(255, 255, 255, 0.4)",
     border: "#424242",
     placeholder: "#666666",
+    loader: "#595959",
 };
 
 export const web3Modal = new Web3Modal({

@@ -138,7 +138,7 @@ export const DepositFlow = ({ open, asset }) => {
                 alignItems="center"
                 open={loadingAllowance}
             >
-                <BounceLoader size={60} color={selectedTheme.text} />
+                <BounceLoader size={60} color={selectedTheme.loader} loading />
             </OverlayBox>
         </Flex>
     );
