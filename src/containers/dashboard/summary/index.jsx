@@ -13,7 +13,7 @@ export const Summary = ({ balance, fiatValue, symbol }) => {
 
     return (
         <Flex flexDirection="column" alignItems="center">
-            <Box fontSize={[40, 48, 56, 64]} fontWeight={700}>
+            <Box fontSize={[36, 48, 56, 64]} fontWeight={700}>
                 {etherBalance.decimalPlaces(4).toString()} {symbol}
             </Box>
             <Box fontSize={[16, 16, 20, 24, 28]}>
