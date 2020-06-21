@@ -117,6 +117,18 @@ export const Dashboard = () => {
         setShowingTransaction(true);
     }, []);
 
+    const handleTransactionsRefresh = useCallback(() => {
+        dispatch(
+            getTokenTransactions(
+                account,
+                wallet,
+                selectedAsset.symbol,
+                supportedTokens,
+                10
+            )
+        );
+    }, [account, dispatch, selectedAsset, supportedTokens, wallet]);
+
     const handleSend = useCallback(() => {
         setSending(true);
     }, []);
@@ -189,6 +201,7 @@ export const Dashboard = () => {
                         transactions={transactions}
                         loading={transactionsLoading}
                         onChange={handleTransactionChange}
+                        onRefresh={handleTransactionsRefresh}
                     />
                 </TransactionsContainer>
             </Flex>

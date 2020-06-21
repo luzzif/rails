@@ -6,6 +6,7 @@ export const RootButton = styled.button`
     background: rgba(0, 0, 0, 0);
     outline: none;
     border: none;
+    padding: 0;
     cursor: pointer;
 `;
 

@@ -6,8 +6,17 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { Searchbar } from "../../../components/searchbar";
 import { BounceLoader } from "react-spinners";
 import { selectedTheme } from "../../app";
+import { ActionButton } from "../../../components/action-button";
+import { faRedo } from "@fortawesome/free-solid-svg-icons";
+import { OverlayBox, RootFlex } from "./styled";
 
-export const Transactions = ({ asset, transactions, loading, onChange }) => {
+export const Transactions = ({
+    asset,
+    transactions,
+    loading,
+    onChange,
+    onRefresh,
+}) => {
     const { formatMessage } = useIntl();
 
     const [query, setQuery] = useState("");
@@ -49,32 +58,12 @@ export const Transactions = ({ asset, transactions, loading, onChange }) => {
         setQuery(event.target.value);
     }, []);
 
-    if (loading) {
-        return (
-            <Flex
-                width="100%"
-                height="100%"
-                alignItems="center"
-                justifyContent="center"
-            >
-                <BounceLoader size={60} color={selectedTheme.loader} loading />
-            </Flex>
-        );
-    }
-    if (
-        !query &&
-        (!filteredTransactions || filteredTransactions.length === 0)
-    ) {
-        return (
-            <Flex width="100%" mt={4} justifyContent="center">
-                <Box>
-                    <FormattedMessage id="dashboard.transactions.empty" />
-                </Box>
-            </Flex>
-        );
-    }
+    const handleRefresh = useCallback(() => {
+        onRefresh();
+    }, [onRefresh]);
+
     return (
-        <Flex
+        <RootFlex
             width="100%"
             height="100%"
             flexDirection="column"
@@ -82,8 +71,8 @@ export const Transactions = ({ asset, transactions, loading, onChange }) => {
             pt={3}
             px={2}
         >
-            <Flex width="100%" px={[2, 3]} mb={2}>
-                <Box width="100%">
+            <Flex px={[2, 3]} mb={2} width="100%">
+                <Box pr={3} flexGrow={1}>
                     <Searchbar
                         dark
                         placeholder={formatMessage({
@@ -93,7 +82,23 @@ export const Transactions = ({ asset, transactions, loading, onChange }) => {
                         onChange={handleSearchbarChange}
                     />
                 </Box>
+                <Box minWidth="auto">
+                    <ActionButton
+                        faIcon={faRedo}
+                        size={48}
+                        faIconSize={20}
+                        dark
+                        onClick={handleRefresh}
+                    />
+                </Box>
             </Flex>
+            {!query &&
+                (!filteredTransactions ||
+                    filteredTransactions.length === 0) && (
+                    <Box>
+                        <FormattedMessage id="dashboard.transactions.empty" />
+                    </Box>
+                )}
             {filteredTransactions && filteredTransactions.length > 0 ? (
                 filteredTransactions.map((transaction) => (
                     <Box
@@ -115,7 +120,16 @@ export const Transactions = ({ asset, transactions, loading, onChange }) => {
                     <FormattedMessage id="dashboard.transactions.empty.search" />
                 </Box>
             )}
-        </Flex>
+            <OverlayBox
+                width="100%"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                open={loading}
+            >
+                <BounceLoader size={60} color={selectedTheme.loader} loading />
+            </OverlayBox>
+        </RootFlex>
     );
 };
 
