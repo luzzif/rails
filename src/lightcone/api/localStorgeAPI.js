@@ -286,15 +286,9 @@ function getLanguageFromBrowser() {
 }
 
 export function getEtherscanLink(chainId) {
-  const lan = getLanguage();
-
   switch (chainId) {
     case 1:
-      if (lan === "zh") {
-        return "https://cn.etherscan.com";
-      } else {
         return "https://etherscan.io";
-      }
     case 5:
       return "https://goerli.etherscan.io";
     default:

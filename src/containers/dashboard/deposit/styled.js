@@ -7,11 +7,13 @@ export const OverlayBox = styled(Box)`
     bottom: 0;
     left: 0;
     right: 0;
-    background: ${(props) => props.theme.background};
+    background: ${props => props.theme.background};
     opacity: 1;
     transition: opacity 0.3s ease;
     transform: translateY(0);
-    ${(props) =>
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    ${props =>
         !props.open &&
         css`
             opacity: 0;

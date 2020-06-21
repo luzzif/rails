@@ -3,15 +3,19 @@ import { Flex, Box } from "reflexbox";
 import { FormattedMessage } from "react-intl";
 import { Button } from "../../components/button";
 import { useDispatch } from "react-redux";
-import { initializeLoopring } from "../../actions/loopring";
+import { initializeLoopring, registerAccount } from "../../actions/loopring";
 import illustration from "../../images/login.png";
 import { LoginIllustration } from "./styled";
 
-export const Login = () => {
+export const Auth = () => {
     const dispatch = useDispatch();
 
     const handleLogin = useCallback(() => {
         dispatch(initializeLoopring());
+    }, [dispatch]);
+
+    const handleRegister = useCallback(() => {
+        dispatch(registerAccount());
     }, [dispatch]);
 
     return (
@@ -31,13 +35,20 @@ export const Login = () => {
                 width={["80%", "70%", "60%", "30%", "20%"]}
                 textAlign="center"
             >
-                <FormattedMessage id="login.summary" />
+                <FormattedMessage id="auth.summary" />
             </Box>
-            <Box>
-                <Button onClick={handleLogin}>
-                    <FormattedMessage id="login.button" />
-                </Button>
-            </Box>
+            <Flex>
+                <Box mr={4}>
+                    <Button onClick={handleLogin}>
+                        <FormattedMessage id="auth.login.button" />
+                    </Button>
+                </Box>
+                <Box>
+                    <Button onClick={handleRegister}>
+                        <FormattedMessage id="auth.register.button" />
+                    </Button>
+                </Box>
+            </Flex>
         </Flex>
     );
 };

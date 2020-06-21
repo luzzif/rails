@@ -15,6 +15,7 @@ import {
 import { TransactionSummary } from "./transaction-summary";
 import { Summary } from "../dashboard/summary";
 import { Confirmation } from "./send/confirmation";
+import { DepositFlow } from "./deposit";
 
 export const Dashboard = () => {
     const {
@@ -41,6 +42,7 @@ export const Dashboard = () => {
     const [sending, setSending] = useState(false);
     const [changingAsset, setChangingAsset] = useState(false);
     const [showingTransaction, setShowingTransaction] = useState(false);
+    const [depositing, setDepositing] = useState(false);
     const [sendIndex, setSendIndex] = useState(0);
     const [selectedAsset, setSelectedAsset] = useState(balances[0]);
     const [selectedTransaction, setSelectedTransaction] = useState(null);
@@ -76,6 +78,7 @@ export const Dashboard = () => {
         setSending(false);
         setChangingAsset(false);
         setShowingTransaction(false);
+        setDepositing(false);
         setSendIndex(0);
     }, []);
 
@@ -92,13 +95,13 @@ export const Dashboard = () => {
     // hiding the bottom up container on outside click
     // (only active if the container is actually shown)
     useEffect(() => {
-        if (sending || changingAsset || showingTransaction) {
+        if (sending || changingAsset || showingTransaction || depositing) {
             document.addEventListener("mousedown", handleClick);
             return () => {
                 document.removeEventListener("mousedown", handleClick);
             };
         }
-    }, [handleClick, sending, changingAsset, showingTransaction]);
+    }, [handleClick, sending, changingAsset, showingTransaction, depositing]);
 
     const handleAssets = useCallback(() => {
         setChangingAsset(true);
@@ -151,6 +154,10 @@ export const Dashboard = () => {
         }
     }, [dispatch, successfulTransferHash]);
 
+    const handleDeposit = useCallback(() => {
+        setDepositing(true);
+    }, []);
+
     return (
         <>
             <Flex
@@ -167,7 +174,11 @@ export const Dashboard = () => {
                     />
                 </Box>
                 <Box mb={3} width={["85%", "60%", "50%", "40%", "30%"]}>
-                    <ButtonsStrip onSend={handleSend} onAssets={handleAssets} />
+                    <ButtonsStrip
+                        onSend={handleSend}
+                        onDeposit={handleDeposit}
+                        onAssets={handleAssets}
+                    />
                 </Box>
                 <TransactionsContainer
                     flexGrow={1}
@@ -181,11 +192,17 @@ export const Dashboard = () => {
                     />
                 </TransactionsContainer>
             </Flex>
-            <Overlay show={sending || changingAsset || showingTransaction} />
+            <Overlay
+                show={
+                    sending || changingAsset || showingTransaction || depositing
+                }
+            />
             <BottomUpContainer
                 m="0 auto"
                 width={["95%", "75%", "65%", "45%", "35%"]}
-                show={sending || changingAsset || showingTransaction}
+                show={
+                    sending || changingAsset || showingTransaction || depositing
+                }
                 ref={bottomUpContainer}
             >
                 {changingAsset && (
@@ -209,6 +226,9 @@ export const Dashboard = () => {
                 )}
                 {showingTransaction && (
                     <TransactionSummary {...selectedTransaction} />
+                )}
+                {depositing && (
+                    <DepositFlow open={depositing} asset={selectedAsset} />
                 )}
             </BottomUpContainer>
         </>

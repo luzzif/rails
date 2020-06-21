@@ -1,8 +1,9 @@
 import { Flex, Box } from "reflexbox";
 import React from "react";
-import { StyledInput, Label } from "./styled";
+import PropTypes from "prop-types";
+import { StyledInput, Label, Message } from "./styled";
 
-export const Input = ({ label, ...rest }) => (
+export const Input = ({ label, message, ...rest }) => (
     <Flex flexDirection="column">
         {label && (
             <Box pl={2} mb={3}>
@@ -12,5 +13,15 @@ export const Input = ({ label, ...rest }) => (
         <Box>
             <StyledInput {...rest} />
         </Box>
+        {message && (
+            <Box mt={2}>
+                <Message>{message}</Message>
+            </Box>
+        )}
     </Flex>
 );
+
+Input.propTypes = {
+    label: PropTypes.node,
+    message: PropTypes.node,
+};

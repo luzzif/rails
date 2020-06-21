@@ -37,6 +37,7 @@ export const ButtonsStrip = ({ onSend, onDeposit, onWithdrawal, onAssets }) => (
                 title={<FormattedMessage id="dashboard.deposit" />}
                 size={[52, 56, 60]}
                 faIconSize={24}
+                onClick={onDeposit}
             />
         </Box>
         <Box

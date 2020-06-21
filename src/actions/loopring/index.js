@@ -19,6 +19,11 @@ import {
     postUniversalLoading,
     deleteUniversalLoading,
 } from "../universal-loadings";
+import { getAllowance } from "../../lightcone/api/v1/allowances/get";
+import { getRecommendedGasPrice } from "../../lightcone/api/v1/recommendedGasPrice/get";
+import { getEthNonce } from "../../lightcone/api/v1/ethnonce/get";
+import { getTokenBalance } from "../../lightcone/api/v1/tokenBalance/get";
+import { getEthBalance } from "../../lightcone/api/v1/ethBalance/get";
 
 export const INTIIALIZE_SUCCESS = "INTIIALIZE_SUCCESS";
 export const GET_SUPPORTED_TOKENS_SUCCESS = "GET_SUPPORTED_TOKENS_SUCCESS";
@@ -30,6 +35,18 @@ export const POST_TRANSFER_LOADING = "POST_TRANSFER_LOADING";
 export const DELETE_TRANSFER_LOADING = "DELETE_TRANSFER_LOADING";
 export const POST_TRANSFER_SUCCESS = "POST_TRANSFER_SUCCESS";
 export const DELETE_TRANSFER_HASH = "DELETE_TRANSFER_HASH";
+export const POST_GET_ALLOWANCE_LOADING = "POST_GET_ALLOWANCE_LOADING";
+export const DELETE_GET_ALLOWANCE_LOADING = "DELETE_GET_ALLOWANCE_LOADING";
+export const GET_ALLOWANCE_SUCCESS = "GET_ALLOWANCE_SUCCESS";
+export const POST_GRANT_ALLOWANCE_LOADING = "POST_GRANT_ALLOWANCE_LOADING";
+export const DELETE_GRANT_ALLOWANCE_LOADING = "DELETE_GRANT_ALLOWANCE_LOADING";
+export const GRANT_ALLOWANCE_SUCCESS = "GRANT_ALLOWANCE_SUCCESS";
+export const DELETE_GRANT_ALLOWANCE_TRANSACTION_HASH =
+    "DELETE_GRANT_ALLOWANCE_TRANSACTION_HASH";
+export const GET_DEPOSIT_BALANCE_SUCCESS = "GET_DEPOSIT_BALANCE_SUCCESS";
+export const POST_DEPOSIT_SUCCESS = "POST_DEPOSIT_SUCCESS";
+export const DELETE_DEPOSIT_TRANSACTION_HASH =
+    "DELETE_DEPOSIT_TRANSACTION_HASHPOST_DEPOSIT_SUCCESS";
 
 export const initializeLoopring = () => async (dispatch) => {
     try {
@@ -85,7 +102,7 @@ export const getUserBalances = (account, wallet, supportedTokens) => async (
             await getLoopringApiKey(wallet, account),
             supportedTokens
         );
-        const fiatBalances = await getPrice("USD");
+        const fiatValues = await getPrice("USD");
         // we process the tokens with no balance too,
         // saving them with a 0 balance if necessary
         const allBalances = supportedTokens
@@ -95,7 +112,7 @@ export const getUserBalances = (account, wallet, supportedTokens) => async (
                 const matchingBalance = partialBalances.find(
                     (balance) => balance.tokenId === supportedTokenId
                 );
-                const matchingFiatValue = fiatBalances.find(
+                const matchingFiatValue = fiatValues.find(
                     (balance) => balance.symbol === supportedTokenSymbol
                 );
                 const balance = new BigNumber(
@@ -125,6 +142,29 @@ export const getUserBalances = (account, wallet, supportedTokens) => async (
         console.error("error getting loopring user balances", error);
     }
     dispatch(deleteUniversalLoading());
+};
+
+export const getDepositBalance = (
+    wallet,
+    tokenSymbol,
+    supportedTokens
+) => async (dispatch) => {
+    try {
+        const balance =
+            tokenSymbol === "ETH"
+                ? await getEthBalance(wallet.address)
+                : await getTokenBalance(
+                      wallet.address,
+                      tokenSymbol,
+                      supportedTokens
+                  );
+        dispatch({
+            type: GET_DEPOSIT_BALANCE_SUCCESS,
+            balance: new BigNumber(balance),
+        });
+    } catch (error) {
+        console.error("error getting loopring user balance", error);
+    }
 };
 
 // FIXME: not particularly efficient (every time we fetch the whole transactions list anew)
@@ -262,4 +302,130 @@ export const postTransfer = (
 
 export const deleteTransferHash = () => async (dispatch) => {
     dispatch({ type: DELETE_TRANSFER_HASH });
+};
+
+export const getTokenAllowance = (
+    wallet,
+    tokenSymbol,
+    supportedTokens
+) => async (dispatch) => {
+    dispatch({ type: POST_GET_ALLOWANCE_LOADING });
+    try {
+        dispatch({
+            type: GET_ALLOWANCE_SUCCESS,
+            token: tokenSymbol,
+            allowance: new BigNumber(
+                await getAllowance(wallet.address, tokenSymbol, supportedTokens)
+            ),
+        });
+    } catch (error) {
+        console.error(`error getting token ${tokenSymbol} allowance`, error);
+    }
+    dispatch({ type: DELETE_GET_ALLOWANCE_LOADING });
+};
+
+export const grantAllowance = (
+    wallet,
+    exchange,
+    tokenSymbol,
+    tokenAddress
+) => async (dispatch) => {
+    dispatch({ type: POST_GRANT_ALLOWANCE_LOADING });
+    try {
+        let { accountNonce: nonce } = await lightconeGetAccount(wallet.address);
+        const { chainId, exchangeAddress } = exchange;
+        dispatch({
+            TYPE: GRANT_ALLOWANCE_SUCCESS,
+            transactionHash: await wallet.approveMax(
+                tokenAddress,
+                exchangeAddress,
+                chainId,
+                nonce,
+                await getRecommendedGasPrice(),
+                true
+            ),
+        });
+    } catch (error) {
+        console.error(`error requesting ${tokenSymbol} allowance`, error);
+    }
+    dispatch({ type: DELETE_GRANT_ALLOWANCE_LOADING });
+};
+
+export const deleteGrantAllowanceTransactionHash = () => async (dispatch) => {
+    dispatch({ type: DELETE_GRANT_ALLOWANCE_TRANSACTION_HASH });
+};
+
+export const postDeposit = (
+    wallet,
+    exchange,
+    supportedTokens,
+    tokenSymbol,
+    amount
+) => async (dispatch) => {
+    try {
+        const { chainId, exchangeAddress, onchainFees } = exchange;
+        const transactionHash = await wallet.depositTo(
+            {
+                exchangeAddress,
+                chainId,
+                token: config.getTokenBySymbol(tokenSymbol, supportedTokens),
+                fee: config.getFeeByType("deposit", onchainFees).fee,
+                amount,
+                nonce: await getEthNonce(wallet.address),
+                gasPrice: await getRecommendedGasPrice(),
+            },
+            true
+        );
+        dispatch({ type: POST_DEPOSIT_SUCCESS, transactionHash });
+    } catch (error) {
+        console.error(`error depositing ${tokenSymbol}`, error);
+    }
+};
+
+export const deleteDepositTransactionHash = () => async (dispatch) => {
+    dispatch({ type: DELETE_DEPOSIT_TRANSACTION_HASH });
+};
+
+export const registerAccount = () => async (dispatch) => {
+    dispatch(postUniversalLoading());
+    try {
+        // TODO: consider moving the wallet initialization
+        // in a specific action to avoid repeated code
+        const provider = await web3Modal.connect();
+        const web3 = new Web3(provider);
+        const accounts = await web3.eth.getAccounts();
+        const selectedAccount = accounts[0];
+        const wallet = new Wallet("MetaMask", web3, selectedAccount);
+        // TODO: same todo above applies to the exchange info
+        const {
+            exchangeAddress,
+            onchainFees,
+            chainId,
+        } = await getExchangeInfo();
+        const tokens = await getTokenInfo();
+        const fee = new BigNumber(
+            config.getFeeByType("create", onchainFees).fee
+        ).plus(config.getFeeByType("deposit", onchainFees).fee);
+        const { keyPair } = await wallet.generateKeyPair(exchangeAddress, 0);
+        if (!keyPair || !keyPair.secretKey) {
+            throw new Error("failed to generate key pair");
+        }
+        await wallet.createOrUpdateAccount(
+            keyPair,
+            {
+                exchangeAddress,
+                fee: fee.toString(),
+                chainId: chainId,
+                token: config.getTokenBySymbol("ETH", tokens),
+                amount: "",
+                permission: "",
+                nonce: await getEthNonce(wallet.address),
+                gasPrice: await getRecommendedGasPrice(),
+            },
+            true
+        );
+    } catch (error) {
+        console.error("error registering user", error);
+    }
+    dispatch(deleteUniversalLoading());
 };

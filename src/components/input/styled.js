@@ -31,3 +31,8 @@ export const Label = styled.div`
     font-size: 20px;
     font-weight: 700;
 `;
+
+export const Message = styled.div`
+    color: ${(props) => props.theme.text};
+    font-size: 12px;
+`;

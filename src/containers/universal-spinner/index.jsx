@@ -25,7 +25,7 @@ export const UniversalSpinner = ({ timeout }) => {
 
     return (
         <RootContainer open={open} justifyContent="center" alignItems="center">
-            <BounceLoader size={120} color={selectedTheme.text} loading />
+            <BounceLoader size={80} color={selectedTheme.text} loading />
         </RootContainer>
     );
 };

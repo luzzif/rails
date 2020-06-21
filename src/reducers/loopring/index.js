@@ -6,7 +6,17 @@ import {
     POST_TRANSACTIONS_LOADING,
     DELETE_TRANSACTIONS_LOADING,
     POST_TRANSFER_SUCCESS,
-    DELETE_TRANSFER_HASH
+    DELETE_TRANSFER_HASH,
+    GET_ALLOWANCE_SUCCESS,
+    POST_GET_ALLOWANCE_LOADING,
+    DELETE_GET_ALLOWANCE_LOADING,
+    DELETE_GRANT_ALLOWANCE_LOADING,
+    POST_GRANT_ALLOWANCE_LOADING,
+    GRANT_ALLOWANCE_SUCCESS,
+    DELETE_GRANT_ALLOWANCE_TRANSACTION_HASH,
+    GET_DEPOSIT_BALANCE_SUCCESS,
+    POST_DEPOSIT_SUCCESS,
+    DELETE_DEPOSIT_TRANSACTION_HASH,
 } from "../../actions/loopring";
 
 const initialState = {
@@ -20,6 +30,12 @@ const initialState = {
         data: [],
     },
     successfulTransferHash: null,
+    successfulGrantAllowanceHash: null,
+    allowances: {
+        loadings: 0,
+    },
+    depositBalance: null,
+    depositHash: null,
 };
 
 export const loopringReducer = (state = initialState, action) => {
@@ -82,6 +98,59 @@ export const loopringReducer = (state = initialState, action) => {
         }
         case DELETE_TRANSFER_HASH: {
             return { ...state, successfulTransferHash: null };
+        }
+        case POST_GRANT_ALLOWANCE_LOADING:
+        case POST_GET_ALLOWANCE_LOADING: {
+            return {
+                ...state,
+                allowances: {
+                    ...state.allowances,
+                    loadings: state.allowances.loadings + 1,
+                },
+            };
+        }
+        case DELETE_GRANT_ALLOWANCE_LOADING:
+        case DELETE_GET_ALLOWANCE_LOADING: {
+            return {
+                ...state,
+                allowances: {
+                    ...state.allowances,
+                    loadings: state.allowances.loadings - 1,
+                },
+            };
+        }
+        case GET_ALLOWANCE_SUCCESS: {
+            return {
+                ...state,
+                allowances: {
+                    ...state.allowances,
+                    [action.token]: action.allowance,
+                },
+            };
+        }
+        case GRANT_ALLOWANCE_SUCCESS: {
+            return {
+                ...state,
+                successfulGrantAllowanceHash: action.transactionHash,
+            };
+        }
+        case DELETE_GRANT_ALLOWANCE_TRANSACTION_HASH: {
+            return {
+                ...state,
+                successfulGrantAllowanceHash: null,
+            };
+        }
+        case GET_DEPOSIT_BALANCE_SUCCESS: {
+            return {
+                ...state,
+                depositBalance: action.balance,
+            };
+        }
+        case POST_DEPOSIT_SUCCESS: {
+            return { ...state, depositHash: action.transactionHash };
+        }
+        case DELETE_DEPOSIT_TRANSACTION_HASH: {
+            return { ...state, depositHash: null };
         }
         default: {
             return state;

@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { UniversalSpinner } from "../universal-spinner";
 import { GlobalStyle } from "./styled.js";
 import { useDispatch } from "react-redux";
-import { Login } from "../login";
+import { Auth } from "../auth";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
 import { PROVIDER_URL, CHAIN_ID } from "../../env";
@@ -154,9 +154,9 @@ export const App = () => {
                             balances.length > 0
                         }
                         component={Dashboard}
-                        redirectTo="/login"
+                        redirectTo="/auth"
                     />
-                    <Route path="/login" component={Login} />
+                    <Route path="/auth" component={Auth} />
                     <Redirect to="/dashboard" />
                 </Switch>
             </Layout>

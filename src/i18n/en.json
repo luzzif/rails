@@ -1,6 +1,7 @@
 {
-    "login.summary": "Login to Loopring Pay and start sending and receiving crypto right away.",
-    "login.button": "Login",
+    "auth.summary": "Login or register to Loopring Pay to start sending and receiving crypto right away.",
+    "auth.login.button": "Login",
+    "auth.register.button": "Register",
     "dashboard.send": "Send",
     "dashboard.deposit": "Deposit",
     "dashboard.withdraw": "Withdraw",
@@ -27,5 +28,14 @@
     "send.form.placeholder.amount": "Amount",
     "send.form.placeholder.memo": "Memo",
     "send.form.confirmation.ok": "The transfer was successfully processed",
-    "send.form.confirmation.button.close": "Close"
+    "send.form.confirmation.button.close": "Close",
+    "deposit.allowance.message": "Before performing a {tokenSymbol} deposit on Loopring, you need to give us permission to move tokens on your behalf on-chain (this is a one-time operation, and you can revoke the permission whenever you want).",
+    "deposit.allowance.button.title": "Grant allowance",
+    "deposit.allowance.confirmation.message": "Your transaction has been broadcast to the network. Once confirmed, you'll be able to deposit your {tokenSymbol} and transfer them at light-speed on Loopring Pay. You can monitor the transaction by clicking on the button below (opens in a new page).",
+    "deposit.allowance.confirmation.button.title": "View on Etherscan",
+    "deposit.form.placeholder.amount": "Amount to deposit",
+    "deposit.form.amount.maximum": "Maximum amount (gas excluded): {amount}",
+    "deposit.form.confirm": "Confirm",
+    "deposit.confirmation.message": "Your transaction has been broadcast to the network. Once confirmed, in a few minutes you'll be able to transfer your {tokenSymbol} at light-speed on Loopring Pay. You can monitor the transaction by clicking on the button below (opens in a new page).",
+    "deposit.confirmation.button.title": "View on Etherscan"
 }
