@@ -27,5 +27,5 @@ export const RootFlex = styled(Flex)`
 `;
 
 export const ListFlex = styled(Flex)`
-    overflow-y: scroll;
+    overflow-y: auto;
 `;

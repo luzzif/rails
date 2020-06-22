@@ -36,5 +36,5 @@ export const TransactionsContainer = styled(Box)`
     border-top-left-radius: 24px;
     border-top-right-radius: 24px;
     height: 100%;
-    overflow-y: scroll;
+    overflow-y: hidden;
 `;
