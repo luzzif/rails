@@ -36,10 +36,9 @@ export const Send = ({ onConfirm, asset }) => {
     const [resolvedReceiver, setResolvedReceiver] = useState("");
     const [usingEns, setUsingEns] = useState(false);
     const [memo, setMemo] = useState("");
-    const [addressError, setReceiverError] = useState(false);
+    const [receiverError, setReceiverError] = useState(false);
     const [debouncedEnsLookup] = useDebouncedCallback((name) => {
         dispatch(getAddressFromEnsName(loopringWallet, name));
-        setReceiverError(false);
     }, 500);
 
     useEffect(() => {
@@ -104,7 +103,11 @@ export const Send = ({ onConfirm, asset }) => {
     const handleReceiverChange = useCallback(
         (event) => {
             const newReceiver = event.target.value;
-            if (newReceiver !== "0" && !newReceiver.startsWith("0x")) {
+            if (
+                newReceiver &&
+                newReceiver !== "0" &&
+                !newReceiver.startsWith("0x")
+            ) {
                 debouncedEnsLookup(newReceiver);
                 setUsingEns(true);
             } else {
@@ -143,7 +146,15 @@ export const Send = ({ onConfirm, asset }) => {
                     placeholder="foo.eth"
                     value={receiver}
                     onChange={handleReceiverChange}
-                    error={addressError}
+                    error={receiverError}
+                    message={
+                        addressFromEns && (
+                            <FormattedMessage
+                                id="send.form.receiver.resolved"
+                                values={{ address: addressFromEns }}
+                            />
+                        )
+                    }
                 />
             </Box>
             <Box mb={3} width="100%">
@@ -170,7 +181,7 @@ export const Send = ({ onConfirm, asset }) => {
                     disabled={
                         !receiver ||
                         !amount ||
-                        addressError ||
+                        receiverError ||
                         amountError ||
                         loadingAddressFromEns
                     }

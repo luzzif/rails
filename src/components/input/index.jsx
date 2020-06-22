@@ -14,7 +14,7 @@ export const Input = ({ label, message, ...rest }) => (
             <StyledInput {...rest} />
         </Box>
         {message && (
-            <Box mt={2}>
+            <Box pl={2} mt={2}>
                 <Message>{message}</Message>
             </Box>
         )}

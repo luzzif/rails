@@ -25,6 +25,7 @@
     "dashboard.transaction.summary.etherscan": "View on Etherscan",
     "send.form.confirm": "Confirm",
     "send.form.placeholder.receiver": "Receiver's address (or ENS)",
+    "send.form.receiver.resolved": "Resolved address: {address}",
     "send.form.placeholder.amount": "Amount",
     "send.form.placeholder.memo": "Memo",
     "send.form.confirmation.ok": "The transfer was successfully processed",
