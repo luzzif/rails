@@ -27,6 +27,8 @@ import { getEthBalance } from "../../lightcone/api/v1/ethBalance/get";
 
 export const INTIIALIZE_SUCCESS = "INTIIALIZE_SUCCESS";
 export const GET_SUPPORTED_TOKENS_SUCCESS = "GET_SUPPORTED_TOKENS_SUCCESS";
+export const POST_GET_BALANCES_LOADING = "POST_GET_BALANCES_LOADING";
+export const DELETE_GET_BALANCES_LOADING = "DELETE_GET_BALANCES_LOADING";
 export const GET_BALANCES_SUCCESS = "GET_BALANCES_SUCCESS";
 export const GET_TRANSACTIONS_SUCCESS = "GET_TRANSACTIONS_SUCCESS";
 export const POST_TRANSACTIONS_LOADING = "POST_TRANSACTIONS_LOADING";
@@ -95,7 +97,7 @@ export const getSupportedTokens = () => async (dispatch) => {
 export const getUserBalances = (account, wallet, supportedTokens) => async (
     dispatch
 ) => {
-    dispatch(postUniversalLoading());
+    dispatch({ type: POST_GET_BALANCES_LOADING });
     try {
         const partialBalances = await getBalances(
             account.accountId,
@@ -106,6 +108,7 @@ export const getUserBalances = (account, wallet, supportedTokens) => async (
         // we process the tokens with no balance too,
         // saving them with a 0 balance if necessary
         const allBalances = supportedTokens
+            .filter((supportedToken) => supportedToken.enabled)
             .reduce((allBalances, supportedToken) => {
                 const supportedTokenId = supportedToken.tokenId;
                 const supportedTokenSymbol = supportedToken.symbol;
@@ -141,7 +144,7 @@ export const getUserBalances = (account, wallet, supportedTokens) => async (
     } catch (error) {
         console.error("error getting loopring user balances", error);
     }
-    dispatch(deleteUniversalLoading());
+    dispatch({ type: DELETE_GET_BALANCES_LOADING });
 };
 
 export const getDepositBalance = (

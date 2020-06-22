@@ -11,6 +11,7 @@ import {
     getTokenTransactions,
     postTransfer,
     deleteTransferHash,
+    getUserBalances,
 } from "../../actions/loopring";
 import { TransactionSummary } from "./transaction-summary";
 import { Summary } from "../dashboard/summary";
@@ -32,7 +33,7 @@ export const Dashboard = () => {
         wallet: state.loopring.wallet,
         exchange: state.loopring.exchange,
         supportedTokens: state.loopring.supportedTokens,
-        balances: state.loopring.balances,
+        balances: state.loopring.balances.data,
         transactions: state.loopring.transactions.data,
         transactionsLoading: !!state.loopring.transactions.loadings,
         successfulTransferHash: state.loopring.successfulTransferHash,
@@ -129,6 +130,10 @@ export const Dashboard = () => {
         );
     }, [account, dispatch, selectedAsset, supportedTokens, wallet]);
 
+    const handleAssetsRefresh = useCallback(() => {
+        dispatch(getUserBalances(account, wallet, supportedTokens));
+    }, [account, dispatch, supportedTokens, wallet]);
+
     const handleSend = useCallback(() => {
         setSending(true);
     }, []);
@@ -223,6 +228,7 @@ export const Dashboard = () => {
                         assets={balances}
                         onChange={handleAssetChange}
                         open={changingAsset}
+                        onRefresh={handleAssetsRefresh}
                     />
                 )}
                 {sending && (

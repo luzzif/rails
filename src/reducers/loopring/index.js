@@ -17,6 +17,8 @@ import {
     GET_DEPOSIT_BALANCE_SUCCESS,
     POST_DEPOSIT_SUCCESS,
     DELETE_DEPOSIT_TRANSACTION_HASH,
+    POST_GET_BALANCES_LOADING,
+    DELETE_GET_BALANCES_LOADING,
 } from "../../actions/loopring";
 
 const initialState = {
@@ -24,7 +26,7 @@ const initialState = {
     wallet: null,
     exchange: null,
     supportedTokens: [],
-    balances: [],
+    balances: { loadings: 0, data: [] },
     transactions: {
         loadings: 0,
         data: [],
@@ -58,7 +60,7 @@ export const loopringReducer = (state = initialState, action) => {
         case GET_BALANCES_SUCCESS: {
             return {
                 ...state,
-                balances: action.balances,
+                balances: { ...state.balances, data: action.balances },
             };
         }
         case POST_TRANSACTIONS_LOADING: {
@@ -151,6 +153,24 @@ export const loopringReducer = (state = initialState, action) => {
         }
         case DELETE_DEPOSIT_TRANSACTION_HASH: {
             return { ...state, depositHash: null };
+        }
+        case POST_GET_BALANCES_LOADING: {
+            return {
+                ...state,
+                balances: {
+                    ...state.balances,
+                    loadings: state.balances.loadings + 1,
+                },
+            };
+        }
+        case DELETE_GET_BALANCES_LOADING: {
+            return {
+                ...state,
+                balances: {
+                    ...state.balances,
+                    loadings: state.balances.loadings - 1,
+                },
+            };
         }
         default: {
             return state;

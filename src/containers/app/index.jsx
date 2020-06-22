@@ -70,7 +70,7 @@ export const App = () => {
         loopringWallet: state.loopring.wallet,
         loopringExchange: state.loopring.exchange,
         supportedTokens: state.loopring.supportedTokens,
-        balances: state.loopring.balances,
+        balances: state.loopring.balances.data,
     }));
 
     const [lightTheme, setLightTheme] = useState(true);

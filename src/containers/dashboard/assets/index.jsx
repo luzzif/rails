@@ -4,9 +4,18 @@ import PropTypes from "prop-types";
 import { Asset } from "./asset";
 import { useIntl } from "react-intl";
 import { Searchbar } from "../../../components/searchbar";
+import { ActionButton } from "../../../components/action-button";
+import { faRedo } from "@fortawesome/free-solid-svg-icons";
+import { OverlayBox } from "./styled";
+import { BounceLoader } from "react-spinners";
+import { selectedTheme } from "../../app";
+import { useSelector } from "react-redux";
 
-export const Assets = ({ assets, onChange, open }) => {
+export const Assets = ({ assets, onChange, onRefresh, open }) => {
     const { formatMessage } = useIntl();
+    const { balancesLoading } = useSelector((state) => ({
+        balancesLoading: !!state.loopring.balances.loadings,
+    }));
 
     const [query, setQuery] = useState("");
     const [filteredAssets, setFilteredAssets] = useState(assets);
@@ -45,7 +54,7 @@ export const Assets = ({ assets, onChange, open }) => {
     return (
         <Flex mx={[3, 4]} flexDirection="column" width="100%">
             <Flex mb={3}>
-                <Box width="100%">
+                <Box width="100%" pr={3}>
                     <Searchbar
                         placeholder={formatMessage({
                             id: "dashboard.assets.search",
@@ -54,12 +63,29 @@ export const Assets = ({ assets, onChange, open }) => {
                         onChange={handleQueryChange}
                     />
                 </Box>
+                <Box minWidth="auto">
+                    <ActionButton
+                        faIcon={faRedo}
+                        size={48}
+                        faIconSize={20}
+                        onClick={onRefresh}
+                    />
+                </Box>
             </Flex>
             <Flex width="100%" flexDirection="column" overflowY="scroll">
                 {filteredAssets.map((asset) => (
                     <Asset key={asset.id} asset={asset} onClick={onChange} />
                 ))}
             </Flex>
+            <OverlayBox
+                width="100%"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                open={balancesLoading}
+            >
+                <BounceLoader size={60} color={selectedTheme.loader} loading />
+            </OverlayBox>
         </Flex>
     );
 };
@@ -68,4 +94,5 @@ Assets.propTypes = {
     assets: PropTypes.array.isRequired,
     onChange: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
+    onRefresh: PropTypes.func.isRequired,
 };
