@@ -105,5 +105,5 @@ export const Transaction = ({ asset, transaction, onClick }) => {
 Transaction.propTypes = {
     asset: PropTypes.object.isRequired,
     transaction: PropTypes.object.isRequired,
-    onClick: PropTypes.func.isRequired
-}
+    onClick: PropTypes.func.isRequired,
+};

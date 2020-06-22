@@ -128,6 +128,9 @@ export const Dashboard = () => {
                 10
             )
         );
+        // we also refresh the summarized balance in order
+        // to avoid inconsistencies
+        dispatch(getUserBalances(account, wallet, supportedTokens));
     }, [account, dispatch, selectedAsset, supportedTokens, wallet]);
 
     const handleAssetsRefresh = useCallback(() => {
