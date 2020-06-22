@@ -92,34 +92,34 @@ export const Transactions = ({
                     />
                 </Box>
             </Flex>
-            {!query &&
-                (!filteredTransactions ||
-                    filteredTransactions.length === 0) && (
-                    <Box>
-                        <FormattedMessage id="dashboard.transactions.empty" />
-                    </Box>
-                )}
-            {filteredTransactions && filteredTransactions.length > 0 ? (
-                filteredTransactions.map((transaction) => (
-                    <Box
-                        key={transaction.id}
-                        height={68}
-                        width="100%"
-                        alignItems="center"
-                        display="flex"
-                    >
-                        <Transaction
-                            transaction={transaction}
-                            asset={asset}
-                            onClick={onChange}
-                        />
-                    </Box>
-                ))
-            ) : (
-                <Box textAlign="center" mt={2} px={3}>
-                    <FormattedMessage id="dashboard.transactions.empty.search" />
+            {(!transactions || transactions.length === 0) && (
+                <Box>
+                    <FormattedMessage id="dashboard.transactions.empty" />
                 </Box>
             )}
+            {transactions && transactions.length > 0 ? (
+                filteredTransactions && filteredTransactions.length > 0 ? (
+                    filteredTransactions.map((transaction) => (
+                        <Box
+                            key={transaction.id}
+                            height={68}
+                            width="100%"
+                            alignItems="center"
+                            display="flex"
+                        >
+                            <Transaction
+                                transaction={transaction}
+                                asset={asset}
+                                onClick={onChange}
+                            />
+                        </Box>
+                    ))
+                ) : (
+                    <Box textAlign="center" mt={2} px={3}>
+                        <FormattedMessage id="dashboard.transactions.empty.search" />
+                    </Box>
+                )
+            ) : null}
             <OverlayBox
                 width="100%"
                 display="flex"

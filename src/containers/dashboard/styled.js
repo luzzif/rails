@@ -12,7 +12,7 @@ export const BottomUpContainer = styled(Flex)`
     left: 0;
     right: 0;
     padding-top: 32px;
-    max-height: 70vh;
+    max-height: 84vh;
 `;
 
 export const Overlay = styled.div`
