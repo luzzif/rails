@@ -1,6 +1,5 @@
 import { Box } from "reflexbox";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const RootButton = styled.button`
     background: rgba(0, 0, 0, 0);
@@ -17,8 +16,10 @@ export const OuterCircle = styled(Box)`
     color: ${(props) => props.theme.text};
 `;
 
-export const Icon = styled(FontAwesomeIcon)`
+export const IconContainer = styled.div`
     font-size: ${(props) => props.faIconSize}px;
+    width: ${(props) => props.faIconSize}px;
+    height: ${(props) => props.faIconSize}px;
 `;
 
 export const Title = styled(Box)`
