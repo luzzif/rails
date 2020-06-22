@@ -219,7 +219,9 @@ export const getTokenTransactions = (
             .concat(
                 deposits.transactions
                     .filter(
-                        (deposit) => deposit.depositType !== "create_account"
+                        (deposit) =>
+                            deposit.depositType !== "create_account" &&
+                            deposit.progress === "100%"
                     )
                     .map((deposit) => {
                         deposit.deposit = true;
@@ -339,7 +341,7 @@ export const grantAllowance = (
         let { accountNonce: nonce } = await lightconeGetAccount(wallet.address);
         const { chainId, exchangeAddress } = exchange;
         dispatch({
-            TYPE: GRANT_ALLOWANCE_SUCCESS,
+            type: GRANT_ALLOWANCE_SUCCESS,
             transactionHash: await wallet.approveMax(
                 tokenAddress,
                 exchangeAddress,
