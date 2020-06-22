@@ -49,7 +49,7 @@ export const Transaction = ({ asset, transaction, onClick }) => {
         <HoverableContainer
             alignItems="center"
             pl={[2, 3]}
-            pr={[3, 4]}
+            pr={[3, 3]}
             width="100%"
             height="100%"
             onClick={handleLocalClick}
