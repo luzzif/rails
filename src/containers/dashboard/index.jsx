@@ -238,6 +238,7 @@ export const Dashboard = () => {
                 {sending && (
                     <SwipeableViews
                         index={sendIndex}
+                        disabled
                         style={{ overflowY: "hidden", width: "100%" }}
                     >
                         <Send

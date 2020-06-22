@@ -107,6 +107,7 @@ export const DepositFlow = ({ open, asset }) => {
                 {needsAllowance ? (
                     <SwipeableViews
                         index={index}
+                        disabled
                         style={{ overflowY: "hidden", width: "100%" }}
                     >
                         {needsAllowance && <Allowance asset={asset} />}
@@ -121,6 +122,7 @@ export const DepositFlow = ({ open, asset }) => {
                 ) : (
                     <SwipeableViews
                         index={index}
+                        disabled
                         style={{ overflowY: "hidden", width: "100%" }}
                     >
                         <Form asset={asset} onConfirm={handleConfirm} />
