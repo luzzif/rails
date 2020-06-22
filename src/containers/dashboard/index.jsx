@@ -12,6 +12,7 @@ import {
     postTransfer,
     deleteTransferHash,
     getUserBalances,
+    postSelectedAsset,
 } from "../../actions/loopring";
 import { TransactionSummary } from "./transaction-summary";
 import { Summary } from "../dashboard/summary";
@@ -28,6 +29,7 @@ export const Dashboard = () => {
         transactions,
         transactionsLoading,
         successfulTransferHash,
+        selectedAsset,
     } = useSelector((state) => ({
         account: state.loopring.account,
         wallet: state.loopring.wallet,
@@ -37,6 +39,7 @@ export const Dashboard = () => {
         transactions: state.loopring.transactions.data,
         transactionsLoading: !!state.loopring.transactions.loadings,
         successfulTransferHash: state.loopring.successfulTransferHash,
+        selectedAsset: state.loopring.selectedAsset,
     }));
     const bottomUpContainer = useRef(null);
     const dispatch = useDispatch();
@@ -45,16 +48,7 @@ export const Dashboard = () => {
     const [showingTransaction, setShowingTransaction] = useState(false);
     const [depositing, setDepositing] = useState(false);
     const [sendIndex, setSendIndex] = useState(0);
-    const [selectedAsset, setSelectedAsset] = useState(balances[0]);
     const [selectedTransaction, setSelectedTransaction] = useState(null);
-
-    // setting the selected asset
-    useEffect(() => {
-        const firstNonZeroBalance = balances.find(
-            (balance) => !balance.balance.isZero()
-        );
-        setSelectedAsset(firstNonZeroBalance || balances[0]);
-    }, [balances, supportedTokens]);
 
     // getting transactions history (deposits, transfers and withdrawals)
     useEffect(() => {
@@ -66,14 +60,7 @@ export const Dashboard = () => {
                 supportedTokens
             )
         );
-    }, [
-        account,
-        balances,
-        dispatch,
-        selectedAsset.symbol,
-        supportedTokens,
-        wallet,
-    ]);
+    }, [account, balances, dispatch, selectedAsset, supportedTokens, wallet]);
 
     const handleClose = useCallback(() => {
         setSending(false);
@@ -108,10 +95,13 @@ export const Dashboard = () => {
         setChangingAsset(true);
     }, []);
 
-    const handleAssetChange = useCallback((asset) => {
-        setSelectedAsset(asset);
-        setChangingAsset(false);
-    }, []);
+    const handleAssetChange = useCallback(
+        (asset) => {
+            dispatch(postSelectedAsset(asset));
+            setChangingAsset(false);
+        },
+        [dispatch]
+    );
 
     const handleTransactionChange = useCallback((transaction) => {
         setSelectedTransaction(transaction);
@@ -156,14 +146,7 @@ export const Dashboard = () => {
                 )
             );
         },
-        [
-            account,
-            dispatch,
-            exchange,
-            selectedAsset.symbol,
-            supportedTokens,
-            wallet,
-        ]
+        [account, dispatch, exchange, selectedAsset, supportedTokens, wallet]
     );
 
     // on a succesful transfer, we set the correct index and delete the hash

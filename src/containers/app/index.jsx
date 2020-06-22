@@ -13,7 +13,11 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
 import { PROVIDER_URL, CHAIN_ID } from "../../env";
 import { changeWeb3ModalTheme } from "../../actions/web3-modal";
-import { getSupportedTokens, getUserBalances } from "../../actions/loopring";
+import {
+    getSupportedTokens,
+    getUserBalances,
+    postSelectedAsset,
+} from "../../actions/loopring";
 
 const commonColors = {
     error: "#ff1744",
@@ -65,12 +69,14 @@ export const App = () => {
         loopringExchange,
         supportedTokens,
         balances,
+        selectedAsset,
     } = useSelector((state) => ({
         loopringAccount: state.loopring.account,
         loopringWallet: state.loopring.wallet,
         loopringExchange: state.loopring.exchange,
         supportedTokens: state.loopring.supportedTokens,
         balances: state.loopring.balances.data,
+        selectedAsset: state.loopring.selectedAsset,
     }));
 
     const [lightTheme, setLightTheme] = useState(true);
@@ -107,6 +113,16 @@ export const App = () => {
         }
     }, [dispatch, supportedTokens, loopringAccount, loopringWallet]);
 
+    // setting the default-selected asset (the one with the most fiat value)
+    useEffect(() => {
+        if (balances && balances.length > 0 && selectedAsset === null) {
+            const firstNonZeroBalance = balances.find(
+                (balance) => !balance.balance.isZero()
+            );
+            dispatch(postSelectedAsset(firstNonZeroBalance || balances[0]));
+        }
+    }, [balances, dispatch, selectedAsset, supportedTokens]);
+
     useEffect(() => {
         if (
             loopringAccount &&
@@ -115,7 +131,8 @@ export const App = () => {
             supportedTokens &&
             supportedTokens.length > 0 &&
             balances &&
-            balances.length > 0
+            balances.length > 0 &&
+            selectedAsset
         ) {
             history.push("/dashboard");
         }
@@ -125,6 +142,7 @@ export const App = () => {
         loopringAccount,
         loopringExchange,
         loopringWallet,
+        selectedAsset,
         supportedTokens,
     ]);
 
@@ -147,13 +165,16 @@ export const App = () => {
                     <PrivateRoute
                         path="/dashboard"
                         condition={
-                            loopringAccount &&
-                            loopringWallet &&
-                            loopringExchange &&
-                            supportedTokens &&
-                            supportedTokens.length > 0 &&
-                            balances &&
-                            balances.length > 0
+                            !!(
+                                loopringAccount &&
+                                loopringWallet &&
+                                loopringExchange &&
+                                supportedTokens &&
+                                supportedTokens.length > 0 &&
+                                balances &&
+                                balances.length > 0 &&
+                                selectedAsset
+                            )
                         }
                         component={Dashboard}
                         redirectTo="/auth"

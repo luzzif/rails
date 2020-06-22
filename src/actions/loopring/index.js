@@ -49,6 +49,7 @@ export const GET_DEPOSIT_BALANCE_SUCCESS = "GET_DEPOSIT_BALANCE_SUCCESS";
 export const POST_DEPOSIT_SUCCESS = "POST_DEPOSIT_SUCCESS";
 export const DELETE_DEPOSIT_TRANSACTION_HASH =
     "DELETE_DEPOSIT_TRANSACTION_HASHPOST_DEPOSIT_SUCCESS";
+export const POST_SELECTED_ASSET = "POST_SELECTED_ASSET";
 
 export const initializeLoopring = () => async (dispatch) => {
     try {
@@ -434,4 +435,8 @@ export const registerAccount = () => async (dispatch) => {
         console.error("error registering user", error);
     }
     dispatch(deleteUniversalLoading());
+};
+
+export const postSelectedAsset = (asset) => async (dispatch) => {
+    dispatch({ type: POST_SELECTED_ASSET, asset });
 };
