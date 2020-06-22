@@ -29,7 +29,7 @@ export const Confirmation = ({ onClose }) => (
         >
             <FormattedMessage id="send.form.confirmation.ok" />
         </Box>
-        <Box width="100%">
+        <Box>
             <Button onClick={onClose}>
                 <FormattedMessage id="send.form.confirmation.button.close" />
             </Button>
