@@ -131,6 +131,7 @@ export const getUserBalances = (account, wallet, supportedTokens) => async (
                     address: supportedToken.address,
                     balance,
                     fiatValue,
+                    depositEnabled: supportedToken.depositEnabled,
                 });
                 return allBalances;
             }, [])

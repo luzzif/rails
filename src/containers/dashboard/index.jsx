@@ -195,6 +195,7 @@ export const Dashboard = () => {
                         onSend={handleSend}
                         onDeposit={handleDeposit}
                         onAssets={handleAssets}
+                        asset={selectedAsset}
                     />
                 </Box>
                 <TransactionsContainer

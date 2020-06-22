@@ -10,14 +10,15 @@ import {
 import { ActionButton } from "../../../components/action-button";
 import { FormattedMessage } from "react-intl";
 
-export const ButtonsStrip = ({ onSend, onDeposit, onWithdrawal, onAssets }) => (
-    <Flex width="100%">
-        <Box
-            width={1 / 3}
-            display="flex"
-            justifyContent="center"
-            minWidth="auto"
-        >
+export const ButtonsStrip = ({
+    asset,
+    onSend,
+    onDeposit,
+    onWithdrawal,
+    onAssets,
+}) => (
+    <Flex width="100%" justifyContent="space-around">
+        <Box>
             <ActionButton
                 faIcon={faArrowUp}
                 title={<FormattedMessage id="dashboard.send" />}
@@ -26,26 +27,18 @@ export const ButtonsStrip = ({ onSend, onDeposit, onWithdrawal, onAssets }) => (
                 onClick={onSend}
             />
         </Box>
-        <Box
-            width={1 / 3}
-            display="flex"
-            justifyContent="center"
-            minWidth="auto"
-        >
-            <ActionButton
-                faIcon={faPlus}
-                title={<FormattedMessage id="dashboard.deposit" />}
-                size={[52, 56, 60]}
-                faIconSize={24}
-                onClick={onDeposit}
-            />
-        </Box>
-        <Box
-            width={1 / 3}
-            display="flex"
-            justifyContent="center"
-            minWidth="auto"
-        >
+        {asset.depositEnabled && (
+            <Box>
+                <ActionButton
+                    faIcon={faPlus}
+                    title={<FormattedMessage id="dashboard.deposit" />}
+                    size={[52, 56, 60]}
+                    faIconSize={24}
+                    onClick={onDeposit}
+                />
+            </Box>
+        )}
+        <Box>
             <ActionButton
                 faIcon={faMinus}
                 title={<FormattedMessage id="dashboard.withdraw" />}
@@ -53,12 +46,7 @@ export const ButtonsStrip = ({ onSend, onDeposit, onWithdrawal, onAssets }) => (
                 faIconSize={24}
             />
         </Box>
-        <Box
-            width={1 / 3}
-            display="flex"
-            justifyContent="center"
-            minWidth="auto"
-        >
+        <Box>
             <ActionButton
                 faIcon={faList}
                 title={<FormattedMessage id="dashboard.change.asset" />}
