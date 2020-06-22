@@ -25,3 +25,7 @@ export const OverlayBox = styled(Box)`
 export const RootFlex = styled(Flex)`
     position: relative;
 `;
+
+export const ListFlex = styled(Flex)`
+    overflow-y: scroll;
+`;

@@ -8,7 +8,7 @@ import { BounceLoader } from "react-spinners";
 import { selectedTheme } from "../../app";
 import { ActionButton } from "../../../components/action-button";
 import { faRedo } from "@fortawesome/free-solid-svg-icons";
-import { OverlayBox, RootFlex } from "./styled";
+import { OverlayBox, RootFlex, ListFlex } from "./styled";
 
 export const Transactions = ({
     asset,
@@ -99,21 +99,23 @@ export const Transactions = ({
             )}
             {transactions && transactions.length > 0 ? (
                 filteredTransactions && filteredTransactions.length > 0 ? (
-                    filteredTransactions.map((transaction) => (
-                        <Box
-                            key={transaction.id}
-                            height={68}
-                            width="100%"
-                            alignItems="center"
-                            display="flex"
-                        >
-                            <Transaction
-                                transaction={transaction}
-                                asset={asset}
-                                onClick={onChange}
-                            />
-                        </Box>
-                    ))
+                    <ListFlex flexGrow={1} flexDirection="column" width="100%">
+                        {filteredTransactions.map((transaction) => (
+                            <Box
+                                key={transaction.id}
+                                height={68}
+                                width="100%"
+                                alignItems="center"
+                                display="flex"
+                            >
+                                <Transaction
+                                    transaction={transaction}
+                                    asset={asset}
+                                    onClick={onChange}
+                                />
+                            </Box>
+                        ))}
+                    </ListFlex>
                 ) : (
                     <Box textAlign="center" mt={2} px={3}>
                         <FormattedMessage id="dashboard.transactions.empty.search" />
