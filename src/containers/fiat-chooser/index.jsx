@@ -3,7 +3,12 @@ import { Flex, Box } from "reflexbox";
 import React from "react";
 import PropTypes from "prop-types";
 import { Fiat } from "./fiat";
-import { faEuroSign, faDollarSign } from "@fortawesome/free-solid-svg-icons";
+import {
+    faEuroSign,
+    faDollarSign,
+    faPoundSign,
+    faYenSign,
+} from "@fortawesome/free-solid-svg-icons";
 
 export const supportedFiats = [
     {
@@ -15,6 +20,21 @@ export const supportedFiats = [
         symbol: "€",
         name: "EUR",
         faIcon: faEuroSign,
+    },
+    {
+        symbol: "£",
+        name: "GBP",
+        faIcon: faPoundSign,
+    },
+    {
+        symbol: "¥",
+        name: "JPY",
+        faIcon: faYenSign,
+    },
+    {
+        symbol: "¥",
+        name: "CNY",
+        faIcon: faYenSign,
     },
 ];
 
