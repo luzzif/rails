@@ -38,5 +38,10 @@
     "deposit.form.amount.maximum": "Maximum amount (gas excluded): {amount}",
     "deposit.form.confirm": "Confirm",
     "deposit.confirmation.message": "Your transaction has been broadcast to the network. Once confirmed, in a few minutes you'll be able to transfer your {tokenSymbol} at light-speed on Loopring Pay. You can monitor the transaction by clicking on the button below (opens in a new page).",
-    "deposit.confirmation.button.title": "View on Etherscan"
+    "deposit.confirmation.button.title": "View on Etherscan",
+    "withdrawal.form.placeholder.amount": "Amount",
+    "withdrawal.form.amount.maximum": "Maximum amount (gas excluded): {amount}",
+    "withdrawal.form.confirm": "Confirm",
+    "withdrawal.confirmation.message": "Your transaction has been broadcast to the network. Once the request is processed (it could take up to a few days), you'll be able to use your funds securely, on chain. You can monitor the transaction by clicking on the button below (opens in a new page).",
+    "withdrawal.confirmation.button.title": "View on Etherscan"
 }

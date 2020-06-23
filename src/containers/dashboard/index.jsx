@@ -18,6 +18,7 @@ import { TransactionSummary } from "./transaction-summary";
 import { Summary } from "../dashboard/summary";
 import { Confirmation } from "./send/confirmation";
 import { DepositFlow } from "./deposit";
+import { WithdrawalFlow } from "./withdraw";
 
 export const Dashboard = () => {
     const {
@@ -47,6 +48,7 @@ export const Dashboard = () => {
     const [changingAsset, setChangingAsset] = useState(false);
     const [showingTransaction, setShowingTransaction] = useState(false);
     const [depositing, setDepositing] = useState(false);
+    const [withdrawing, setWithdrawing] = useState(false);
     const [sendIndex, setSendIndex] = useState(0);
     const [selectedTransaction, setSelectedTransaction] = useState(null);
 
@@ -67,6 +69,7 @@ export const Dashboard = () => {
         setChangingAsset(false);
         setShowingTransaction(false);
         setDepositing(false);
+        setWithdrawing(false);
         setSendIndex(0);
     }, []);
 
@@ -83,13 +86,26 @@ export const Dashboard = () => {
     // hiding the bottom up container on outside click
     // (only active if the container is actually shown)
     useEffect(() => {
-        if (sending || changingAsset || showingTransaction || depositing) {
+        if (
+            sending ||
+            changingAsset ||
+            showingTransaction ||
+            depositing ||
+            withdrawing
+        ) {
             document.addEventListener("mousedown", handleClick);
             return () => {
                 document.removeEventListener("mousedown", handleClick);
             };
         }
-    }, [handleClick, sending, changingAsset, showingTransaction, depositing]);
+    }, [
+        handleClick,
+        sending,
+        changingAsset,
+        showingTransaction,
+        depositing,
+        withdrawing,
+    ]);
 
     const handleAssets = useCallback(() => {
         setChangingAsset(true);
@@ -161,6 +177,10 @@ export const Dashboard = () => {
         setDepositing(true);
     }, []);
 
+    const handleWithdraw = useCallback(() => {
+        setWithdrawing(true);
+    }, []);
+
     return (
         <>
             <Flex
@@ -181,6 +201,7 @@ export const Dashboard = () => {
                         onSend={handleSend}
                         onDeposit={handleDeposit}
                         onAssets={handleAssets}
+                        onWithdraw={handleWithdraw}
                         asset={selectedAsset}
                     />
                 </Box>
@@ -199,14 +220,22 @@ export const Dashboard = () => {
             </Flex>
             <Overlay
                 show={
-                    sending || changingAsset || showingTransaction || depositing
+                    sending ||
+                    changingAsset ||
+                    showingTransaction ||
+                    depositing ||
+                    withdrawing
                 }
             />
             <BottomUpContainer
                 m="0 auto"
                 width={["95%", "75%", "65%", "45%", "35%"]}
                 show={
-                    sending || changingAsset || showingTransaction || depositing
+                    sending ||
+                    changingAsset ||
+                    showingTransaction ||
+                    depositing ||
+                    withdrawing
                 }
                 ref={bottomUpContainer}
             >
@@ -236,6 +265,9 @@ export const Dashboard = () => {
                 )}
                 {depositing && (
                     <DepositFlow open={depositing} asset={selectedAsset} />
+                )}
+                {withdrawing && (
+                    <WithdrawalFlow open={withdrawing} asset={selectedAsset} />
                 )}
             </BottomUpContainer>
         </>

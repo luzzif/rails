@@ -20,6 +20,8 @@ import {
     POST_GET_BALANCES_LOADING,
     DELETE_GET_BALANCES_LOADING,
     POST_SELECTED_ASSET,
+    POST_WITHDRAWAL_SUCCESS,
+    DELETE_WITHDRAWAL_TRANSACTION_HASH,
 } from "../../actions/loopring";
 
 const initialState = {
@@ -40,6 +42,7 @@ const initialState = {
     depositBalance: null,
     depositHash: null,
     selectedAsset: null,
+    withdrawalTransactionHash: null,
 };
 
 export const loopringReducer = (state = initialState, action) => {
@@ -176,6 +179,18 @@ export const loopringReducer = (state = initialState, action) => {
         }
         case POST_SELECTED_ASSET: {
             return { ...state, selectedAsset: action.asset };
+        }
+        case POST_WITHDRAWAL_SUCCESS: {
+            return {
+                ...state,
+                withdrawalTransactionHash: action.transactionHash,
+            };
+        }
+        case DELETE_WITHDRAWAL_TRANSACTION_HASH: {
+            return {
+                ...state,
+                withdrawalTransactionHash: null,
+            };
         }
         default: {
             return state;

@@ -50,6 +50,9 @@ export const POST_DEPOSIT_SUCCESS = "POST_DEPOSIT_SUCCESS";
 export const DELETE_DEPOSIT_TRANSACTION_HASH =
     "DELETE_DEPOSIT_TRANSACTION_HASHPOST_DEPOSIT_SUCCESS";
 export const POST_SELECTED_ASSET = "POST_SELECTED_ASSET";
+export const POST_WITHDRAWAL_SUCCESS = "POST_WITHDRAWAL_SUCCESS";
+export const DELETE_WITHDRAWAL_TRANSACTION_HASH =
+    "DELETE_WITHDRAWAL_TRANSACTION_HASH";
 
 export const initializeLoopring = () => async (dispatch) => {
     try {
@@ -439,4 +442,35 @@ export const registerAccount = () => async (dispatch) => {
 
 export const postSelectedAsset = (asset) => async (dispatch) => {
     dispatch({ type: POST_SELECTED_ASSET, asset });
+};
+
+export const postOnchainWithdrawal = (
+    wallet,
+    exchange,
+    tokenSymbol,
+    supportedTokens,
+    amount
+) => async (dispatch) => {
+    try {
+        const { exchangeAddress, chainId, onchainFees } = exchange;
+        const transactionHash = await wallet.onchainWithdrawal(
+            {
+                exchangeAddress,
+                chainId,
+                token: config.getTokenBySymbol(tokenSymbol, supportedTokens),
+                amount,
+                nonce: await getEthNonce(wallet.address),
+                gasPrice: await getRecommendedGasPrice(),
+                fee: config.getFeeByType("withdraw", onchainFees).fee,
+            },
+            true
+        );
+        dispatch({ type: POST_WITHDRAWAL_SUCCESS, transactionHash });
+    } catch (error) {
+        console.error("error performing onchain withdrawal", error);
+    }
+};
+
+export const deleteWithdrawalTransactionHash = () => async (dispatch) => {
+    dispatch({ type: DELETE_WITHDRAWAL_TRANSACTION_HASH });
 };
