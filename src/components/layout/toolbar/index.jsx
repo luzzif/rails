@@ -24,7 +24,7 @@ export const Toolbar = ({ lightTheme, onThemeChange, fiat, onFiatClick }) => (
                     <ActionButton
                         onClick={onFiatClick}
                         faIcon={fiat.faIcon}
-                        size={48}
+                        size={[40, 44, 48]}
                         faIconSize={20}
                     />
                 </Box>
@@ -33,7 +33,7 @@ export const Toolbar = ({ lightTheme, onThemeChange, fiat, onFiatClick }) => (
                 <ActionButton
                     onClick={onThemeChange}
                     faIcon={lightTheme ? faMoon : faSun}
-                    size={48}
+                    size={[40, 44, 48]}
                     faIconSize={20}
                 />
             </Box>
