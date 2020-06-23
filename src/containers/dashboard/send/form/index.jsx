@@ -72,7 +72,8 @@ export const Send = ({ onConfirm, asset }) => {
                 newAmount.indexOf(",") >= 0 ||
                 newAmount.indexOf(" ") >= 0 ||
                 newAmount.indexOf("-") >= 0 ||
-                numericAmount < 0
+                numericAmount < 0 ||
+                isNaN(numericAmount)
             ) {
                 setAmountError(true);
                 setStringAmount("");
@@ -84,7 +85,10 @@ export const Send = ({ onConfirm, asset }) => {
             } else {
                 setAmountError(false);
             }
-            if (/\.{2,}/.test(newAmount) || newAmount.split(".").length > 2) {
+            if (
+                /\.{2,}|[a-zA-Z]/.test(newAmount) ||
+                newAmount.split(".").length > 2
+            ) {
                 return;
             }
             setStringAmount(newAmount);
