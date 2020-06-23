@@ -14,19 +14,21 @@ export const ButtonsStrip = ({
     asset,
     onSend,
     onDeposit,
-    onWithdrawal,
+    onWithdraw,
     onAssets,
 }) => (
     <Flex width="100%" justifyContent="space-around">
-        <Box>
-            <ActionButton
-                faIcon={faArrowUp}
-                title={<FormattedMessage id="dashboard.send" />}
-                size={[52, 56, 60]}
-                faIconSize={24}
-                onClick={onSend}
-            />
-        </Box>
+        {!asset.balance.isZero() && (
+            <Box>
+                <ActionButton
+                    faIcon={faArrowUp}
+                    title={<FormattedMessage id="dashboard.send" />}
+                    size={[52, 56, 60]}
+                    faIconSize={24}
+                    onClick={onSend}
+                />
+            </Box>
+        )}
         {asset.depositEnabled && (
             <Box>
                 <ActionButton
@@ -38,14 +40,17 @@ export const ButtonsStrip = ({
                 />
             </Box>
         )}
-        <Box>
-            <ActionButton
-                faIcon={faMinus}
-                title={<FormattedMessage id="dashboard.withdraw" />}
-                size={[52, 56, 60]}
-                faIconSize={24}
-            />
-        </Box>
+        {!asset.balance.isZero() && (
+            <Box>
+                <ActionButton
+                    faIcon={faMinus}
+                    title={<FormattedMessage id="dashboard.withdraw" />}
+                    size={[52, 56, 60]}
+                    faIconSize={24}
+                    onClick={onWithdraw}
+                />
+            </Box>
+        )}
         <Box>
             <ActionButton
                 faIcon={faList}
@@ -61,6 +66,6 @@ export const ButtonsStrip = ({
 ButtonsStrip.propTypes = {
     onSend: PropTypes.func.isRequired,
     onDeposit: PropTypes.func.isRequired,
-    onWithdrawal: PropTypes.func.isRequired,
+    onWithdraw: PropTypes.func.isRequired,
     onAssets: PropTypes.func.isRequired,
 };
