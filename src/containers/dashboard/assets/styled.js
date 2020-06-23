@@ -9,6 +9,8 @@ export const OverlayBox = styled(Box)`
     right: 0;
     background: ${(props) => props.theme.background};
     opacity: 1;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
     transition: opacity 0.3s ease;
     transform: translateY(0);
     ${(props) =>
