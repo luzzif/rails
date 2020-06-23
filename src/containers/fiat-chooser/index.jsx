@@ -36,6 +36,11 @@ export const supportedFiats = [
         name: "CNY",
         faIcon: faYenSign,
     },
+    {
+        symbol: "$",
+        name: "HKD",
+        faIcon: faDollarSign,
+    },
 ];
 
 export const FiatChooser = ({ onChange }) => (
