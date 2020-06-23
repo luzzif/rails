@@ -21,7 +21,7 @@ export const Summary = ({ balance, fiatValue, symbol }) => {
                     .multipliedBy(etherBalance)
                     .decimalPlaces(2)
                     .toString()}{" "}
-                USD
+                $
             </Box>
         </Flex>
     );

@@ -45,7 +45,7 @@ export const Asset = ({ asset, onClick }) => {
                         .multipliedBy(asset.fiatValue)
                         .decimalPlaces(3)
                         .toString()}{" "}
-                    USD
+                    $
                 </Box>
             </Flex>
         </RootContainer>
