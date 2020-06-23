@@ -17,7 +17,10 @@ import {
     getSupportedTokens,
     getUserBalances,
     postSelectedAsset,
+    postSelectedFiat,
 } from "../../actions/loopring";
+import { BottomUpContainer } from "../../components/bottom-up-container";
+import { FiatChooser, supportedFiats } from "../fiat-chooser";
 
 const commonColors = {
     error: "#ff1744",
@@ -71,6 +74,7 @@ export const App = () => {
         supportedTokens,
         balances,
         selectedAsset,
+        selectedFiat,
     } = useSelector((state) => ({
         loopringAccount: state.loopring.account,
         loopringWallet: state.loopring.wallet,
@@ -78,10 +82,13 @@ export const App = () => {
         supportedTokens: state.loopring.supportedTokens,
         balances: state.loopring.balances.data,
         selectedAsset: state.loopring.selectedAsset,
+        selectedFiat: state.loopring.selectedFiat,
     }));
 
     const [lightTheme, setLightTheme] = useState(true);
+    const [changingFiat, setChangingFiat] = useState(false);
 
+    // setting up local storage stuff
     useEffect(() => {
         const cachedTheme =
             localStorage.getItem("loopring-pay-theme") || "light";
@@ -89,6 +96,14 @@ export const App = () => {
         setLightTheme(lightTheme);
         selectedTheme = lightTheme ? light : dark;
         dispatch(changeWeb3ModalTheme(cachedTheme));
+        const fiatFromLocalStorage = localStorage.getItem("loopring-pay-fiat");
+        dispatch(
+            postSelectedFiat(
+                fiatFromLocalStorage
+                    ? JSON.parse(fiatFromLocalStorage)
+                    : supportedFiats[0]
+            )
+        );
     }, [dispatch]);
 
     useEffect(() => {
@@ -108,11 +123,18 @@ export const App = () => {
                 getUserBalances(
                     loopringAccount,
                     loopringWallet,
-                    supportedTokens
+                    supportedTokens,
+                    selectedFiat
                 )
             );
         }
-    }, [dispatch, supportedTokens, loopringAccount, loopringWallet]);
+    }, [
+        dispatch,
+        supportedTokens,
+        loopringAccount,
+        loopringWallet,
+        selectedFiat,
+    ]);
 
     // setting the default-selected asset (the one with the most fiat value)
     useEffect(() => {
@@ -158,10 +180,32 @@ export const App = () => {
         selectedTheme = newLightTheme ? light : dark;
     }, [lightTheme, dispatch]);
 
+    const handleFiatClick = useCallback(() => {
+        setChangingFiat(true);
+    }, []);
+
+    const handleFiatBottomUpContainerClose = useCallback(() => {
+        setChangingFiat(false);
+    }, []);
+
+    const handleFiatChange = useCallback(
+        (fiat) => {
+            localStorage.setItem("loopring-pay-fiat", JSON.stringify(fiat));
+            dispatch(postSelectedFiat(fiat));
+            setChangingFiat(false);
+        },
+        [dispatch]
+    );
+
     return (
         <ThemeProvider theme={lightTheme ? light : dark}>
             <GlobalStyle />
-            <Layout lightTheme={lightTheme} onThemeChange={handleThemeChange}>
+            <Layout
+                lightTheme={lightTheme}
+                onThemeChange={handleThemeChange}
+                fiat={selectedFiat}
+                onFiatClick={handleFiatClick}
+            >
                 <Switch>
                     <PrivateRoute
                         path="/dashboard"
@@ -183,6 +227,12 @@ export const App = () => {
                     <Route path="/auth" component={Auth} />
                     <Redirect to="/dashboard" />
                 </Switch>
+                <BottomUpContainer
+                    open={changingFiat}
+                    onClose={handleFiatBottomUpContainerClose}
+                >
+                    <FiatChooser onChange={handleFiatChange} />
+                </BottomUpContainer>
             </Layout>
             <UniversalSpinner />
         </ThemeProvider>

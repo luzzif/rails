@@ -8,7 +8,7 @@ import { weiToEther } from "../../../../utils/conversion";
 import BigNumber from "bignumber.js";
 import moment from "moment";
 
-export const Transaction = ({ asset, transaction, onClick }) => {
+export const Transaction = ({ asset, transaction, onClick, selectedFiat }) => {
     const {
         amount,
         deposit,
@@ -102,9 +102,9 @@ export const Transaction = ({ asset, transaction, onClick }) => {
                         {(deposit || !sent ? "+" : "-") +
                             etherAmount
                                 .multipliedBy(asset.fiatValue)
-                                .decimalPlaces(3)
+                                .decimalPlaces(2)
                                 .toString()}{" "}
-                        $
+                        {selectedFiat.symbol}
                     </AmountText>
                 </Box>
             </Flex>

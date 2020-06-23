@@ -6,7 +6,7 @@ import { weiToEther } from "../../../../utils/conversion";
 import { TokenIcon } from "../../../../components/token-icon";
 import { RootContainer } from "./styled";
 
-export const Asset = ({ asset, onClick }) => {
+export const Asset = ({ asset, onClick, selectedFiat }) => {
     const [etherBalance, setEtherBalance] = useState(new BigNumber("0"));
 
     useLayoutEffect(() => {
@@ -43,9 +43,9 @@ export const Asset = ({ asset, onClick }) => {
                 <Box fontSize={12}>
                     {etherBalance
                         .multipliedBy(asset.fiatValue)
-                        .decimalPlaces(3)
+                        .decimalPlaces(2)
                         .toString()}{" "}
-                    $
+                    {selectedFiat.symbol}
                 </Box>
             </Flex>
         </RootContainer>

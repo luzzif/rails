@@ -11,7 +11,7 @@ import { BounceLoader } from "react-spinners";
 import { selectedTheme } from "../../app";
 import { useSelector } from "react-redux";
 
-export const Assets = ({ assets, onChange, onRefresh, open }) => {
+export const Assets = ({ assets, onChange, onRefresh, open, selectedFiat }) => {
     const { formatMessage } = useIntl();
     const { balancesLoading } = useSelector((state) => ({
         balancesLoading: !!state.loopring.balances.loadings,
@@ -74,7 +74,7 @@ export const Assets = ({ assets, onChange, onRefresh, open }) => {
             </Flex>
             <Flex width="100%" flexDirection="column" overflowY="scroll">
                 {filteredAssets.map((asset) => (
-                    <Asset key={asset.id} asset={asset} onClick={onChange} />
+                    <Asset key={asset.id} asset={asset} onClick={onChange} selectedFiat={selectedFiat} />
                 ))}
             </Flex>
             <OverlayBox

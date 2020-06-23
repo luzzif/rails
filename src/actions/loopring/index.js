@@ -53,6 +53,7 @@ export const POST_SELECTED_ASSET = "POST_SELECTED_ASSET";
 export const POST_WITHDRAWAL_SUCCESS = "POST_WITHDRAWAL_SUCCESS";
 export const DELETE_WITHDRAWAL_TRANSACTION_HASH =
     "DELETE_WITHDRAWAL_TRANSACTION_HASH";
+export const POST_SELECTED_FIAT = "POST_SELECTED_FIAT";
 
 export const initializeLoopring = () => async (dispatch) => {
     try {
@@ -98,7 +99,7 @@ export const getSupportedTokens = () => async (dispatch) => {
     dispatch(deleteUniversalLoading());
 };
 
-export const getUserBalances = (account, wallet, supportedTokens) => async (
+export const getUserBalances = (account, wallet, supportedTokens, selectedFiat) => async (
     dispatch
 ) => {
     dispatch({ type: POST_GET_BALANCES_LOADING });
@@ -108,7 +109,7 @@ export const getUserBalances = (account, wallet, supportedTokens) => async (
             await getLoopringApiKey(wallet, account),
             supportedTokens
         );
-        const fiatValues = await getPrice("USD");
+        const fiatValues = await getPrice(selectedFiat.name);
         // we process the tokens with no balance too,
         // saving them with a 0 balance if necessary
         const allBalances = supportedTokens
@@ -471,4 +472,8 @@ export const postOnchainWithdrawal = (
 
 export const deleteWithdrawalTransactionHash = () => async (dispatch) => {
     dispatch({ type: DELETE_WITHDRAWAL_TRANSACTION_HASH });
+};
+
+export const postSelectedFiat = (fiat) => async (dispatch) => {
+    dispatch({ type: POST_SELECTED_FIAT, fiat });
 };

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { weiToEther } from "../../../utils/conversion";
 import BigNumber from "bignumber.js";
 
-export const Summary = ({ balance, fiatValue, symbol }) => {
+export const Summary = ({ balance, fiatValue, symbol, selectedFiat }) => {
     const [etherBalance, setEtherBalance] = useState(new BigNumber("0"));
 
     useLayoutEffect(() => {
@@ -21,7 +21,7 @@ export const Summary = ({ balance, fiatValue, symbol }) => {
                     .multipliedBy(etherBalance)
                     .decimalPlaces(2)
                     .toString()}{" "}
-                $
+                {selectedFiat.symbol}
             </Box>
         </Flex>
     );

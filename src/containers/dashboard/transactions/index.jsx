@@ -16,6 +16,7 @@ export const Transactions = ({
     loading,
     onChange,
     onRefresh,
+    selectedFiat
 }) => {
     const { formatMessage } = useIntl();
 
@@ -112,6 +113,7 @@ export const Transactions = ({
                                     transaction={transaction}
                                     asset={asset}
                                     onClick={onChange}
+                                    selectedFiat={selectedFiat}
                                 />
                             </Box>
                         ))}

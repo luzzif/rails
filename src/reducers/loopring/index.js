@@ -22,6 +22,7 @@ import {
     POST_SELECTED_ASSET,
     POST_WITHDRAWAL_SUCCESS,
     DELETE_WITHDRAWAL_TRANSACTION_HASH,
+    POST_SELECTED_FIAT,
 } from "../../actions/loopring";
 
 const initialState = {
@@ -43,6 +44,7 @@ const initialState = {
     depositHash: null,
     selectedAsset: null,
     withdrawalTransactionHash: null,
+    selectedFiat: null,
 };
 
 export const loopringReducer = (state = initialState, action) => {
@@ -191,6 +193,9 @@ export const loopringReducer = (state = initialState, action) => {
                 ...state,
                 withdrawalTransactionHash: null,
             };
+        }
+        case POST_SELECTED_FIAT: {
+            return { ...state, selectedFiat: action.fiat };
         }
         default: {
             return state;

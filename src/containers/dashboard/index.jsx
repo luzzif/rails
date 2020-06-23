@@ -1,5 +1,5 @@
-import React, { useCallback, useState, useRef, useEffect } from "react";
-import { BottomUpContainer, Overlay, TransactionsContainer } from "./styled";
+import React, { useCallback, useState, useEffect } from "react";
+import { TransactionsContainer } from "./styled";
 import { Send } from "./send/form";
 import { Box, Flex } from "reflexbox";
 import { Transactions } from "./transactions";
@@ -19,6 +19,7 @@ import { Summary } from "../dashboard/summary";
 import { Confirmation } from "./send/confirmation";
 import { DepositFlow } from "./deposit";
 import { WithdrawalFlow } from "./withdraw";
+import { BottomUpContainer } from "../../components/bottom-up-container";
 
 export const Dashboard = () => {
     const {
@@ -31,6 +32,7 @@ export const Dashboard = () => {
         transactionsLoading,
         successfulTransferHash,
         selectedAsset,
+        selectedFiat
     } = useSelector((state) => ({
         account: state.loopring.account,
         wallet: state.loopring.wallet,
@@ -41,8 +43,8 @@ export const Dashboard = () => {
         transactionsLoading: !!state.loopring.transactions.loadings,
         successfulTransferHash: state.loopring.successfulTransferHash,
         selectedAsset: state.loopring.selectedAsset,
+        selectedFiat: state.loopring.selectedFiat,
     }));
-    const bottomUpContainer = useRef(null);
     const dispatch = useDispatch();
     const [sending, setSending] = useState(false);
     const [changingAsset, setChangingAsset] = useState(false);
@@ -72,40 +74,6 @@ export const Dashboard = () => {
         setWithdrawing(false);
         setSendIndex(0);
     }, []);
-
-    const handleClick = useCallback(
-        (event) => {
-            if (bottomUpContainer.current.contains(event.target)) {
-                return;
-            }
-            handleClose();
-        },
-        [handleClose]
-    );
-
-    // hiding the bottom up container on outside click
-    // (only active if the container is actually shown)
-    useEffect(() => {
-        if (
-            sending ||
-            changingAsset ||
-            showingTransaction ||
-            depositing ||
-            withdrawing
-        ) {
-            document.addEventListener("mousedown", handleClick);
-            return () => {
-                document.removeEventListener("mousedown", handleClick);
-            };
-        }
-    }, [
-        handleClick,
-        sending,
-        changingAsset,
-        showingTransaction,
-        depositing,
-        withdrawing,
-    ]);
 
     const handleAssets = useCallback(() => {
         setChangingAsset(true);
@@ -194,6 +162,7 @@ export const Dashboard = () => {
                         balance={selectedAsset.balance}
                         symbol={selectedAsset.symbol}
                         fiatValue={selectedAsset.fiatValue}
+                        selectedFiat={selectedFiat}
                     />
                 </Box>
                 <Box mb={3} width={["85%", "60%", "50%", "40%", "30%"]}>
@@ -215,29 +184,20 @@ export const Dashboard = () => {
                         loading={transactionsLoading}
                         onChange={handleTransactionChange}
                         onRefresh={handleTransactionsRefresh}
+                        selectedFiat={selectedFiat}
                     />
                 </TransactionsContainer>
             </Flex>
-            <Overlay
-                show={
-                    sending ||
-                    changingAsset ||
-                    showingTransaction ||
-                    depositing ||
-                    withdrawing
-                }
-            />
             <BottomUpContainer
-                m="0 auto"
                 width={["95%", "75%", "65%", "45%", "35%"]}
-                show={
+                open={
                     sending ||
                     changingAsset ||
                     showingTransaction ||
                     depositing ||
                     withdrawing
                 }
-                ref={bottomUpContainer}
+                onClose={handleClose}
             >
                 {changingAsset && (
                     <Assets
@@ -245,6 +205,7 @@ export const Dashboard = () => {
                         onChange={handleAssetChange}
                         open={changingAsset}
                         onRefresh={handleAssetsRefresh}
+                        selectedFiat={selectedFiat}
                     />
                 )}
                 {sending && (
