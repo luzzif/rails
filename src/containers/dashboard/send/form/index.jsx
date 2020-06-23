@@ -80,7 +80,7 @@ export const Send = ({ onConfirm, asset }) => {
                 setAmount(0);
                 return;
             }
-            if (newAmount.endsWith(".")) {
+            if (newAmount.endsWith(".") || numericAmount === 0) {
                 setAmountError(true);
             } else {
                 setAmountError(false);
