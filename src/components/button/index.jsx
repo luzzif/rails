@@ -10,7 +10,7 @@ const commonsStyles = css`
     font-size: 20px;
     font-family: "Montserrat";
     background: ${(props) => (props.secondary ? "none" : props.theme.primary)};
-    color: ${(props) => (props.secondary ? "#fe2479" : "#fff")};
+    color: ${(props) => (props.secondary ? props.theme.primary : "#fff")};
     border: ${(props) =>
         props.secondary ? `solid 3px ${props.theme.primary}` : "none"};
     border-radius: 24px;
