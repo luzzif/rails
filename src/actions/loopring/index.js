@@ -223,9 +223,7 @@ export const getTokenTransactions = (
             .concat(
                 deposits.transactions
                     .filter(
-                        (deposit) =>
-                            deposit.depositType !== "create_account" &&
-                            deposit.progress === "100%"
+                        (deposit) => deposit.depositType !== "create_account"
                     )
                     .map((deposit) => {
                         deposit.deposit = true;

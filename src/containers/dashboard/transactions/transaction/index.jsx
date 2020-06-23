@@ -9,7 +9,15 @@ import BigNumber from "bignumber.js";
 import moment from "moment";
 
 export const Transaction = ({ asset, transaction, onClick }) => {
-    const { amount, deposit, memo, sent, withdraw, timestamp } = transaction;
+    const {
+        amount,
+        deposit,
+        memo,
+        sent,
+        withdrawal,
+        timestamp,
+        progress,
+    } = transaction;
     const [etherAmount, setEtherAmount] = useState(new BigNumber("0"));
     const [referenceColor, setReferenceColor] = useState("");
 
@@ -21,7 +29,7 @@ export const Transaction = ({ asset, transaction, onClick }) => {
         let referenceColor = "";
         if (deposit) {
             referenceColor = "#2E7D32";
-        } else if (withdraw) {
+        } else if (withdrawal) {
             referenceColor = "#C62828";
         } else if (sent) {
             referenceColor = "#D50000";
@@ -29,13 +37,13 @@ export const Transaction = ({ asset, transaction, onClick }) => {
             referenceColor = "#00C853";
         }
         setReferenceColor(referenceColor);
-    }, [deposit, sent, withdraw]);
+    }, [deposit, progress, sent, withdrawal]);
 
     const getText = () => {
         if (deposit) {
             return <FormattedMessage id="dashboard.transactions.deposit" />;
         }
-        if (withdraw) {
+        if (withdrawal) {
             return <FormattedMessage id="dashboard.transactions.withdrawal" />;
         }
         return memo;
@@ -57,7 +65,7 @@ export const Transaction = ({ asset, transaction, onClick }) => {
             <Box pr={3} minWidth="auto">
                 <TransactionIcon
                     deposit={deposit}
-                    withdraw={withdraw}
+                    withdraw={withdrawal}
                     sent={sent}
                     color={referenceColor}
                 />
@@ -69,7 +77,9 @@ export const Transaction = ({ asset, transaction, onClick }) => {
                 pr={3}
             >
                 <Box mb={1}>
-                    <OneLineText>{getText()}</OneLineText>
+                    <OneLineText>
+                        {getText()} {progress !== "100%" && "*"}
+                    </OneLineText>
                 </Box>
                 <Box>
                     <OneLineText fontSize={12}>
@@ -84,7 +94,7 @@ export const Transaction = ({ asset, transaction, onClick }) => {
                 minWidth="auto"
             >
                 <Box color={referenceColor} mb={1}>
-                    {(deposit || !sent ? "+" : "-") +
+                    {(!withdrawal && (deposit || !sent) ? "+" : "-") +
                         etherAmount.decimalPlaces(4).toString()}
                 </Box>
                 <Box fontSize={12}>
@@ -94,7 +104,7 @@ export const Transaction = ({ asset, transaction, onClick }) => {
                                 .multipliedBy(asset.fiatValue)
                                 .decimalPlaces(3)
                                 .toString()}{" "}
-                        USD
+                        $
                     </AmountText>
                 </Box>
             </Flex>
