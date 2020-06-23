@@ -44,7 +44,7 @@ export const Auth = () => {
                     </Button>
                 </Box>
                 <Box>
-                    <Button onClick={handleRegister}>
+                    <Button secondary onClick={handleRegister}>
                         <FormattedMessage id="auth.register.button" />
                     </Button>
                 </Box>

@@ -21,6 +21,7 @@ import {
 
 const commonColors = {
     error: "#ff1744",
+    primary: "#cb014e",
 };
 
 const light = {
