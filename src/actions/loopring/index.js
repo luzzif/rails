@@ -63,6 +63,9 @@ export const initializeLoopring = () => async (dispatch) => {
         provider.on("networkChanged", () => {
             dispatch(postLogout());
         });
+        provider.on("accountsChanged", () => {
+            dispatch(postLogout());
+        });
         const web3 = new Web3(provider);
         const accounts = await web3.eth.getAccounts();
         const selectedAccount = accounts[0];
