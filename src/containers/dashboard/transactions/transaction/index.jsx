@@ -78,7 +78,7 @@ export const Transaction = ({ asset, transaction, onClick, selectedFiat }) => {
             >
                 <Box mb={1}>
                     <OneLineText>
-                        {getText()} {progress !== "100%" && "*"}
+                        {getText()} {progress && progress !== "100%" && "*"}
                     </OneLineText>
                 </Box>
                 <Box>

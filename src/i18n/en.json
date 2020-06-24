@@ -19,6 +19,8 @@
     "dashboard.transaction.summary.type.sent": "sent",
     "dashboard.transaction.summary.type.received": "received",
     "dashboard.transaction.summary.date": "Date",
+    "dashboard.transaction.summary.receiver": "Receiver",
+    "dashboard.transaction.summary.sender": "Sender",
     "dashboard.transaction.summary.amount": "Amount",
     "dashboard.transaction.summary.amount.fee": "Fee",
     "dashboard.transaction.summary.progress": "Progress",

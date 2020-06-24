@@ -18,6 +18,8 @@ export const TransactionSummary = ({
     txHash,
     feeAmount,
     progress,
+    senderInUI,
+    recipientInUI,
 }) => {
     const [etherAmount, setEtherAmount] = useState(new BigNumber("0"));
     const [etherFeeAmount, setEtherFeeAmount] = useState(new BigNumber("0"));
@@ -66,6 +68,22 @@ export const TransactionSummary = ({
                     </BoldDiv>
                     : {moment(timestamp).format("L - LT")}
                 </Box>
+                {sent && recipientInUI && (
+                    <Box mb={2}>
+                        <BoldDiv>
+                            <FormattedMessage id="dashboard.transaction.summary.receiver" />
+                        </BoldDiv>
+                        : {recipientInUI}
+                    </Box>
+                )}
+                {!sent && senderInUI && (
+                    <Box mb={2}>
+                        <BoldDiv>
+                            <FormattedMessage id="dashboard.transaction.summary.sender" />
+                        </BoldDiv>
+                        : {senderInUI}
+                    </Box>
+                )}
                 <Box mb={2}>
                     <BoldDiv>
                         <FormattedMessage id="dashboard.transaction.summary.amount" />
