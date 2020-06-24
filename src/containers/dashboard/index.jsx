@@ -72,6 +72,20 @@ export const Dashboard = () => {
         }
     }, [account, balances, dispatch, selectedAsset, supportedTokens, wallet]);
 
+    // when the balances update, we need to update the selected asset too,
+    // in order to avoid inconsistencies
+    useEffect(() => {
+        if (balances) {
+            dispatch(
+                postSelectedAsset(
+                    balances.find(
+                        (asset) => (asset.symbol = selectedAsset.symbol)
+                    )
+                )
+            );
+        }
+    }, [balances, dispatch, selectedAsset.symbol]);
+
     const handleClose = useCallback(() => {
         setSending(false);
         setChangingAsset(false);
@@ -166,7 +180,7 @@ export const Dashboard = () => {
                 flexDirection="column"
                 alignItems="center"
                 height="100%"
-                pt={80}
+                pt={72}
             >
                 <Box mb={3}>
                     <Summary
