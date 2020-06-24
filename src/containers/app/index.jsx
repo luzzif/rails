@@ -88,7 +88,7 @@ export const App = () => {
     const [lightTheme, setLightTheme] = useState(true);
     const [changingFiat, setChangingFiat] = useState(false);
 
-    // setting up local storage stuff
+    // setting up local storage -saved theme
     useEffect(() => {
         const cachedTheme =
             localStorage.getItem("loopring-pay-theme") || "light";
@@ -96,6 +96,13 @@ export const App = () => {
         setLightTheme(lightTheme);
         selectedTheme = lightTheme ? light : dark;
         dispatch(changeWeb3ModalTheme(cachedTheme));
+    }, [dispatch]);
+
+    // setting up selected fiat on boot and logout
+    useEffect(() => {
+        if(selectedFiat) {
+            return;
+        }
         const fiatFromLocalStorage = localStorage.getItem("loopring-pay-fiat");
         dispatch(
             postSelectedFiat(
@@ -104,7 +111,7 @@ export const App = () => {
                     : supportedFiats[0]
             )
         );
-    }, [dispatch]);
+    }, [dispatch, selectedFiat]);
 
     useEffect(() => {
         if (loopringWallet && loopringAccount) {

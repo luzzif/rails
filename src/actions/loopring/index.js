@@ -54,10 +54,15 @@ export const POST_WITHDRAWAL_SUCCESS = "POST_WITHDRAWAL_SUCCESS";
 export const DELETE_WITHDRAWAL_TRANSACTION_HASH =
     "DELETE_WITHDRAWAL_TRANSACTION_HASH";
 export const POST_SELECTED_FIAT = "POST_SELECTED_FIAT";
+export const POST_LOGOUT = "POST_LOGOUT";
 
 export const initializeLoopring = () => async (dispatch) => {
     try {
         const provider = await web3Modal.connect();
+        provider.autoRefreshOnNetworkChange = false;
+        provider.on("networkChanged", () => {
+            dispatch(postLogout());
+        });
         const web3 = new Web3(provider);
         const accounts = await web3.eth.getAccounts();
         const selectedAccount = accounts[0];
@@ -99,9 +104,12 @@ export const getSupportedTokens = () => async (dispatch) => {
     dispatch(deleteUniversalLoading());
 };
 
-export const getUserBalances = (account, wallet, supportedTokens, selectedFiat) => async (
-    dispatch
-) => {
+export const getUserBalances = (
+    account,
+    wallet,
+    supportedTokens,
+    selectedFiat
+) => async (dispatch) => {
     dispatch({ type: POST_GET_BALANCES_LOADING });
     try {
         const partialBalances = await getBalances(
@@ -476,4 +484,8 @@ export const deleteWithdrawalTransactionHash = () => async (dispatch) => {
 
 export const postSelectedFiat = (fiat) => async (dispatch) => {
     dispatch({ type: POST_SELECTED_FIAT, fiat });
+};
+
+export const postLogout = () => (dispatch) => {
+    dispatch({ type: POST_LOGOUT });
 };

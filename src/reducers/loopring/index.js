@@ -23,6 +23,7 @@ import {
     POST_WITHDRAWAL_SUCCESS,
     DELETE_WITHDRAWAL_TRANSACTION_HASH,
     POST_SELECTED_FIAT,
+    POST_LOGOUT,
 } from "../../actions/loopring";
 
 const initialState = {
@@ -196,6 +197,9 @@ export const loopringReducer = (state = initialState, action) => {
         }
         case POST_SELECTED_FIAT: {
             return { ...state, selectedFiat: action.fiat };
+        }
+        case POST_LOGOUT: {
+            return { ...initialState };
         }
         default: {
             return state;
