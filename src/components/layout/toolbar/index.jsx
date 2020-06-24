@@ -7,6 +7,9 @@ import lightLogo from "../../../images/logo/light.svg";
 import darkLogo from "../../../images/logo/dark.svg";
 import { ActionButton } from "../../action-button";
 
+const ACTION_SIZES = [36, 40, 44];
+const ACTION_ICON_SIZE = 16;
+
 export const Toolbar = ({
     lightTheme,
     onThemeChange,
@@ -31,8 +34,8 @@ export const Toolbar = ({
                     <ActionButton
                         onClick={onFiatClick}
                         faIcon={fiat.faIcon}
-                        size={[40, 44, 48]}
-                        faIconSize={20}
+                        size={ACTION_SIZES}
+                        faIconSize={ACTION_ICON_SIZE}
                     />
                 </Box>
             )}
@@ -40,8 +43,8 @@ export const Toolbar = ({
                 <ActionButton
                     onClick={onThemeChange}
                     faIcon={lightTheme ? faMoon : faSun}
-                    size={[40, 44, 48]}
-                    faIconSize={20}
+                    size={ACTION_SIZES}
+                    faIconSize={ACTION_ICON_SIZE}
                 />
             </Box>
             {logged && (
@@ -49,8 +52,8 @@ export const Toolbar = ({
                     <ActionButton
                         onClick={onLogoutClick}
                         faIcon={faSignOutAlt}
-                        size={[40, 44, 48]}
-                        faIconSize={20}
+                        size={ACTION_SIZES}
+                        faIconSize={ACTION_ICON_SIZE}
                     />
                 </Box>
             )}
