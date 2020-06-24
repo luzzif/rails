@@ -278,7 +278,6 @@ export const postTransfer = (
         const { accountId: receiverAccountId } = await lightconeGetAccount(
             receiver
         );
-        debugger;
         const { exchangeId, transferFees } = exchange;
         let fee = "0";
         if (transferFees) {
