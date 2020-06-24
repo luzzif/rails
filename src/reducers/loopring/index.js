@@ -199,7 +199,7 @@ export const loopringReducer = (state = initialState, action) => {
             return { ...state, selectedFiat: action.fiat };
         }
         case POST_LOGOUT: {
-            return { ...initialState };
+            return { ...state, account: null, wallet: null, exchange: null };
         }
         default: {
             return state;

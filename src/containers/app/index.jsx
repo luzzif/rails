@@ -1,4 +1,9 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, {
+    useCallback,
+    useState,
+    useEffect,
+    useLayoutEffect,
+} from "react";
 import { Dashboard } from "../dashboard";
 import { Layout } from "../../components/layout";
 import { ThemeProvider } from "styled-components";
@@ -18,6 +23,7 @@ import {
     getUserBalances,
     postSelectedAsset,
     postSelectedFiat,
+    postLogout,
 } from "../../actions/loopring";
 import { BottomUpContainer } from "../../components/bottom-up-container";
 import { FiatChooser, supportedFiats } from "../fiat-chooser";
@@ -87,6 +93,7 @@ export const App = () => {
 
     const [lightTheme, setLightTheme] = useState(true);
     const [changingFiat, setChangingFiat] = useState(false);
+    const [logged, setLogged] = useState(false);
 
     // setting up local storage -saved theme
     useEffect(() => {
@@ -100,7 +107,7 @@ export const App = () => {
 
     // setting up selected fiat on boot and logout
     useEffect(() => {
-        if(selectedFiat) {
+        if (selectedFiat) {
             return;
         }
         const fiatFromLocalStorage = localStorage.getItem("loopring-pay-fiat");
@@ -153,22 +160,25 @@ export const App = () => {
         }
     }, [balances, dispatch, selectedAsset, supportedTokens]);
 
+    useLayoutEffect(() => {
+        history.push(logged ? "/dashboard" : "/auth");
+    }, [history, logged]);
+
     useEffect(() => {
-        if (
-            loopringAccount &&
-            loopringWallet &&
-            loopringExchange &&
-            supportedTokens &&
-            supportedTokens.length > 0 &&
-            balances &&
-            balances.length > 0 &&
-            selectedAsset
-        ) {
-            history.push("/dashboard");
-        }
+        setLogged(
+            !!(
+                loopringAccount &&
+                loopringWallet &&
+                loopringExchange &&
+                supportedTokens &&
+                supportedTokens.length > 0 &&
+                balances &&
+                balances.length > 0 &&
+                selectedAsset
+            )
+        );
     }, [
         balances,
-        history,
         loopringAccount,
         loopringExchange,
         loopringWallet,
@@ -204,6 +214,10 @@ export const App = () => {
         [dispatch]
     );
 
+    const handleLogoutClick = useCallback(() => {
+        dispatch(postLogout());
+    }, [dispatch]);
+
     return (
         <ThemeProvider theme={lightTheme ? light : dark}>
             <GlobalStyle />
@@ -212,22 +226,13 @@ export const App = () => {
                 onThemeChange={handleThemeChange}
                 fiat={selectedFiat}
                 onFiatClick={handleFiatClick}
+                logged={logged}
+                onLogoutClick={handleLogoutClick}
             >
                 <Switch>
                     <PrivateRoute
                         path="/dashboard"
-                        condition={
-                            !!(
-                                loopringAccount &&
-                                loopringWallet &&
-                                loopringExchange &&
-                                supportedTokens &&
-                                supportedTokens.length > 0 &&
-                                balances &&
-                                balances.length > 0 &&
-                                selectedAsset
-                            )
-                        }
+                        condition={logged}
                         component={Dashboard}
                         redirectTo="/auth"
                     />

@@ -2,12 +2,19 @@ import React from "react";
 import PropTypes from "prop-types";
 import { FlexContainer, Logo } from "./styled";
 import { Box, Flex } from "reflexbox";
-import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
+import { faMoon, faSun, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import lightLogo from "../../../images/logo/light.svg";
 import darkLogo from "../../../images/logo/dark.svg";
 import { ActionButton } from "../../action-button";
 
-export const Toolbar = ({ lightTheme, onThemeChange, fiat, onFiatClick }) => (
+export const Toolbar = ({
+    lightTheme,
+    onThemeChange,
+    fiat,
+    onFiatClick,
+    logged,
+    onLogoutClick,
+}) => (
     <FlexContainer
         px={20}
         py={3}
@@ -37,6 +44,16 @@ export const Toolbar = ({ lightTheme, onThemeChange, fiat, onFiatClick }) => (
                     faIconSize={20}
                 />
             </Box>
+            {logged && (
+                <Box minWidth="auto" ml={[2, 3]}>
+                    <ActionButton
+                        onClick={onLogoutClick}
+                        faIcon={faSignOutAlt}
+                        size={[40, 44, 48]}
+                        faIconSize={20}
+                    />
+                </Box>
+            )}
         </Flex>
     </FlexContainer>
 );
@@ -46,4 +63,6 @@ Toolbar.propTypes = {
     onThemeChange: PropTypes.func.isRequired,
     fiat: PropTypes.object,
     onFiatClick: PropTypes.func.isRequired,
+    logged: PropTypes.bool.isRequired,
+    onLogoutClick: PropTypes.func.isRequired,
 };

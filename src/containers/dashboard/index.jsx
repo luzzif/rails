@@ -32,7 +32,7 @@ export const Dashboard = () => {
         transactionsLoading,
         successfulTransferHash,
         selectedAsset,
-        selectedFiat
+        selectedFiat,
     } = useSelector((state) => ({
         account: state.loopring.account,
         wallet: state.loopring.wallet,
@@ -56,14 +56,20 @@ export const Dashboard = () => {
 
     // getting transactions history (deposits, transfers and withdrawals)
     useEffect(() => {
-        dispatch(
-            getTokenTransactions(
-                account,
-                wallet,
-                selectedAsset.symbol,
-                supportedTokens
-            )
-        );
+        // if a logout happens, loopring's state will be wiped clean. Since the
+        // dashboard updates before the app component (which is the one that
+        // really knows if a user logged out or not), we need to check if 
+        // the account is still there
+        if (account) {
+            dispatch(
+                getTokenTransactions(
+                    account,
+                    wallet,
+                    selectedAsset.symbol,
+                    supportedTokens
+                )
+            );
+        }
     }, [account, balances, dispatch, selectedAsset, supportedTokens, wallet]);
 
     const handleClose = useCallback(() => {

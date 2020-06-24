@@ -9,6 +9,8 @@ export const Layout = ({
     onThemeChange,
     fiat,
     onFiatClick,
+    logged,
+    onLogoutClick
 }) => (
     <Root>
         <Toolbar
@@ -16,6 +18,8 @@ export const Layout = ({
             onThemeChange={onThemeChange}
             fiat={fiat}
             onFiatClick={onFiatClick}
+            logged={logged}
+            onLogoutClick={onLogoutClick}
         />
         {children}
     </Root>
@@ -27,4 +31,6 @@ Layout.propTypes = {
     onThemeChange: PropTypes.func.isRequired,
     fiat: PropTypes.object,
     onFiatClick: PropTypes.func.isRequired,
+    logged: PropTypes.bool.isRequired,
+    onLogoutClick: PropTypes.func.isRequired,
 };
