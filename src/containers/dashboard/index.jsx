@@ -58,7 +58,7 @@ export const Dashboard = () => {
     useEffect(() => {
         // if a logout happens, loopring's state will be wiped clean. Since the
         // dashboard updates before the app component (which is the one that
-        // really knows if a user logged out or not), we need to check if 
+        // really knows if a user logged out or not), we need to check if
         // the account is still there
         if (account) {
             dispatch(
@@ -155,6 +155,11 @@ export const Dashboard = () => {
         setWithdrawing(true);
     }, []);
 
+    const handleTransferConfirmationClose = useCallback(() => {
+        handleTransactionsRefresh();
+        handleClose();
+    }, [handleClose, handleTransactionsRefresh]);
+
     return (
         <>
             <Flex
@@ -224,7 +229,9 @@ export const Dashboard = () => {
                             asset={selectedAsset}
                             onConfirm={handleSendConfirm}
                         />
-                        <Confirmation onClose={handleClose} />
+                        <Confirmation
+                            onClose={handleTransferConfirmationClose}
+                        />
                     </SwipeableViews>
                 )}
                 {showingTransaction && (
