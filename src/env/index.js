@@ -5,7 +5,7 @@ if (NODE_ENV !== "production") {
     require("dotenv").config();
 }
 
-export const PROVIDER_URL = env("REACT_APP_PROVIDER_URL", {
+export const INFURA_ID = env("REACT_APP_INFURA_ID", {
     required: true,
 });
 

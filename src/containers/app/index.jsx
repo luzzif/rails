@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 import { Auth } from "../auth";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
-import { PROVIDER_URL, CHAIN_ID } from "../../env";
+import { INFURA_ID } from "../../env";
 import { changeWeb3ModalTheme } from "../../actions/web3-modal";
 import {
     getSupportedTokens,
@@ -56,13 +56,12 @@ const dark = {
 };
 
 export const web3Modal = new Web3Modal({
-    network: CHAIN_ID,
     cacheProvider: false,
     providerOptions: {
         walletconnect: {
             package: WalletConnectProvider,
             options: {
-                infuraId: PROVIDER_URL,
+                infuraId: INFURA_ID,
             },
         },
     },
