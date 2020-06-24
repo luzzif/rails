@@ -1,7 +1,7 @@
 import { getLoopringApiKey } from "../../utils/loopring";
 import Wallet from "../../lightcone/wallet";
 import Web3 from "web3";
-import { web3Modal } from "../../containers/app";
+import { getWeb3Modal } from "../../containers/app";
 import {
     lightconeGetAccount,
     getExchangeInfo,
@@ -58,6 +58,7 @@ export const POST_LOGOUT = "POST_LOGOUT";
 
 export const initializeLoopring = () => async (dispatch) => {
     try {
+        const web3Modal = getWeb3Modal();
         const provider = await web3Modal.connect();
         provider.autoRefreshOnNetworkChange = false;
         provider.on("networkChanged", () => {
@@ -410,6 +411,7 @@ export const registerAccount = () => async (dispatch) => {
     try {
         // TODO: consider moving the wallet initialization
         // in a specific action to avoid repeated code
+        const web3Modal = getWeb3Modal();
         const provider = await web3Modal.connect();
         const web3 = new Web3(provider);
         const accounts = await web3.eth.getAccounts();

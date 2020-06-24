@@ -17,7 +17,6 @@ import { Auth } from "../auth";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3Modal from "web3modal";
 import { INFURA_ID } from "../../env";
-import { changeWeb3ModalTheme } from "../../actions/web3-modal";
 import {
     getSupportedTokens,
     getUserBalances,
@@ -39,7 +38,6 @@ const light = {
     foreground: "#f2f2f2",
     text: "#0e062d",
     shadow: "rgba(0, 0, 0, 0.4)",
-    border: "#e0e0e0",
     placeholder: "#b3b3b3",
     loader: "#a6a6a6",
 };
@@ -50,12 +48,11 @@ const dark = {
     foreground: "#333",
     text: "#F1F9D2",
     shadow: "rgba(255, 255, 255, 0.4)",
-    border: "#424242",
     placeholder: "#666666",
     loader: "#595959",
 };
 
-export const web3Modal = new Web3Modal({
+const web3ModalOptions = {
     cacheProvider: false,
     providerOptions: {
         walletconnect: {
@@ -65,7 +62,9 @@ export const web3Modal = new Web3Modal({
             },
         },
     },
-});
+};
+
+export const getWeb3Modal = () => new Web3Modal(web3ModalOptions);
 
 export let selectedTheme = light;
 
@@ -101,7 +100,7 @@ export const App = () => {
         const lightTheme = cachedTheme === "light";
         setLightTheme(lightTheme);
         selectedTheme = lightTheme ? light : dark;
-        dispatch(changeWeb3ModalTheme(cachedTheme));
+        web3ModalOptions.theme = cachedTheme;
     }, [dispatch]);
 
     // setting up selected fiat on boot and logout
@@ -187,14 +186,12 @@ export const App = () => {
 
     const handleThemeChange = useCallback(() => {
         const newLightTheme = !lightTheme;
-        localStorage.setItem(
-            "loopring-pay-theme",
-            newLightTheme ? "light" : "dark"
-        );
-        dispatch(changeWeb3ModalTheme(newLightTheme));
+        const textTheme = newLightTheme ? "light" : "dark";
+        localStorage.setItem("loopring-pay-theme", textTheme);
+        web3ModalOptions.theme = textTheme;
         setLightTheme(newLightTheme);
         selectedTheme = newLightTheme ? light : dark;
-    }, [lightTheme, dispatch]);
+    }, [lightTheme]);
 
     const handleFiatClick = useCallback(() => {
         setChangingFiat(true);
