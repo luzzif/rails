@@ -11,8 +11,6 @@ export const OverlayBox = styled(Box)`
     opacity: 1;
     transition: opacity 0.3s ease;
     transform: translateY(0);
-    border-top-left-radius: 24px;
-    border-top-right-radius: 24px;
     ${(props) =>
         !props.open &&
         css`
@@ -22,10 +20,7 @@ export const OverlayBox = styled(Box)`
         `}
 `;
 
-export const RootFlex = styled(Flex)`
-    position: relative;
-`;
-
 export const ListFlex = styled(Flex)`
+    position: relative;
     overflow-y: auto;
 `;

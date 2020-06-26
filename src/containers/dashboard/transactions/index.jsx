@@ -8,15 +8,18 @@ import { BounceLoader } from "react-spinners";
 import { selectedTheme } from "../../app";
 import { ActionButton } from "../../../components/action-button";
 import { faRedo } from "@fortawesome/free-solid-svg-icons";
-import { OverlayBox, RootFlex, ListFlex } from "./styled";
+import { OverlayBox, ListFlex } from "./styled";
+import { Chip } from "../../../chip";
 
 export const Transactions = ({
     asset,
     transactions,
     loading,
     onChange,
+    typeFilter,
+    onTypeFilterChange,
     onRefresh,
-    selectedFiat
+    selectedFiat,
 }) => {
     const { formatMessage } = useIntl();
 
@@ -63,17 +66,33 @@ export const Transactions = ({
         onRefresh();
     }, [onRefresh]);
 
+    const handleAllChipClick = useCallback(() => {
+        onTypeFilterChange("all");
+    }, [onTypeFilterChange]);
+
+    const handleDepositsChipClick = useCallback(() => {
+        onTypeFilterChange("deposits");
+    }, [onTypeFilterChange]);
+
+    const handleWithdrawalsChipClick = useCallback(() => {
+        onTypeFilterChange("withdrawals");
+    }, [onTypeFilterChange]);
+
+    const handleTransfersChipClick = useCallback(() => {
+        onTypeFilterChange("transfers");
+    }, [onTypeFilterChange]);
+
     return (
-        <RootFlex
+        <Flex
             width="100%"
             height="100%"
             flexDirection="column"
             alignItems="center"
-            pt={3}
+            pt={12}
             px={2}
         >
-            <Flex px={[2, 3]} mb={2} width="100%">
-                <Box pr={3} flexGrow={1}>
+            <Flex px={[2, 3]} width="100%" mb={12}>
+                <Box pr={3} width="100%">
                     <Searchbar
                         dark
                         placeholder={formatMessage({
@@ -83,25 +102,75 @@ export const Transactions = ({
                         onChange={handleSearchbarChange}
                     />
                 </Box>
-                <Box minWidth="auto">
+                <Box minWidth="auto" height={36}>
                     <ActionButton
                         faIcon={faRedo}
-                        size={48}
+                        size={44}
                         faIconSize={20}
                         dark
                         onClick={handleRefresh}
                     />
                 </Box>
             </Flex>
-            {(!transactions || transactions.length === 0) && (
-                <Box>
-                    <FormattedMessage id="dashboard.transactions.empty" />
+            <Flex
+                px={[2, 3]}
+                flexWrap="nowrap"
+                width="100%"
+                overflowX="auto"
+                minHeight={36}
+                mb={12}
+            >
+                <Box mr={12} minWidth="auto">
+                    <Chip
+                        dark
+                        onClick={handleAllChipClick}
+                        active={typeFilter === "all"}
+                    >
+                        <FormattedMessage id="dashboard.transactions.chip.all" />
+                    </Chip>
                 </Box>
-            )}
-            {transactions && transactions.length > 0 ? (
-                filteredTransactions && filteredTransactions.length > 0 ? (
-                    <ListFlex flexGrow={1} flexDirection="column" width="100%">
-                        {filteredTransactions.map((transaction) => (
+                <Box mr={12} minWidth="auto">
+                    <Chip
+                        dark
+                        onClick={handleDepositsChipClick}
+                        active={typeFilter === "deposits"}
+                    >
+                        <FormattedMessage id="dashboard.transactions.chip.deposits" />
+                    </Chip>
+                </Box>
+                <Box mr={12} minWidth="auto">
+                    <Chip
+                        dark
+                        onClick={handleWithdrawalsChipClick}
+                        active={typeFilter === "withdrawals"}
+                    >
+                        <FormattedMessage id="dashboard.transactions.chip.withdrawals" />
+                    </Chip>
+                </Box>
+                <Box minWidth="auto">
+                    <Chip
+                        dark
+                        onClick={handleTransfersChipClick}
+                        active={typeFilter === "transfers"}
+                    >
+                        <FormattedMessage id="dashboard.transactions.chip.transfers" />
+                    </Chip>
+                </Box>
+            </Flex>
+            <ListFlex
+                flexGrow={1}
+                flexDirection="column"
+                alignItems="center"
+                width="100%"
+            >
+                {(!transactions || transactions.length === 0) && (
+                    <Box>
+                        <FormattedMessage id="dashboard.transactions.empty" />
+                    </Box>
+                )}
+                {transactions && transactions.length > 0 ? (
+                    filteredTransactions && filteredTransactions.length > 0 ? (
+                        filteredTransactions.map((transaction) => (
                             <Box
                                 key={transaction.id}
                                 height={68}
@@ -116,24 +185,28 @@ export const Transactions = ({
                                     selectedFiat={selectedFiat}
                                 />
                             </Box>
-                        ))}
-                    </ListFlex>
-                ) : (
-                    <Box textAlign="center" mt={2} px={3}>
-                        <FormattedMessage id="dashboard.transactions.empty.search" />
-                    </Box>
-                )
-            ) : null}
-            <OverlayBox
-                width="100%"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                open={loading}
-            >
-                <BounceLoader size={60} color={selectedTheme.loader} loading />
-            </OverlayBox>
-        </RootFlex>
+                        ))
+                    ) : (
+                        <Box textAlign="center" mt={2} px={3}>
+                            <FormattedMessage id="dashboard.transactions.empty.search" />
+                        </Box>
+                    )
+                ) : null}
+                <OverlayBox
+                    width="100%"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    open={loading}
+                >
+                    <BounceLoader
+                        size={60}
+                        color={selectedTheme.loader}
+                        loading
+                    />
+                </OverlayBox>
+            </ListFlex>
+        </Flex>
     );
 };
 
@@ -142,4 +215,7 @@ Transactions.propTypes = {
     transactions: PropTypes.array.isRequired,
     loading: PropTypes.bool.isRequired,
     onChange: PropTypes.func.isRequired,
+    typeFilter: PropTypes.oneOf(["all", "deposits", "withdrawals", "transfers"])
+        .isRequired,
+    onTypeFilterChange: PropTypes.func.isRequired,
 };

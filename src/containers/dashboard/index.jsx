@@ -53,6 +53,7 @@ export const Dashboard = () => {
     const [withdrawing, setWithdrawing] = useState(false);
     const [sendIndex, setSendIndex] = useState(0);
     const [selectedTransaction, setSelectedTransaction] = useState(null);
+    const [transactionsTypeFilter, setTransactionsTypeFilter] = useState("all");
 
     // getting transactions history (deposits, transfers and withdrawals)
     useEffect(() => {
@@ -60,17 +61,27 @@ export const Dashboard = () => {
         // dashboard updates before the app component (which is the one that
         // really knows if a user logged out or not), we need to check if
         // the account is still there
-        if (account) {
+        if (account && transactionsTypeFilter) {
             dispatch(
                 getTokenTransactions(
                     account,
                     wallet,
                     selectedAsset.symbol,
-                    supportedTokens
+                    supportedTokens,
+                    10,
+                    transactionsTypeFilter
                 )
             );
         }
-    }, [account, balances, dispatch, selectedAsset, supportedTokens, wallet]);
+    }, [
+        account,
+        balances,
+        dispatch,
+        selectedAsset,
+        supportedTokens,
+        transactionsTypeFilter,
+        wallet,
+    ]);
 
     // when the balances update, we need to update the selected asset too,
     // in order to avoid inconsistencies
@@ -119,13 +130,21 @@ export const Dashboard = () => {
                 wallet,
                 selectedAsset.symbol,
                 supportedTokens,
-                10
+                10,
+                transactionsTypeFilter
             )
         );
         // we also refresh the summarized balance in order
         // to avoid inconsistencies
         dispatch(getUserBalances(account, wallet, supportedTokens));
-    }, [account, dispatch, selectedAsset, supportedTokens, wallet]);
+    }, [
+        account,
+        dispatch,
+        selectedAsset,
+        supportedTokens,
+        transactionsTypeFilter,
+        wallet,
+    ]);
 
     const handleAssetsRefresh = useCallback(() => {
         dispatch(getUserBalances(account, wallet, supportedTokens));
@@ -207,7 +226,9 @@ export const Dashboard = () => {
                         asset={selectedAsset}
                         transactions={transactions}
                         loading={transactionsLoading}
+                        typeFilter={transactionsTypeFilter}
                         onChange={handleTransactionChange}
+                        onTypeFilterChange={setTransactionsTypeFilter}
                         onRefresh={handleTransactionsRefresh}
                         selectedFiat={selectedFiat}
                     />

@@ -194,46 +194,44 @@ export const getTokenTransactions = (
     wallet,
     tokenSymbol,
     supportedTokens,
-    amount
+    amount,
+    type
 ) => async (dispatch) => {
     dispatch({ type: POST_TRANSACTIONS_LOADING });
     try {
         const apiKey = await getLoopringApiKey(wallet, account);
-        const transfers = await getTransferHistory(
-            account.accountId,
-            tokenSymbol,
-            amount,
-            0,
-            apiKey,
-            supportedTokens
-        );
-        const deposits = await getDepositHistory(
-            account.accountId,
-            tokenSymbol,
-            amount,
-            0,
-            apiKey,
-            supportedTokens
-        );
-        const withdrawals = await getWithdrawalHistory(
-            account.accountId,
-            tokenSymbol,
-            amount,
-            0,
-            apiKey,
-            supportedTokens
-        );
-        const transactions = transfers.transactions
-            .map((transfer) => {
-                transfer.transfer = true;
-                transfer.amount = new BigNumber(transfer.amount);
-                transfer.feeAmount = new BigNumber(transfer.feeAmount);
-                transfer.sent =
-                    wallet.address.toLowerCase() ===
-                    transfer.senderAddress.toLowerCase();
-                return transfer;
-            })
-            .concat(
+        let transactions = [];
+        if (type === "all" || type === "transfers") {
+            const transfers = await getTransferHistory(
+                account.accountId,
+                tokenSymbol,
+                amount,
+                0,
+                apiKey,
+                supportedTokens
+            );
+            transactions = transactions.concat(
+                transfers.transactions.map((transfer) => {
+                    transfer.transfer = true;
+                    transfer.amount = new BigNumber(transfer.amount);
+                    transfer.feeAmount = new BigNumber(transfer.feeAmount);
+                    transfer.sent =
+                        wallet.address.toLowerCase() ===
+                        transfer.senderAddress.toLowerCase();
+                    return transfer;
+                })
+            );
+        }
+        if (type === "all" || type === "deposits") {
+            const deposits = await getDepositHistory(
+                account.accountId,
+                tokenSymbol,
+                amount,
+                0,
+                apiKey,
+                supportedTokens
+            );
+            transactions = transactions.concat(
                 deposits.transactions
                     .filter(
                         (deposit) => deposit.depositType !== "create_account"
@@ -244,17 +242,32 @@ export const getTokenTransactions = (
                         deposit.feeAmount = new BigNumber(deposit.feeAmount);
                         return deposit;
                     })
-            )
-            .concat(
+            );
+        }
+        if (type === "all" || type === "withdrawals") {
+            const withdrawals = await getWithdrawalHistory(
+                account.accountId,
+                tokenSymbol,
+                amount,
+                0,
+                apiKey,
+                supportedTokens
+            );
+            transactions = transactions.concat(
                 withdrawals.transactions.map((withdrawal) => {
                     withdrawal.withdrawal = true;
                     withdrawal.amount = new BigNumber(withdrawal.amount);
                     withdrawal.feeAmount = new BigNumber(withdrawal.feeAmount);
                     return withdrawal;
                 })
-            )
-            .sort((a, b) => a.timestamp - b.timestamp);
-        dispatch({ type: GET_TRANSACTIONS_SUCCESS, transactions });
+            );
+        }
+        dispatch({
+            type: GET_TRANSACTIONS_SUCCESS,
+            transactions: transactions.sort(
+                (a, b) => a.timestamp - b.timestamp
+            ),
+        });
     } catch (error) {
         console.error("error getting loopring token transactions", error);
     }
