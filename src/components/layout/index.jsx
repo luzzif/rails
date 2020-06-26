@@ -10,7 +10,7 @@ export const Layout = ({
     fiat,
     onFiatClick,
     logged,
-    onLogoutClick
+    onLogoutClick,
 }) => (
     <Root>
         <Toolbar

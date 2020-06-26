@@ -66,7 +66,7 @@ export const Assets = ({ assets, onChange, onRefresh, open, selectedFiat }) => {
                 <Box minWidth="auto">
                     <ActionButton
                         faIcon={faRedo}
-                        size={48}
+                        size={44}
                         faIconSize={20}
                         onClick={onRefresh}
                     />
