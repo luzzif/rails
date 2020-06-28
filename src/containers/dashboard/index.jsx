@@ -136,19 +136,24 @@ export const Dashboard = () => {
         );
         // we also refresh the summarized balance in order
         // to avoid inconsistencies
-        dispatch(getUserBalances(account, wallet, supportedTokens));
+        dispatch(
+            getUserBalances(account, wallet, supportedTokens, selectedFiat)
+        );
     }, [
         account,
         dispatch,
         selectedAsset,
+        selectedFiat,
         supportedTokens,
         transactionsTypeFilter,
         wallet,
     ]);
 
     const handleAssetsRefresh = useCallback(() => {
-        dispatch(getUserBalances(account, wallet, supportedTokens));
-    }, [account, dispatch, supportedTokens, wallet]);
+        dispatch(
+            getUserBalances(account, wallet, supportedTokens, selectedFiat)
+        );
+    }, [account, dispatch, selectedFiat, supportedTokens, wallet]);
 
     const handleSend = useCallback(() => {
         setSending(true);
