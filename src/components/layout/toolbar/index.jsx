@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 import { FlexContainer, Logo } from "./styled";
 import { Box, Flex } from "reflexbox";
 import { faMoon, faSun, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
-import lightLogo from "../../../images/logo/light.svg";
-import darkLogo from "../../../images/logo/dark.svg";
+import logo from "../../../images/logo.svg";
 import { ActionButton } from "../../action-button";
 
 const ACTION_SIZES = [36, 40, 44];
@@ -26,7 +25,7 @@ export const Toolbar = ({
         width="100vw"
     >
         <Box>
-            <Logo src={lightTheme ? darkLogo : lightLogo} />
+            <Logo src={logo} />
         </Box>
         <Flex alignItems="center" height="100%">
             {fiat && (
