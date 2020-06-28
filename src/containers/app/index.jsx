@@ -53,7 +53,7 @@ const dark = {
 };
 
 const web3ModalOptions = {
-    cacheProvider: false,
+    cacheProvider: true,
     providerOptions: {
         walletconnect: {
             package: WalletConnectProvider,
@@ -72,6 +72,7 @@ export const App = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const {
+        web3Instance,
         loopringAccount,
         loopringWallet,
         loopringExchange,
@@ -80,6 +81,7 @@ export const App = () => {
         selectedAsset,
         selectedFiat,
     } = useSelector((state) => ({
+        web3Instance: state.web3.instance,
         loopringAccount: state.loopring.account,
         loopringWallet: state.loopring.wallet,
         loopringExchange: state.loopring.exchange,
@@ -165,6 +167,7 @@ export const App = () => {
     useEffect(() => {
         setLogged(
             !!(
+                web3Instance &&
                 loopringAccount &&
                 loopringWallet &&
                 loopringExchange &&
@@ -182,6 +185,7 @@ export const App = () => {
         loopringWallet,
         selectedAsset,
         supportedTokens,
+        web3Instance,
     ]);
 
     const handleThemeChange = useCallback(() => {

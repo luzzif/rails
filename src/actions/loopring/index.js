@@ -1,7 +1,5 @@
 import { getLoopringApiKey } from "../../utils/loopring";
 import Wallet from "../../lightcone/wallet";
-import Web3 from "web3";
-import { getWeb3Modal } from "../../containers/app";
 import {
     lightconeGetAccount,
     getExchangeInfo,
@@ -56,21 +54,11 @@ export const DELETE_WITHDRAWAL_TRANSACTION_HASH =
 export const POST_SELECTED_FIAT = "POST_SELECTED_FIAT";
 export const POST_LOGOUT = "POST_LOGOUT";
 
-export const initializeLoopring = () => async (dispatch) => {
+export const initializeLoopring = (web3Instance) => async (dispatch) => {
     try {
-        const web3Modal = getWeb3Modal();
-        const provider = await web3Modal.connect();
-        provider.autoRefreshOnNetworkChange = false;
-        provider.on("networkChanged", () => {
-            dispatch(postLogout());
-        });
-        provider.on("accountsChanged", () => {
-            dispatch(postLogout());
-        });
-        const web3 = new Web3(provider);
-        const accounts = await web3.eth.getAccounts();
+        const accounts = await web3Instance.eth.getAccounts();
         const selectedAccount = accounts[0];
-        const wallet = new Wallet("MetaMask", web3, selectedAccount);
+        const wallet = new Wallet("MetaMask", web3Instance, selectedAccount);
         const account = await lightconeGetAccount(selectedAccount);
         const exchange = await getExchangeInfo();
         const { exchangeAddress } = exchange;
@@ -419,17 +407,11 @@ export const deleteDepositTransactionHash = () => async (dispatch) => {
     dispatch({ type: DELETE_DEPOSIT_TRANSACTION_HASH });
 };
 
-export const registerAccount = () => async (dispatch) => {
-    dispatch(postUniversalLoading());
+export const registerAccount = (web3Instance) => async (dispatch) => {
     try {
-        // TODO: consider moving the wallet initialization
-        // in a specific action to avoid repeated code
-        const web3Modal = getWeb3Modal();
-        const provider = await web3Modal.connect();
-        const web3 = new Web3(provider);
-        const accounts = await web3.eth.getAccounts();
+        const accounts = await web3Instance.eth.getAccounts();
         const selectedAccount = accounts[0];
-        const wallet = new Wallet("MetaMask", web3, selectedAccount);
+        const wallet = new Wallet("MetaMask", web3Instance, selectedAccount);
         // TODO: same todo above applies to the exchange info
         const {
             exchangeAddress,
@@ -461,7 +443,6 @@ export const registerAccount = () => async (dispatch) => {
     } catch (error) {
         console.error("error registering user", error);
     }
-    dispatch(deleteUniversalLoading());
 };
 
 export const postSelectedAsset = (asset) => async (dispatch) => {

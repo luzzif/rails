@@ -49,72 +49,70 @@ export const TransactionSummary = ({
     const getEtherscanLink = () => `https://etherscan.com/tx/${txHash}`;
 
     return (
-        <>
-            <Flex width="100%" flexDirection="column" pb={4} px={[3, 4]}>
-                <Box fontSize={20} mb={3}>
-                    <BoldDiv>
-                        <FormattedMessage id="dashboard.transaction.summary.title" />
-                    </BoldDiv>
-                </Box>
+        <Flex width="100%" flexDirection="column" pb={4} px={[3, 4]}>
+            <Box fontSize={20} mb={3}>
+                <BoldDiv>
+                    <FormattedMessage id="dashboard.transaction.summary.title" />
+                </BoldDiv>
+            </Box>
+            <Box mb={2}>
+                <BoldDiv>
+                    <FormattedMessage id="dashboard.transaction.summary.type" />
+                </BoldDiv>
+                : {getType()}
+            </Box>
+            <Box mb={2}>
+                <BoldDiv>
+                    <FormattedMessage id="dashboard.transaction.summary.date" />
+                </BoldDiv>
+                : {moment(timestamp).format("L - LT")}
+            </Box>
+            {sent && recipientInUI && (
                 <Box mb={2}>
                     <BoldDiv>
-                        <FormattedMessage id="dashboard.transaction.summary.type" />
+                        <FormattedMessage id="dashboard.transaction.summary.receiver" />
                     </BoldDiv>
-                    : {getType()}
+                    : {recipientInUI}
                 </Box>
+            )}
+            {!sent && senderInUI && (
                 <Box mb={2}>
                     <BoldDiv>
-                        <FormattedMessage id="dashboard.transaction.summary.date" />
+                        <FormattedMessage id="dashboard.transaction.summary.sender" />
                     </BoldDiv>
-                    : {moment(timestamp).format("L - LT")}
+                    : {senderInUI}
                 </Box>
-                {sent && recipientInUI && (
-                    <Box mb={2}>
-                        <BoldDiv>
-                            <FormattedMessage id="dashboard.transaction.summary.receiver" />
-                        </BoldDiv>
-                        : {recipientInUI}
+            )}
+            <Box mb={2}>
+                <BoldDiv>
+                    <FormattedMessage id="dashboard.transaction.summary.amount" />
+                </BoldDiv>
+                : {etherAmount.decimalPlaces(4).toString()} {symbol}
+            </Box>
+            <Box mb={2}>
+                <BoldDiv>
+                    <FormattedMessage id="dashboard.transaction.summary.amount.fee" />
+                </BoldDiv>
+                : {etherFeeAmount.decimalPlaces(4).toString()} {symbol}
+            </Box>
+            {progress && (
+                <Box mb={2}>
+                    <BoldDiv>
+                        <FormattedMessage id="dashboard.transaction.summary.progress" />
+                    </BoldDiv>
+                    : {progress}
+                </Box>
+            )}
+            {txHash && (
+                <Flex justifyContent="center">
+                    <Box mt={4}>
+                        <Button link external href={getEtherscanLink()}>
+                            <FormattedMessage id="dashboard.transaction.summary.etherscan" />
+                        </Button>
                     </Box>
-                )}
-                {!sent && senderInUI && (
-                    <Box mb={2}>
-                        <BoldDiv>
-                            <FormattedMessage id="dashboard.transaction.summary.sender" />
-                        </BoldDiv>
-                        : {senderInUI}
-                    </Box>
-                )}
-                <Box mb={2}>
-                    <BoldDiv>
-                        <FormattedMessage id="dashboard.transaction.summary.amount" />
-                    </BoldDiv>
-                    : {etherAmount.decimalPlaces(4).toString()} {symbol}
-                </Box>
-                <Box mb={2}>
-                    <BoldDiv>
-                        <FormattedMessage id="dashboard.transaction.summary.amount.fee" />
-                    </BoldDiv>
-                    : {etherFeeAmount.decimalPlaces(4).toString()} {symbol}
-                </Box>
-                {progress && (
-                    <Box mb={2}>
-                        <BoldDiv>
-                            <FormattedMessage id="dashboard.transaction.summary.progress" />
-                        </BoldDiv>
-                        : {progress}
-                    </Box>
-                )}
-                {txHash && (
-                    <Flex justifyContent="center">
-                        <Box mt={4}>
-                            <Button link external href={getEtherscanLink()}>
-                                <FormattedMessage id="dashboard.transaction.summary.etherscan" />
-                            </Button>
-                        </Box>
-                    </Flex>
-                )}
-            </Flex>
-        </>
+                </Flex>
+            )}
+        </Flex>
     );
 };
 
