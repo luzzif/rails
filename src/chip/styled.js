@@ -14,6 +14,6 @@ export const Container = styled(Flex)`
         return props.dark ? props.theme.background : props.theme.foreground;
     }};
     font-size: 16px;
-    transition: background 0.2s ease, color 0.2s ease;
+    transition: background 0.3s ease;
     cursor: pointer;
 `;
