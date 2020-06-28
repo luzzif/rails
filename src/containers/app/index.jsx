@@ -224,7 +224,8 @@ export const App = () => {
             <Layout
                 lightTheme={lightTheme}
                 onThemeChange={handleThemeChange}
-                fiat={selectedFiat}
+                // show fiat selector only if actually logged in
+                fiat={logged ? selectedFiat : null}
                 onFiatClick={handleFiatClick}
                 logged={logged}
                 onLogoutClick={handleLogoutClick}
