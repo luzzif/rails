@@ -108,7 +108,7 @@ export const Form = ({ onConfirm, asset }) => {
             justifyContent="center"
             pb={4}
             pt={1}
-            px={[3, 4]}
+            px={4}
         >
             <Box mb={4} width="100%">
                 <Input

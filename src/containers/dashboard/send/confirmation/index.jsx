@@ -13,7 +13,7 @@ export const Confirmation = ({ onClose }) => (
         flexDirection="column"
         pb={4}
         pt={1}
-        px={[3, 4]}
+        px={4}
     >
         <Box
             width={["80%", "70%", "60%", "50%", "40%"]}

@@ -53,7 +53,7 @@ export const TransactionSummary = ({
     const getEtherscanLink = () => `https://etherscan.com/tx/${txHash}`;
 
     return (
-        <Flex width="100%" flexDirection="column" pb={4} px={[3, 4]}>
+        <Flex width="100%" flexDirection="column" pb={4} px={4}>
             <Box mb={2}>
                 <BoldDiv>
                     <FormattedMessage id="dashboard.transaction.summary.type" />

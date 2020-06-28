@@ -86,7 +86,7 @@ export const Auth = () => {
                     flexDirection="column"
                     alignItems="center"
                     pb={4}
-                    px={[3, 4]}
+                    px={4}
                 >
                     <Box mb={2}>
                         <FormattedMessage id="auth.login.proceed.message" />
@@ -104,7 +104,7 @@ export const Auth = () => {
                     flexDirection="column"
                     alignItems="center"
                     pb={4}
-                    px={[3, 4]}
+                    px={4}
                 >
                     <Box mb={2}>
                         <FormattedMessage id="auth.register.proceed.message.1" />
