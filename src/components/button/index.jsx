@@ -15,7 +15,7 @@ const commonsStyles = css`
         props.secondary ? `solid 3px ${props.theme.primary}` : "none"};
     border-radius: 24px;
     font-weight: 700;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     box-shadow: ${(props) =>
         props.secondary ? "none" : `0px 5px 21px 0px ${props.theme.shadow}`};
     transform: scale(1);
@@ -32,11 +32,11 @@ const commonsStyles = css`
         ${(props) =>
             props.secondary &&
             css`
-                background: rgba(254, 36, 121, 0.1);
+                background: rgba(28, 96, 255, 0.2);
             `}
     }
     :active {
-        transform: scale(0.9);
+        transform: scale(0.95);
         ${(props) =>
             !props.secondary &&
             css`
