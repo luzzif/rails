@@ -68,7 +68,7 @@ export const Auth = () => {
                     <FormattedMessage id="auth.summary" />
                 </Box>
                 <Flex>
-                    <Box mr={4}>
+                    <Box mr={3}>
                         <Button onClick={handleLoginClick}>
                             <FormattedMessage id="auth.login.button" />
                         </Button>

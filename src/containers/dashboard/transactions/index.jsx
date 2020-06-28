@@ -91,7 +91,7 @@ export const Transactions = ({
             pt={12}
             px={2}
         >
-            <Flex px={[2, 3]} width="100%" mb={12}>
+            <Flex px={2} width="100%" mb={12}>
                 <Box pr={3} width="100%">
                     <Searchbar
                         dark
@@ -113,7 +113,7 @@ export const Transactions = ({
                 </Box>
             </Flex>
             <Flex
-                px={[2, 3]}
+                px={2}
                 flexWrap="nowrap"
                 width="100%"
                 overflowX="auto"
@@ -158,6 +158,7 @@ export const Transactions = ({
                 </Box>
             </Flex>
             <ListFlex
+                px={2}
                 flexGrow={1}
                 flexDirection="column"
                 alignItems="center"
