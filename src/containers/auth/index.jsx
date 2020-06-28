@@ -93,7 +93,7 @@ export const Auth = () => {
                             <Box mb={2}>
                                 <FormattedMessage id="auth.login.proceed.message" />
                             </Box>
-                            <Box mt={4}>
+                            <Box mt={3}>
                                 <Button onClick={handleLoginProceed}>
                                     <FormattedMessage id="auth.login.proceed.button.title" />
                                 </Button>
@@ -108,7 +108,7 @@ export const Auth = () => {
                             <Box>
                                 <FormattedMessage id="auth.register.proceed.message.2" />
                             </Box>
-                            <Box mt={4}>
+                            <Box mt={3}>
                                 <Button onClick={handleRegisterProceed}>
                                     <FormattedMessage id="auth.register.proceed.button.title" />
                                 </Button>
