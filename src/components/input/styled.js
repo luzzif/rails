@@ -28,7 +28,7 @@ export const StyledInput = styled.input`
 
 export const Label = styled.div`
     color: ${(props) => props.theme.text};
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 700;
 `;
 
