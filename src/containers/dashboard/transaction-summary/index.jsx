@@ -25,11 +25,15 @@ export const TransactionSummary = ({
     const [etherFeeAmount, setEtherFeeAmount] = useState(new BigNumber("0"));
 
     useEffect(() => {
-        setEtherAmount(weiToEther(amount));
+        if (amount) {
+            setEtherAmount(weiToEther(amount));
+        }
     }, [amount]);
 
     useEffect(() => {
-        setEtherFeeAmount(weiToEther(feeAmount));
+        if (feeAmount) {
+            setEtherFeeAmount(weiToEther(feeAmount));
+        }
     }, [feeAmount]);
 
     const getType = () => {

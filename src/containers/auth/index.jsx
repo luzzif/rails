@@ -80,7 +80,7 @@ export const Auth = () => {
                     </Box>
                 </Flex>
             </Flex>
-            <BottomUpContainer open={open} onClose={handleClose}>
+            <BottomUpContainer open={open && loggingIn} onClose={handleClose}>
                 <Flex
                     width="100%"
                     flexDirection="column"
@@ -88,33 +88,35 @@ export const Auth = () => {
                     pb={4}
                     px={[3, 4]}
                 >
-                    {loggingIn && (
-                        <>
-                            <Box mb={2}>
-                                <FormattedMessage id="auth.login.proceed.message" />
-                            </Box>
-                            <Box mt={3}>
-                                <Button onClick={handleLoginProceed}>
-                                    <FormattedMessage id="auth.login.proceed.button.title" />
-                                </Button>
-                            </Box>
-                        </>
-                    )}
-                    {registering && (
-                        <>
-                            <Box mb={2}>
-                                <FormattedMessage id="auth.register.proceed.message.1" />
-                            </Box>
-                            <Box>
-                                <FormattedMessage id="auth.register.proceed.message.2" />
-                            </Box>
-                            <Box mt={3}>
-                                <Button onClick={handleRegisterProceed}>
-                                    <FormattedMessage id="auth.register.proceed.button.title" />
-                                </Button>
-                            </Box>
-                        </>
-                    )}
+                    <Box mb={2}>
+                        <FormattedMessage id="auth.login.proceed.message" />
+                    </Box>
+                    <Box mt={3}>
+                        <Button onClick={handleLoginProceed}>
+                            <FormattedMessage id="auth.login.proceed.button.title" />
+                        </Button>
+                    </Box>
+                </Flex>
+            </BottomUpContainer>
+            <BottomUpContainer open={open && registering} onClose={handleClose}>
+                <Flex
+                    width="100%"
+                    flexDirection="column"
+                    alignItems="center"
+                    pb={4}
+                    px={[3, 4]}
+                >
+                    <Box mb={2}>
+                        <FormattedMessage id="auth.register.proceed.message.1" />
+                    </Box>
+                    <Box>
+                        <FormattedMessage id="auth.register.proceed.message.2" />
+                    </Box>
+                    <Box mt={3}>
+                        <Button onClick={handleRegisterProceed}>
+                            <FormattedMessage id="auth.register.proceed.button.title" />
+                        </Button>
+                    </Box>
                 </Flex>
             </BottomUpContainer>
         </>

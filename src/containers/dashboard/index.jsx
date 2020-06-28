@@ -236,50 +236,33 @@ export const Dashboard = () => {
                     />
                 </TransactionsContainer>
             </Flex>
-            <BottomUpContainer
-                width={["95%", "75%", "65%", "45%", "35%"]}
-                open={
-                    sending ||
-                    changingAsset ||
-                    showingTransaction ||
-                    depositing ||
-                    withdrawing
-                }
-                onClose={handleClose}
-            >
-                {changingAsset && (
-                    <Assets
-                        assets={balances}
-                        onChange={handleAssetChange}
-                        open={changingAsset}
-                        onRefresh={handleAssetsRefresh}
-                        selectedFiat={selectedFiat}
-                    />
-                )}
-                {sending && (
-                    <SwipeableViews
-                        index={sendIndex}
-                        disabled
-                        style={{ overflowY: "hidden", width: "100%" }}
-                    >
-                        <Send
-                            asset={selectedAsset}
-                            onConfirm={handleSendConfirm}
-                        />
-                        <Confirmation
-                            onClose={handleTransferConfirmationClose}
-                        />
-                    </SwipeableViews>
-                )}
-                {showingTransaction && (
-                    <TransactionSummary {...selectedTransaction} />
-                )}
-                {depositing && (
-                    <DepositFlow open={depositing} asset={selectedAsset} />
-                )}
-                {withdrawing && (
-                    <WithdrawalFlow open={withdrawing} asset={selectedAsset} />
-                )}
+            <BottomUpContainer open={changingAsset} onClose={handleClose}>
+                <Assets
+                    assets={balances}
+                    onChange={handleAssetChange}
+                    open={changingAsset}
+                    onRefresh={handleAssetsRefresh}
+                    selectedFiat={selectedFiat}
+                />
+            </BottomUpContainer>
+            <BottomUpContainer open={sending} onClose={handleClose}>
+                <SwipeableViews
+                    index={sendIndex}
+                    disabled
+                    style={{ overflowY: "hidden", width: "100%" }}
+                >
+                    <Send asset={selectedAsset} onConfirm={handleSendConfirm} />
+                    <Confirmation onClose={handleTransferConfirmationClose} />
+                </SwipeableViews>
+            </BottomUpContainer>
+            <BottomUpContainer open={showingTransaction} onClose={handleClose}>
+                <TransactionSummary {...selectedTransaction} />
+            </BottomUpContainer>
+            <BottomUpContainer open={depositing} onClose={handleClose}>
+                <DepositFlow open={depositing} asset={selectedAsset} />
+            </BottomUpContainer>
+            <BottomUpContainer open={withdrawing} onClose={handleClose}>
+                <WithdrawalFlow open={withdrawing} asset={selectedAsset} />
             </BottomUpContainer>
         </>
     );
