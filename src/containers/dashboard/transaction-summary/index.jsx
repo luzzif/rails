@@ -117,13 +117,13 @@ export const TransactionSummary = ({
 };
 
 TransactionSummary.propTypes = {
-    sent: PropTypes.bool.isRequired,
-    deposit: PropTypes.bool.isRequired,
-    withdrawal: PropTypes.bool.isRequired,
+    sent: PropTypes.bool,
+    deposit: PropTypes.bool,
+    withdrawal: PropTypes.bool,
     timestamp: PropTypes.number.isRequired,
-    amount: PropTypes.string.isRequired,
+    amount: PropTypes.object.isRequired,
     symbol: PropTypes.string.isRequired,
-    txHash: PropTypes.string.isRequired,
-    feeAmount: PropTypes.string.isRequired,
+    txHash: PropTypes.string,
+    feeAmount: PropTypes.object.isRequired,
     progress: PropTypes.string.isRequired,
 };
