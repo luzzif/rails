@@ -83,6 +83,17 @@ export const Dashboard = () => {
         wallet,
     ]);
 
+    // when balances change (for example on selected fiat change, the selected asset has to be updated)
+    useEffect(() => {
+        if (balances) {
+            dispatch(
+                postSelectedAsset(
+                    balances.find((balance) => balance.id === selectedAsset.id)
+                )
+            );
+        }
+    }, [balances, dispatch, selectedAsset]);
+
     const handleClose = useCallback(() => {
         setSending(false);
         setChangingAsset(false);
