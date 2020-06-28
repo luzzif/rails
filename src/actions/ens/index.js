@@ -11,7 +11,6 @@ export const getAddressFromEnsName = (wallet, name) => async (dispatch) => {
             address: await wallet.web3.eth.ens.getAddress(name),
         });
     } catch (error) {
-        console.error(`error getting address from ens name ${name}`, error);
         dispatch({ type: GET_ADDRESS_FAILURE });
     }
     dispatch({ type: DELETE_GET_ADDRESS_LOADING });

@@ -15,24 +15,28 @@ export const GlobalStyle = createGlobalStyle`
         height: 100%;
     }
 
-    .toast-root {
-        width: auto;
+    .custom-toast-root {
+        width: auto !important;
     }
 
     @media (max-width: 600px) {
-        .toast-root {
-            width: 100vw;
+        .custom-toast-root {
+            left: 16px !important;
+            right: 16px !important;
         }
     }
 
-    .toast-container {
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-        border-radius: 16px;
+    .custom-toast-container {
+        margin-top: 16px !important;
+        box-shadow: 0px 30px 62px 0px ${(props) =>
+            props.theme.shadow} !important;
+        border-radius: 16px !important;
+        background: ${(props) => props.theme.error} !important;
     }
 
-    .toast-body {
+    .custom-toast-body {
         font-size: 16px;
         font-family: "Montserrat";
-        padding: 0px 16px;
+        padding: 8px 16px;
     }
 `;

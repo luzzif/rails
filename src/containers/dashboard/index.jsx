@@ -237,32 +237,47 @@ export const Dashboard = () => {
                 </TransactionsContainer>
             </Flex>
             <BottomUpContainer open={changingAsset} onClose={handleClose}>
-                <Assets
-                    assets={balances}
-                    onChange={handleAssetChange}
-                    open={changingAsset}
-                    onRefresh={handleAssetsRefresh}
-                    selectedFiat={selectedFiat}
-                />
+                {changingAsset && (
+                    <Assets
+                        assets={balances}
+                        onChange={handleAssetChange}
+                        open={changingAsset}
+                        onRefresh={handleAssetsRefresh}
+                        selectedFiat={selectedFiat}
+                    />
+                )}
             </BottomUpContainer>
             <BottomUpContainer open={sending} onClose={handleClose}>
-                <SwipeableViews
-                    index={sendIndex}
-                    disabled
-                    style={{ overflowY: "hidden", width: "100%" }}
-                >
-                    <Send asset={selectedAsset} onConfirm={handleSendConfirm} />
-                    <Confirmation onClose={handleTransferConfirmationClose} />
-                </SwipeableViews>
+                {sending && (
+                    <SwipeableViews
+                        index={sendIndex}
+                        disabled
+                        style={{ overflowY: "hidden", width: "100%" }}
+                    >
+                        <Send
+                            asset={selectedAsset}
+                            onConfirm={handleSendConfirm}
+                        />
+                        <Confirmation
+                            onClose={handleTransferConfirmationClose}
+                        />
+                    </SwipeableViews>
+                )}
             </BottomUpContainer>
             <BottomUpContainer open={showingTransaction} onClose={handleClose}>
-                <TransactionSummary {...selectedTransaction} />
+                {showingTransaction && (
+                    <TransactionSummary {...selectedTransaction} />
+                )}
             </BottomUpContainer>
             <BottomUpContainer open={depositing} onClose={handleClose}>
-                <DepositFlow open={depositing} asset={selectedAsset} />
+                {depositing && (
+                    <DepositFlow open={depositing} asset={selectedAsset} />
+                )}
             </BottomUpContainer>
             <BottomUpContainer open={withdrawing} onClose={handleClose}>
-                <WithdrawalFlow open={withdrawing} asset={selectedAsset} />
+                {withdrawing && (
+                    <WithdrawalFlow open={withdrawing} asset={selectedAsset} />
+                )}
             </BottomUpContainer>
         </>
     );

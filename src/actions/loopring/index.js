@@ -1,3 +1,4 @@
+import React from "react";
 import { getLoopringApiKey } from "../../utils/loopring";
 import Wallet from "../../lightcone/wallet";
 import {
@@ -18,6 +19,8 @@ import { getRecommendedGasPrice } from "../../lightcone/api/v1/recommendedGasPri
 import { getEthNonce } from "../../lightcone/api/v1/ethnonce/get";
 import { getTokenBalance } from "../../lightcone/api/v1/tokenBalance/get";
 import { getEthBalance } from "../../lightcone/api/v1/ethBalance/get";
+import { toast } from "react-toastify";
+import { FormattedMessage } from "react-intl";
 
 export const INTIIALIZE_SUCCESS = "INTIIALIZE_SUCCESS";
 export const POST_GET_SUPPORTED_TOKENS_LOADING =
@@ -79,6 +82,7 @@ export const initializeLoopring = (web3Instance) => async (dispatch) => {
         wallet.accountId = account.accountId;
         dispatch({ type: INTIIALIZE_SUCCESS, account, wallet, exchange });
     } catch (error) {
+        toast.error(<FormattedMessage id="error.loopring.initialization" />);
         console.error("error initializing loopring", error);
     }
 };
@@ -91,6 +95,7 @@ export const getSupportedTokens = () => async (dispatch) => {
             supportedTokens: await getTokenInfo(),
         });
     } catch (error) {
+        toast.error(<FormattedMessage id="error.loopring.supported.tokens" />);
         console.error("error getting loopring supported tokens", error);
     }
     dispatch({ type: DELETE_GET_SUPPORTED_TOKENS_LOADING });
@@ -148,6 +153,7 @@ export const getUserBalances = (
             );
         dispatch({ type: GET_BALANCES_SUCCESS, balances: allBalances });
     } catch (error) {
+        toast.error(<FormattedMessage id="error.loopring.user.balances" />);
         console.error("error getting loopring user balances", error);
     }
     dispatch({ type: DELETE_GET_BALANCES_LOADING });
@@ -172,6 +178,7 @@ export const getDepositBalance = (
             balance: new BigNumber(balance),
         });
     } catch (error) {
+        toast.error(<FormattedMessage id="error.loopring.deposit.balance" />);
         console.error("error getting loopring user balance", error);
     }
 };
@@ -257,6 +264,9 @@ export const getTokenTransactions = (
             ),
         });
     } catch (error) {
+        toast.error(
+            <FormattedMessage id="error.loopring.token.transactions" />
+        );
         console.error("error getting loopring token transactions", error);
     }
     dispatch({ type: DELETE_TRANSACTIONS_LOADING });
@@ -316,6 +326,7 @@ export const postTransfer = (
         );
         dispatch({ type: POST_TRANSFER_SUCCESS, hash: transferHash });
     } catch (error) {
+        toast.error(<FormattedMessage id="error.loopring.transfer" />);
         console.error("error posting loopring transfer", error);
     }
     dispatch({ type: DELETE_TRANSFER_LOADING });
@@ -340,6 +351,7 @@ export const getTokenAllowance = (
             ),
         });
     } catch (error) {
+        toast.error(<FormattedMessage id="error.loopring.token.allowance.get" />);
         console.error(`error getting token ${tokenSymbol} allowance`, error);
     }
     dispatch({ type: DELETE_GET_ALLOWANCE_LOADING });
@@ -367,6 +379,7 @@ export const grantAllowance = (
             ),
         });
     } catch (error) {
+        toast.error(<FormattedMessage id="error.loopring.token.allowance.grant" />);
         console.error(`error requesting ${tokenSymbol} allowance`, error);
     }
     dispatch({ type: DELETE_GRANT_ALLOWANCE_LOADING });
@@ -399,6 +412,7 @@ export const postDeposit = (
         );
         dispatch({ type: POST_DEPOSIT_SUCCESS, transactionHash });
     } catch (error) {
+        toast.error(<FormattedMessage id="error.loopring.deposit" />);
         console.error(`error depositing ${tokenSymbol}`, error);
     }
 };
@@ -441,6 +455,7 @@ export const registerAccount = (web3Instance) => async (dispatch) => {
             true
         );
     } catch (error) {
+        toast.error(<FormattedMessage id="error.loopring.register" />);
         console.error("error registering user", error);
     }
 };
@@ -472,6 +487,7 @@ export const postOnchainWithdrawal = (
         );
         dispatch({ type: POST_WITHDRAWAL_SUCCESS, transactionHash });
     } catch (error) {
+        toast.error(<FormattedMessage id="error.loopring.withdrawal" />);
         console.error("error performing onchain withdrawal", error);
     }
 };

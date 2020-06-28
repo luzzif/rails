@@ -53,5 +53,17 @@
     "withdrawal.form.amount.maximum": "Maximum amount (gas excluded): {amount}",
     "withdrawal.form.confirm": "Confirm",
     "withdrawal.confirmation.message": "Your transaction has been broadcast to the network. Once the request is processed (it could take up to a few days), you'll be able to use your funds securely, on chain. You can monitor the transaction by clicking on the button below (opens in a new page).",
-    "withdrawal.confirmation.button.title": "View on Etherscan"
+    "withdrawal.confirmation.button.title": "View on Etherscan",
+    "error.loopring.initialization": "There was an error initializing Loopring Pay. Please try again later.",
+    "error.loopring.supported.tokens": "There was an error fetching the list of Loopring Pay's supported tokens. Please try again later.",
+    "error.loopring.user.balances": "There was an error fetching the user's balances. Please try again later.",
+    "error.loopring.deposit.balance": "There was an error fetching the user's maximum depositable balance. Please try again.",
+    "error.loopring.token.transactions": "There was an error fetching previous token transactions. Please try again later.",
+    "error.loopring.transfer": "There was an error performing the transfer. Please try again later.",
+    "error.loopring.token.allowance.get": "There was an error fetching the on-chain token allowance. Please try again later.",
+    "error.loopring.token.allowance.grant": "There was an error granting on-chain token allowance. Please try again later.",
+    "error.loopring.deposit": "There was an error performing the deposit. Please try again later.",
+    "error.loopring.register": "There was an error registering the new account. Please try again later.",
+    "error.loopring.withdrawal": "There was an error performing the on-chain withdrawal. Please try again later.",
+    "error.web3.initialization": "There was an error initializing web3. Please try again later."
 }

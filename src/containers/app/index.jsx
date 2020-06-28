@@ -26,9 +26,11 @@ import {
 } from "../../actions/loopring";
 import { BottomUpContainer } from "../../components/bottom-up-container";
 import { FiatChooser, supportedFiats } from "../fiat-chooser";
+import { ToastContainer, Slide } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const commonColors = {
-    error: "#ff1744",
+    error: "#c62828",
     primary: "#1c60ff",
 };
 
@@ -260,6 +262,14 @@ export const App = () => {
                 </BottomUpContainer>
             </Layout>
             <UniversalSpinner open={universallyLoading} />
+            <ToastContainer
+                className="custom-toast-root"
+                toastClassName="custom-toast-container"
+                bodyClassName="custom-toast-body"
+                position="top-right"
+                closeButton={false}
+                transition={Slide}
+            />
         </ThemeProvider>
     );
 };
