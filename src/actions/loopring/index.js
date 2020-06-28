@@ -121,7 +121,7 @@ export const getUserBalances = (
                     (balance) => balance.tokenId === supportedTokenId
                 );
                 const matchingFiatValue = fiatValues.find(
-                    (balance) => balance.symbol === supportedTokenSymbol
+                    (fiatValue) => fiatValue.symbol === supportedTokenSymbol
                 );
                 const balance = new BigNumber(
                     matchingBalance ? matchingBalance.totalAmount : "0"
