@@ -50,11 +50,6 @@ export const TransactionSummary = ({
 
     return (
         <Flex width="100%" flexDirection="column" pb={4} px={[3, 4]}>
-            <Box fontSize={20} mb={3}>
-                <BoldDiv>
-                    <FormattedMessage id="dashboard.transaction.summary.title" />
-                </BoldDiv>
-            </Box>
             <Box mb={2}>
                 <BoldDiv>
                     <FormattedMessage id="dashboard.transaction.summary.type" />
