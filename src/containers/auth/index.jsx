@@ -62,7 +62,6 @@ export const Auth = () => {
                 </Box>
                 <Box
                     mb={4}
-                    fontSize={20}
                     width={["80%", "70%", "60%", "30%", "20%"]}
                     textAlign="center"
                 >

@@ -13,7 +13,7 @@ export const Searchbar = ({ placeholder, value, onChange, dark }) => (
         alignItems="center"
         dark={dark}
     >
-        <Box mr={2}>
+        <Box mr={3}>
             <SearchIconContainer>
                 <FontAwesomeIcon icon={faSearch} />
             </SearchIconContainer>
