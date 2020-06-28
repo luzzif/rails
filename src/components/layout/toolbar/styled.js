@@ -6,5 +6,5 @@ export const FlexContainer = styled(Flex)`
 `;
 
 export const Logo = styled.img`
-    height: 28px;
+    height: 100%;
 `;
