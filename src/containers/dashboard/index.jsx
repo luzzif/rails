@@ -37,7 +37,7 @@ export const Dashboard = () => {
         account: state.loopring.account,
         wallet: state.loopring.wallet,
         exchange: state.loopring.exchange,
-        supportedTokens: state.loopring.supportedTokens,
+        supportedTokens: state.loopring.supportedTokens.data,
         balances: state.loopring.balances.data,
         transactions: state.loopring.transactions.data,
         transactionsLoading: !!state.loopring.transactions.loadings,

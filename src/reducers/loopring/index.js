@@ -24,13 +24,15 @@ import {
     DELETE_WITHDRAWAL_TRANSACTION_HASH,
     POST_SELECTED_FIAT,
     POST_LOGOUT,
+    POST_GET_SUPPORTED_TOKENS_LOADING,
+    DELETE_GET_SUPPORTED_TOKENS_LOADING,
 } from "../../actions/loopring";
 
 const initialState = {
     account: null,
     wallet: null,
     exchange: null,
-    supportedTokens: [],
+    supportedTokens: { loadings: 0, data: [] },
     balances: { loadings: 0, data: [] },
     transactions: {
         loadings: 0,
@@ -62,7 +64,28 @@ export const loopringReducer = (state = initialState, action) => {
         case GET_SUPPORTED_TOKENS_SUCCESS: {
             return {
                 ...state,
-                supportedTokens: action.supportedTokens,
+                supportedTokens: {
+                    ...state.supportedTokens,
+                    data: action.supportedTokens,
+                },
+            };
+        }
+        case POST_GET_SUPPORTED_TOKENS_LOADING: {
+            return {
+                ...state,
+                supportedTokens: {
+                    ...state.supportedTokens,
+                    loadings: state.supportedTokens.loadings + 1,
+                },
+            };
+        }
+        case DELETE_GET_SUPPORTED_TOKENS_LOADING: {
+            return {
+                ...state,
+                supportedTokens: {
+                    ...state.supportedTokens,
+                    loadings: state.supportedTokens.loadings - 1,
+                },
             };
         }
         case GET_BALANCES_SUCCESS: {

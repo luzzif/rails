@@ -13,10 +13,6 @@ import BigNumber from "bignumber.js";
 import { getTransferHistory } from "../../lightcone/api/v1/transfer/get";
 import config from "../../lightcone/config";
 import { submitTransfer } from "../../lightcone/api/v1/transfer";
-import {
-    postUniversalLoading,
-    deleteUniversalLoading,
-} from "../universal-loadings";
 import { getAllowance } from "../../lightcone/api/v1/allowances/get";
 import { getRecommendedGasPrice } from "../../lightcone/api/v1/recommendedGasPrice/get";
 import { getEthNonce } from "../../lightcone/api/v1/ethnonce/get";
@@ -24,6 +20,10 @@ import { getTokenBalance } from "../../lightcone/api/v1/tokenBalance/get";
 import { getEthBalance } from "../../lightcone/api/v1/ethBalance/get";
 
 export const INTIIALIZE_SUCCESS = "INTIIALIZE_SUCCESS";
+export const POST_GET_SUPPORTED_TOKENS_LOADING =
+    "POST_GET_SUPPORTED_TOKENS_LOADING";
+export const DELETE_GET_SUPPORTED_TOKENS_LOADING =
+    "DELETE_GET_SUPPORTED_TOKENS_LOADING";
 export const GET_SUPPORTED_TOKENS_SUCCESS = "GET_SUPPORTED_TOKENS_SUCCESS";
 export const POST_GET_BALANCES_LOADING = "POST_GET_BALANCES_LOADING";
 export const DELETE_GET_BALANCES_LOADING = "DELETE_GET_BALANCES_LOADING";
@@ -84,7 +84,7 @@ export const initializeLoopring = (web3Instance) => async (dispatch) => {
 };
 
 export const getSupportedTokens = () => async (dispatch) => {
-    dispatch(postUniversalLoading());
+    dispatch({ type: POST_GET_SUPPORTED_TOKENS_LOADING });
     try {
         dispatch({
             type: GET_SUPPORTED_TOKENS_SUCCESS,
@@ -93,7 +93,7 @@ export const getSupportedTokens = () => async (dispatch) => {
     } catch (error) {
         console.error("error getting loopring supported tokens", error);
     }
-    dispatch(deleteUniversalLoading());
+    dispatch({ type: DELETE_GET_SUPPORTED_TOKENS_LOADING });
 };
 
 export const getUserBalances = (

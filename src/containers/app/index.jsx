@@ -29,7 +29,7 @@ import { FiatChooser, supportedFiats } from "../fiat-chooser";
 
 const commonColors = {
     error: "#ff1744",
-    primary: "#cb014e",
+    primary: "#1c60ff",
 };
 
 const light = {
@@ -47,7 +47,7 @@ const dark = {
     background: "#212121",
     foreground: "#333",
     text: "#F1F9D2",
-    shadow: "rgba(255, 255, 255, 0.4)",
+    shadow: "rgba(0, 0, 0, 0.4)",
     placeholder: "#666666",
     loader: "#595959",
 };
@@ -80,20 +80,25 @@ export const App = () => {
         balances,
         selectedAsset,
         selectedFiat,
+        loadingSupportedTokens,
+        loadingBalances,
     } = useSelector((state) => ({
         web3Instance: state.web3.instance,
         loopringAccount: state.loopring.account,
         loopringWallet: state.loopring.wallet,
         loopringExchange: state.loopring.exchange,
-        supportedTokens: state.loopring.supportedTokens,
+        supportedTokens: state.loopring.supportedTokens.data,
         balances: state.loopring.balances.data,
         selectedAsset: state.loopring.selectedAsset,
         selectedFiat: state.loopring.selectedFiat,
+        loadingSupportedTokens: !!state.loopring.supportedTokens.loadings,
+        loadingBalances: !!state.loopring.balances.loadings,
     }));
 
     const [lightTheme, setLightTheme] = useState(true);
     const [changingFiat, setChangingFiat] = useState(false);
     const [logged, setLogged] = useState(false);
+    const [universallyLoading, setUniversallyLoading] = useState(false);
 
     // setting up local storage -saved theme
     useEffect(() => {
@@ -163,6 +168,13 @@ export const App = () => {
     useLayoutEffect(() => {
         history.push(logged ? "/dashboard" : "/auth");
     }, [history, logged]);
+
+    // shows spinner when logging in and still loading data
+    useEffect(() => {
+        setUniversallyLoading(
+            !logged && (loadingBalances || loadingSupportedTokens)
+        );
+    }, [loadingBalances, loadingSupportedTokens, logged]);
 
     useEffect(() => {
         setLogged(
@@ -247,7 +259,7 @@ export const App = () => {
                     <FiatChooser onChange={handleFiatChange} />
                 </BottomUpContainer>
             </Layout>
-            <UniversalSpinner />
+            <UniversalSpinner open={universallyLoading} />
         </ThemeProvider>
     );
 };

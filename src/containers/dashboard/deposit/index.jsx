@@ -30,7 +30,7 @@ export const DepositFlow = ({ open, asset }) => {
     } = useSelector((state) => ({
         loopringWallet: state.loopring.wallet,
         loopringExchange: state.loopring.exchange,
-        supportedTokens: state.loopring.supportedTokens,
+        supportedTokens: state.loopring.supportedTokens.data,
         loadingAllowance: !!state.loopring.allowances.loadings,
         allowance: state.loopring.allowances[asset.symbol],
         successfulGrantAllowanceHash:

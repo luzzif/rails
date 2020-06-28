@@ -19,7 +19,7 @@ export const Form = ({ onConfirm, asset }) => {
     } = useSelector((state) => ({
         loopringAccount: state.loopring.account,
         loopringWallet: state.loopring.wallet,
-        supportedTokens: state.loopring.supportedTokens,
+        supportedTokens: state.loopring.supportedTokens.data,
         depositBalance: state.loopring.depositBalance,
     }));
 

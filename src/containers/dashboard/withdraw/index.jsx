@@ -20,7 +20,7 @@ export const WithdrawalFlow = ({ open, asset }) => {
     } = useSelector((state) => ({
         loopringWallet: state.loopring.wallet,
         loopringExchange: state.loopring.exchange,
-        supportedTokens: state.loopring.supportedTokens,
+        supportedTokens: state.loopring.supportedTokens.data,
         withdrawalTransactionHash: state.loopring.withdrawalTransactionHash,
     }));
 

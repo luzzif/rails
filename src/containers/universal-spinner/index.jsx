@@ -1,30 +1,32 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
 import { RootContainer } from "./styled";
 import { selectedTheme } from "../app";
 import { BounceLoader } from "react-spinners";
 
-export const UniversalSpinner = ({ timeout }) => {
-    const [open, setOpen] = useState(false);
+export const UniversalSpinner = ({ timeout, open }) => {
+    const [locallyOpen, setLocallyOpen] = useState(false);
     let timer = useRef(null);
-    const loading = useSelector((state) => !!state.universalLoadings.amount);
 
     const onTimeout = useCallback(() => {
-        setOpen(loading);
+        setLocallyOpen(open);
         clearTimeout(timer);
-    }, [loading, timer]);
+    }, [open, timer]);
 
     useEffect(() => {
-        if (!loading) {
-            setOpen(false);
-        } else if (!open) {
+        if (!open) {
+            setLocallyOpen(false);
+        } else if (!locallyOpen) {
             timer.current = setTimeout(onTimeout, timeout);
         }
-    }, [loading, timeout, open, onTimeout]);
+    }, [open, timeout, onTimeout, locallyOpen]);
 
     return (
-        <RootContainer open={open} justifyContent="center" alignItems="center">
+        <RootContainer
+            open={locallyOpen}
+            justifyContent="center"
+            alignItems="center"
+        >
             <BounceLoader size={80} color={selectedTheme.loader} loading />
         </RootContainer>
     );
