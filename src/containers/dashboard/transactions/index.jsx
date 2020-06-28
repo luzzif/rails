@@ -164,7 +164,13 @@ export const Transactions = ({
                 width="100%"
             >
                 {(!transactions || transactions.length === 0) && (
-                    <Box>
+                    <Box
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
                         <FormattedMessage id="dashboard.transactions.empty" />
                     </Box>
                 )}
@@ -187,7 +193,13 @@ export const Transactions = ({
                             </Box>
                         ))
                     ) : (
-                        <Box textAlign="center" mt={2} px={3}>
+                        <Box
+                            width="100%"
+                            height="100%"
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                        >
                             <FormattedMessage id="dashboard.transactions.empty.search" />
                         </Box>
                     )
