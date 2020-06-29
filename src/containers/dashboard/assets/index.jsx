@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { Flex, Box } from "reflexbox";
 import PropTypes from "prop-types";
 import { Asset } from "./asset";
-import { useIntl } from "react-intl";
+import { useIntl, FormattedMessage } from "react-intl";
 import { Searchbar } from "../../../components/searchbar";
 import { ActionButton } from "../../../components/action-button";
 import { faRedo } from "@fortawesome/free-solid-svg-icons";
@@ -72,10 +72,27 @@ export const Assets = ({ assets, onChange, onRefresh, open, selectedFiat }) => {
                     />
                 </Box>
             </Flex>
-            <Flex width="100%" flexDirection="column" overflowY="scroll">
-                {filteredAssets.map((asset) => (
-                    <Asset key={asset.id} asset={asset} onClick={onChange} selectedFiat={selectedFiat} />
-                ))}
+            <Flex mb={3} width="100%" flexDirection="column" overflowY="scroll">
+                {filteredAssets && filteredAssets.length > 0 ? (
+                    filteredAssets.map((asset) => (
+                        <Asset
+                            key={asset.id}
+                            asset={asset}
+                            onClick={onChange}
+                            selectedFiat={selectedFiat}
+                        />
+                    ))
+                ) : (
+                    <Box
+                        minHeight={68}
+                        maxHeight={68}
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <FormattedMessage id="dashboard.assets.empty" />
+                    </Box>
+                )}
             </Flex>
             <OverlayBox
                 width="100%"

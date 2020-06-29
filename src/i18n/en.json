@@ -12,6 +12,7 @@
     "dashboard.withdraw": "Withdraw",
     "dashboard.change.asset": "Assets",
     "dashboard.assets.search": "Search...",
+    "dashboard.assets.empty": "No asset matches the search criteria...",
     "dashboard.transactions.empty": "No transactions so far...",
     "dashboard.transactions.empty.search": "No transaction matches the search criteria...",
     "dashboard.transactions.deposit": "Deposit",
