@@ -69,6 +69,11 @@ export const initializeLoopring = (web3Instance) => async (dispatch) => {
             exchangeAddress,
             account.keyNonce
         );
+        if (!keyPair) {
+            // the user most probably aborted the signing
+            console.warn("The user aborted the signing process");
+            return;
+        }
         const { publicKeyX, publicKeyY } = keyPair;
         if (
             account.publicKeyX !== publicKeyX ||
@@ -305,7 +310,7 @@ export const postTransfer = (
             }
         }
         // FIXME: is this input data correct?
-        const { transfer, ecdsaSig } = await wallet.signTransfer(
+        const signedData = await wallet.signTransfer(
             {
                 exchangeId: exchangeId,
                 receiver: receiverAccountId,
@@ -319,6 +324,11 @@ export const postTransfer = (
             },
             supportedTokens
         );
+        if(!signedData) {
+            // the user aborted the signing procedure
+            return;
+        }
+        const { transfer, ecdsaSig } = signedData;
         const transferHash = await submitTransfer(
             transfer,
             ecdsaSig,
@@ -351,7 +361,9 @@ export const getTokenAllowance = (
             ),
         });
     } catch (error) {
-        toast.error(<FormattedMessage id="error.loopring.token.allowance.get" />);
+        toast.error(
+            <FormattedMessage id="error.loopring.token.allowance.get" />
+        );
         console.error(`error getting token ${tokenSymbol} allowance`, error);
     }
     dispatch({ type: DELETE_GET_ALLOWANCE_LOADING });
@@ -379,7 +391,9 @@ export const grantAllowance = (
             ),
         });
     } catch (error) {
-        toast.error(<FormattedMessage id="error.loopring.token.allowance.grant" />);
+        toast.error(
+            <FormattedMessage id="error.loopring.token.allowance.grant" />
+        );
         console.error(`error requesting ${tokenSymbol} allowance`, error);
     }
     dispatch({ type: DELETE_GRANT_ALLOWANCE_LOADING });
