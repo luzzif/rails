@@ -14,7 +14,7 @@ import { UniversalSpinner } from "../universal-spinner";
 import { GlobalStyle } from "./styled.js";
 import { useDispatch } from "react-redux";
 import { Auth } from "../auth";
-import WalletConnectProvider from "@walletconnect/web3-provider";
+import MewConnect from "@myetherwallet/mewconnect-web-client";
 import Web3Modal from "web3modal";
 import { INFURA_ID } from "../../env";
 import {
@@ -55,11 +55,25 @@ const dark = {
     loader: "#595959",
 };
 
+const lightWeb3ModalTheme = {
+    background: light.background,
+    main: light.text,
+    secondary: light.text,
+    hover: light.foreground,
+};
+
+const darkWeb3ModalTheme = {
+    background: dark.background,
+    main: dark.text,
+    secondary: dark.text,
+    hover: dark.foreground,
+};
+
 const web3ModalOptions = {
     cacheProvider: false,
     providerOptions: {
-        walletconnect: {
-            package: WalletConnectProvider,
+        mewconnect: {
+            package: MewConnect,
             options: {
                 infuraId: INFURA_ID,
             },
@@ -110,7 +124,9 @@ export const App = () => {
         const lightTheme = cachedTheme === "light";
         setLightTheme(lightTheme);
         selectedTheme = lightTheme ? light : dark;
-        web3ModalOptions.theme = cachedTheme;
+        web3ModalOptions.theme = lightTheme
+            ? lightWeb3ModalTheme
+            : darkWeb3ModalTheme;
     }, [dispatch]);
 
     // setting up selected fiat on boot and logout
@@ -207,7 +223,9 @@ export const App = () => {
         const newLightTheme = !lightTheme;
         const textTheme = newLightTheme ? "light" : "dark";
         localStorage.setItem("loopring-pay-theme", textTheme);
-        web3ModalOptions.theme = textTheme;
+        web3ModalOptions.theme = newLightTheme
+            ? lightWeb3ModalTheme
+            : darkWeb3ModalTheme;
         setLightTheme(newLightTheme);
         selectedTheme = newLightTheme ? light : dark;
     }, [lightTheme]);

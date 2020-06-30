@@ -21,16 +21,20 @@ export const Auth = () => {
     const [open, setOpen] = useState(false);
 
     const handleLoginClick = useCallback(() => {
-        dispatch(initializeWeb3());
+        if(!web3Instance) {
+            dispatch(initializeWeb3());
+        }
         setRegistering(false);
         setLoggingIn(true);
-    }, [dispatch]);
+    }, [dispatch, web3Instance]);
 
     const handleRegisterClick = useCallback(() => {
-        dispatch(initializeWeb3());
+        if(!web3Instance) {
+            dispatch(initializeWeb3());
+        }
         setLoggingIn(false);
         setRegistering(true);
-    }, [dispatch]);
+    }, [dispatch, web3Instance]);
 
     useEffect(() => {
         setOpen(web3Instance && (loggingIn || registering));
