@@ -21,7 +21,7 @@ import { DepositFlow } from "./deposit";
 import { WithdrawalFlow } from "./withdraw";
 import { BottomUpContainer } from "../../components/bottom-up-container";
 
-export const Dashboard = () => {
+const Dashboard = () => {
     const {
         account,
         wallet,
@@ -276,3 +276,5 @@ export const Dashboard = () => {
         </>
     );
 };
+
+export default Dashboard;

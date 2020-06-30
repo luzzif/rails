@@ -10,7 +10,7 @@ import { BottomUpContainer } from "../../components/bottom-up-container";
 import { initializeWeb3 } from "../../actions/web3";
 import { RegistrationFlow } from "./registration-flow";
 
-export const Auth = () => {
+const Auth = () => {
     const dispatch = useDispatch();
     const { web3Instance } = useSelector((state) => ({
         web3Instance: state.web3.instance,
@@ -105,3 +105,5 @@ export const Auth = () => {
         </>
     );
 };
+
+export default Auth;

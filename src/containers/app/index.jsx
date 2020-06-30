@@ -3,8 +3,9 @@ import React, {
     useState,
     useEffect,
     useLayoutEffect,
+    Suspense,
+    lazy,
 } from "react";
-import { Dashboard } from "../dashboard";
 import { Layout } from "../../components/layout";
 import { ThemeProvider } from "styled-components";
 import { PrivateRoute } from "../../components/private-route";
@@ -13,7 +14,6 @@ import { useSelector } from "react-redux";
 import { UniversalSpinner } from "../universal-spinner";
 import { GlobalStyle } from "./styled.js";
 import { useDispatch } from "react-redux";
-import { Auth } from "../auth";
 import MewConnect from "@myetherwallet/mewconnect-web-client";
 import Web3Modal from "web3modal";
 import { INFURA_ID } from "../../env";
@@ -28,6 +28,9 @@ import { BottomUpContainer } from "../../components/bottom-up-container";
 import { FiatChooser, supportedFiats } from "../fiat-chooser";
 import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+const LazyAuth = lazy(() => import("../auth"));
+const LazyDashboard = lazy(() => import("../dashboard"));
 
 const commonColors = {
     error: "#c62828",
@@ -263,16 +266,18 @@ export const App = () => {
                 logged={logged}
                 onLogoutClick={handleLogoutClick}
             >
-                <Switch>
-                    <PrivateRoute
-                        path="/dashboard"
-                        condition={logged}
-                        component={Dashboard}
-                        redirectTo="/auth"
-                    />
-                    <Route path="/auth" component={Auth} />
-                    <Redirect to="/dashboard" />
-                </Switch>
+                <Suspense fallback={<UniversalSpinner open />}>
+                    <Switch>
+                        <PrivateRoute
+                            path="/dashboard"
+                            condition={logged}
+                            component={LazyDashboard}
+                            redirectTo="/auth"
+                        />
+                        <Route path="/auth" component={LazyAuth} />
+                        <Redirect to="/dashboard" />
+                    </Switch>
+                </Suspense>
                 <BottomUpContainer
                     open={changingFiat}
                     onClose={handleFiatBottomUpContainerClose}
