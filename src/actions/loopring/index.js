@@ -62,7 +62,15 @@ export const initializeLoopring = (web3Instance) => async (dispatch) => {
         const accounts = await web3Instance.eth.getAccounts();
         const selectedAccount = accounts[0];
         const wallet = new Wallet("MetaMask", web3Instance, selectedAccount);
-        const account = await lightconeGetAccount(selectedAccount);
+        // custom notification in case the account is not registered
+        let account;
+        try {
+            account = await lightconeGetAccount(selectedAccount);
+        } catch (error) {
+            toast.warn(<FormattedMessage id="warn.account.not.found" />);
+            console.warn("account not found");
+            return;
+        }
         const exchange = await getExchangeInfo();
         const { exchangeAddress } = exchange;
         const { keyPair } = await wallet.generateKeyPair(
@@ -324,7 +332,7 @@ export const postTransfer = (
             },
             supportedTokens
         );
-        if(!signedData) {
+        if (!signedData) {
             // the user aborted the signing procedure
             return;
         }

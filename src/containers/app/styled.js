@@ -31,12 +31,19 @@ export const GlobalStyle = createGlobalStyle`
         box-shadow: 0px 30px 62px 0px ${(props) =>
             props.theme.shadow} !important;
         border-radius: 16px !important;
-        background: ${(props) => props.theme.error} !important;
     }
 
     .custom-toast-body {
         font-size: 16px;
         font-family: "Montserrat";
         padding: 8px 16px;
+    }
+
+    .Toastify__toast--warning {
+        background: ${(props) => props.theme.warning} !important;
+    }
+    
+    .Toastify__toast--error {
+        background: ${(props) => props.theme.error} !important;
     }
 `;

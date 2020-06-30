@@ -31,6 +31,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const commonColors = {
     error: "#c62828",
+    warning: "#FF6F00",
     primary: "#1c60ff",
 };
 
@@ -269,6 +270,7 @@ export const App = () => {
                 position="top-right"
                 closeButton={false}
                 transition={Slide}
+                limit={3}
             />
         </ThemeProvider>
     );
