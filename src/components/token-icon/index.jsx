@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { StyledImage } from "./styled";
 import keepLogo from "../../images/keep.png";
 import nestLogo from "../../images/nest.png";
+import pNetworkLogo from "../../images/pnetwork.png";
 
 export const TokenIcon = ({ address, size }) => {
     const getIconSource = () => {
@@ -12,6 +13,9 @@ export const TokenIcon = ({ address, size }) => {
             }
             case "0x04abEdA201850aC0124161F037Efd70c74ddC74C": {
                 return nestLogo;
+            }
+            case "0x89Ab32156e46F46D02ade3FEcbe5Fc4243B9AAeD": {
+                return pNetworkLogo;
             }
             default: {
                 // If the address is ETH, we simply fallback to the WETH icon.
