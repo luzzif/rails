@@ -13,6 +13,7 @@ export const OuterCircle = styled(Box)`
     border-radius: 50%;
     background: ${(props) =>
         props.dark ? props.theme.background : props.theme.foreground};
+    transition: background 0.3s ease;
     color: ${(props) => props.theme.text};
 `;
 
@@ -24,5 +25,6 @@ export const IconContainer = styled.div`
 
 export const Title = styled(Box)`
     color: ${(props) => props.theme.text};
+    transition: color 0.3s ease;
     font-family: "Montserrat";
 `;
