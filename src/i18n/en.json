@@ -66,5 +66,6 @@
     "error.loopring.deposit": "There was an error performing the deposit. Please try again later.",
     "error.loopring.register": "There was an error registering the new account. Please try again later.",
     "error.loopring.withdrawal": "There was an error performing the on-chain withdrawal. Please try again later.",
-    "error.web3.initialization": "There was an error initializing web3. Please try again later."
+    "error.web3.initialization": "There was an error initializing web3. Please try again later.",
+    "warn.account.not.found": "Seems like this account is not yet on our platform. Please register first."
 }
