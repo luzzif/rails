@@ -211,7 +211,7 @@ export const Dashboard = () => {
                         selectedFiat={selectedFiat}
                     />
                 </Box>
-                <Box mb={3} width={["85%", "60%", "50%", "44%"]}>
+                <Box mb={3} width={["85%", "60%", "50%", "45%"]}>
                     <ButtonsStrip
                         onSend={handleSend}
                         onDeposit={handleDeposit}
@@ -222,7 +222,7 @@ export const Dashboard = () => {
                 </Box>
                 <TransactionsContainer
                     flexGrow={1}
-                    width={["93%", "75%", "65%", "40%"]}
+                    width={["93%", "75%", "65%", "45%"]}
                 >
                     <Transactions
                         asset={selectedAsset}

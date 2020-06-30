@@ -28,7 +28,7 @@ export const BottomUpContainer = ({ open, onClose, children, ...rest }) => {
         <>
             <Overlay open={open} />
             <Container
-                width={["95%", "75%", "65%", "45%", "35%"]}
+                width={["95%", "75%", "65%", "45%"]}
                 open={open}
                 ref={container}
                 m="0 auto"
