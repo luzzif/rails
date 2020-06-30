@@ -56,7 +56,7 @@ const dark = {
 };
 
 const web3ModalOptions = {
-    cacheProvider: true,
+    cacheProvider: false,
     providerOptions: {
         walletconnect: {
             package: WalletConnectProvider,
