@@ -16,3 +16,4 @@ A new, shiny UI for the Loopring Pay protocol.
 - Possibility to choose between a dark and a light color scheme for improved UX
 - Possibility to choose between any of the fiats supported by Loopring in order to show countervalues (EUR, USD, JPY etc etc)
 - Fully responsive and designed with a mobile-first strategy
+- Internationalization-ready
