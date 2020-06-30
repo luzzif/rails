@@ -55,9 +55,7 @@ export const DepositFlow = ({ open, asset }) => {
     }, [open, dispatch, isEther, loopringWallet, asset, supportedTokens]);
 
     useEffect(() => {
-        if (allowance) {
-            setNeedsAllowance(!isEther && allowance.isZero());
-        }
+        setNeedsAllowance(!isEther && allowance && allowance.isZero());
     }, [allowance, isEther]);
 
     useEffect(() => {
@@ -69,6 +67,7 @@ export const DepositFlow = ({ open, asset }) => {
     // resets the state
     useEffect(() => {
         if (!open) {
+            setIndex(0);
             dispatch(deleteGrantAllowanceTransactionHash());
             dispatch(deleteDepositTransactionHash());
         }
@@ -125,7 +124,7 @@ export const DepositFlow = ({ open, asset }) => {
                         disabled
                         style={{ overflowY: "hidden", width: "100%" }}
                     >
-                        <Form asset={asset} onConfirm={handleConfirm} />
+                        <Form asset={asset} open={open} onConfirm={handleConfirm} />
                         <DepositConfirmation
                             asset={asset}
                             transactionHash={depositTransactionHash}

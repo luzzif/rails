@@ -26,6 +26,8 @@ import {
     POST_LOGOUT,
     POST_GET_SUPPORTED_TOKENS_LOADING,
     DELETE_GET_SUPPORTED_TOKENS_LOADING,
+    POST_REGISTRATION_SUCCESS,
+    DELETE_REGISTRATION_SUCCESS_TRANSACTION_HASH,
 } from "../../actions/loopring";
 
 const initialState = {
@@ -48,6 +50,7 @@ const initialState = {
     selectedAsset: null,
     withdrawalTransactionHash: null,
     selectedFiat: null,
+    successfulRegistrationHash: null,
 };
 
 export const loopringReducer = (state = initialState, action) => {
@@ -223,6 +226,15 @@ export const loopringReducer = (state = initialState, action) => {
         }
         case POST_LOGOUT: {
             return { ...state, account: null, wallet: null, exchange: null };
+        }
+        case POST_REGISTRATION_SUCCESS: {
+            return {
+                ...state,
+                successfulRegistrationHash: action.transactionHash,
+            };
+        }
+        case DELETE_REGISTRATION_SUCCESS_TRANSACTION_HASH: {
+            return { ...state, successfulRegistrationHash: null };
         }
         default: {
             return state;

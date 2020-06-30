@@ -7,6 +7,8 @@
     "auth.register.proceed.message.1": "The registration consists in tying your on-chain Ethereum address to the Loopring Pay L2 system. The process usually takes from 5 to 30 minutes to fully complete.",
     "auth.register.proceed.message.2": "Please pay attention to pending requests in Metamask. In some cases a popup won't appear. Click on the button below to continue.",
     "auth.register.proceed.button.title": "Continue",
+    "auth.register.confirmation.message": "Your transaction has been broadcast to the network. Once the request is processed you'll be able to login into your newly-created account. You can monitor the transaction by clicking on the button below (opens in a new page).",
+    "auth.register.confirmation.button.title": "View on Etherscan",
     "dashboard.send": "Send",
     "dashboard.deposit": "Deposit",
     "dashboard.withdraw": "Withdraw",
@@ -67,5 +69,6 @@
     "error.loopring.register": "There was an error registering the new account. Please try again later.",
     "error.loopring.withdrawal": "There was an error performing the on-chain withdrawal. Please try again later.",
     "error.web3.initialization": "There was an error initializing web3. Please try again later.",
-    "warn.account.not.found": "Seems like this account is not yet on our platform. Please register first."
+    "warn.account.not.found": "Seems like this account is not yet on our platform. Please register first.",
+    "warn.register.existing.account": "Seems like you already own a Loopring Pay account. Please login to start using it."
 }

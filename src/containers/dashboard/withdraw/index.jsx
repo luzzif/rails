@@ -35,6 +35,7 @@ export const WithdrawalFlow = ({ open, asset }) => {
     // resets the state
     useEffect(() => {
         if (!open) {
+            setIndex(0);
             dispatch(deleteWithdrawalTransactionHash());
         }
     }, [dispatch, open]);
@@ -62,7 +63,7 @@ export const WithdrawalFlow = ({ open, asset }) => {
                     disabled
                     style={{ overflowY: "hidden", width: "100%" }}
                 >
-                    <Form asset={asset} onConfirm={handleConfirm} />
+                    <Form asset={asset} open={open} onConfirm={handleConfirm} />
                     <Confirmation
                         asset={asset}
                         transactionHash={withdrawalTransactionHash}

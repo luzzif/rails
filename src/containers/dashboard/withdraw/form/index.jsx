@@ -7,7 +7,7 @@ import { Input } from "../../../../components/input";
 import BigNumber from "bignumber.js";
 import { weiToEther } from "../../../../utils/conversion";
 
-export const Form = ({ onConfirm, asset }) => {
+export const Form = ({ onConfirm, asset, open }) => {
     const [parsedUserBalance, setParsedUserBalance] = useState(
         new BigNumber("0")
     );
@@ -18,6 +18,15 @@ export const Form = ({ onConfirm, asset }) => {
     useEffect(() => {
         setParsedUserBalance(weiToEther(asset.balance.decimalPlaces(4)));
     }, [asset]);
+
+    useEffect(() => {
+        if (!open) {
+            // reset state on close
+            setAmount(0);
+            setStringAmount("");
+            setAmountError(false);
+        }
+    }, [asset, open]);
 
     const handleAmountChange = useCallback(
         (event) => {
@@ -73,6 +82,7 @@ export const Form = ({ onConfirm, asset }) => {
     return (
         <Flex
             width="100%"
+            height="100%"
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
@@ -80,7 +90,7 @@ export const Form = ({ onConfirm, asset }) => {
             pt={1}
             px={4}
         >
-                <Box mb={4} width="100%">
+            <Box mb={4} width="100%">
                 <Input
                     label={
                         <FormattedMessage id="withdrawal.form.placeholder.amount" />
@@ -116,4 +126,5 @@ export const Form = ({ onConfirm, asset }) => {
 Form.propTypes = {
     onConfirm: PropTypes.func.isRequired,
     asset: PropTypes.object.isRequired,
+    open: PropTypes.bool.isRequired,
 };

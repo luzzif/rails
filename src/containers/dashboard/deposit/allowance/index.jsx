@@ -34,6 +34,7 @@ export const Allowance = ({ asset }) => {
     return (
         <Flex
             width="100%"
+            height="100%"
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
@@ -41,7 +42,7 @@ export const Allowance = ({ asset }) => {
             pt={1}
             px={4}
         >
-            <Box mb={3} width="100%">
+            <Box mb={4} width="100%">
                 <FormattedMessage
                     id="deposit.allowance.message"
                     values={{ tokenSymbol: asset.symbol }}

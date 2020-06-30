@@ -211,7 +211,7 @@ export const Dashboard = () => {
                         selectedFiat={selectedFiat}
                     />
                 </Box>
-                <Box mb={3} width={["85%", "60%", "50%", "40%", "30%"]}>
+                <Box mb={3} width={["85%", "60%", "50%", "44%"]}>
                     <ButtonsStrip
                         onSend={handleSend}
                         onDeposit={handleDeposit}
@@ -222,7 +222,7 @@ export const Dashboard = () => {
                 </Box>
                 <TransactionsContainer
                     flexGrow={1}
-                    width={["93%", "75%", "65%", "45%", "35%"]}
+                    width={["93%", "75%", "65%", "40%"]}
                 >
                     <Transactions
                         asset={selectedAsset}
@@ -237,15 +237,13 @@ export const Dashboard = () => {
                 </TransactionsContainer>
             </Flex>
             <BottomUpContainer open={changingAsset} onClose={handleClose}>
-                {changingAsset && (
-                    <Assets
-                        assets={balances}
-                        onChange={handleAssetChange}
-                        open={changingAsset}
-                        onRefresh={handleAssetsRefresh}
-                        selectedFiat={selectedFiat}
-                    />
-                )}
+                <Assets
+                    assets={balances}
+                    onChange={handleAssetChange}
+                    open={changingAsset}
+                    onRefresh={handleAssetsRefresh}
+                    selectedFiat={selectedFiat}
+                />
             </BottomUpContainer>
             <BottomUpContainer open={sending} onClose={handleClose}>
                 {sending && (
@@ -270,14 +268,10 @@ export const Dashboard = () => {
                 )}
             </BottomUpContainer>
             <BottomUpContainer open={depositing} onClose={handleClose}>
-                {depositing && (
-                    <DepositFlow open={depositing} asset={selectedAsset} />
-                )}
+                <DepositFlow open={depositing} asset={selectedAsset} />
             </BottomUpContainer>
             <BottomUpContainer open={withdrawing} onClose={handleClose}>
-                {withdrawing && (
-                    <WithdrawalFlow open={withdrawing} asset={selectedAsset} />
-                )}
+                <WithdrawalFlow open={withdrawing} asset={selectedAsset} />
             </BottomUpContainer>
         </>
     );

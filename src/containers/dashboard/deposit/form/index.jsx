@@ -9,7 +9,7 @@ import BigNumber from "bignumber.js";
 import { weiToEther } from "../../../../utils/conversion";
 import { getDepositBalance } from "../../../../actions/loopring";
 
-export const Form = ({ onConfirm, asset }) => {
+export const Form = ({ onConfirm, asset, open }) => {
     const dispatch = useDispatch();
     const {
         loopringAccount,
@@ -48,6 +48,16 @@ export const Form = ({ onConfirm, asset }) => {
             setParsedUserBalance(weiToEther(depositBalance.decimalPlaces(4)));
         }
     }, [asset, depositBalance]);
+
+    useEffect(() => {
+        if(!open) {
+            // reset the state on close
+            setParsedUserBalance(new BigNumber("0"));
+            setAmount(0);
+            setStringAmount("");
+            setAmountError(false);
+        }
+    }, [open])
 
     const handleAmountChange = useCallback(
         (event) => {
@@ -103,6 +113,7 @@ export const Form = ({ onConfirm, asset }) => {
     return (
         <Flex
             width="100%"
+            height="100%"
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
@@ -144,6 +155,7 @@ export const Form = ({ onConfirm, asset }) => {
 };
 
 Form.propTypes = {
+    open: PropTypes.bool.isRequired,
     onConfirm: PropTypes.func.isRequired,
     asset: PropTypes.object.isRequired,
 };

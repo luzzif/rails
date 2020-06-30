@@ -9,6 +9,7 @@ import { CHAIN_ID } from "../../../../../env";
 export const AllowanceConfirmation = ({ asset, transactionHash }) => (
     <Flex
         width="100%"
+        height="100%"
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
@@ -16,9 +17,9 @@ export const AllowanceConfirmation = ({ asset, transactionHash }) => (
         pt={1}
         px={4}
     >
-        <Box mb={3} width="100%">
+        <Box mb={4} width="100%">
             <FormattedMessage
-                id="deposit.allowance.message"
+                id="deposit.allowance.confirmation.message"
                 values={{ tokenSymbol: asset.symbol }}
             />
         </Box>
@@ -36,5 +37,5 @@ export const AllowanceConfirmation = ({ asset, transactionHash }) => (
 
 AllowanceConfirmation.propTypes = {
     asset: PropTypes.object.isRequired,
-    transactionHash: PropTypes.string.isRequired,
+    transactionHash: PropTypes.string,
 };

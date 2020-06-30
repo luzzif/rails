@@ -56,6 +56,9 @@ export const DELETE_WITHDRAWAL_TRANSACTION_HASH =
     "DELETE_WITHDRAWAL_TRANSACTION_HASH";
 export const POST_SELECTED_FIAT = "POST_SELECTED_FIAT";
 export const POST_LOGOUT = "POST_LOGOUT";
+export const POST_REGISTRATION_SUCCESS = "POST_REGISTRATION_SUCCESS";
+export const DELETE_REGISTRATION_SUCCESS_TRANSACTION_HASH =
+    "DELETE_REGISTRATION_SUCCESS_TRANSACTION_HASH";
 
 export const initializeLoopring = (web3Instance) => async (dispatch) => {
     try {
@@ -385,19 +388,19 @@ export const grantAllowance = (
 ) => async (dispatch) => {
     dispatch({ type: POST_GRANT_ALLOWANCE_LOADING });
     try {
-        let { accountNonce: nonce } = await lightconeGetAccount(wallet.address);
+        const { accountNonce: nonce } = await lightconeGetAccount(
+            wallet.address
+        );
         const { chainId, exchangeAddress } = exchange;
-        dispatch({
-            type: GRANT_ALLOWANCE_SUCCESS,
-            transactionHash: await wallet.approveMax(
-                tokenAddress,
-                exchangeAddress,
-                chainId,
-                nonce,
-                await getRecommendedGasPrice(),
-                true
-            ),
-        });
+        const transactionHash = await wallet.approveMax(
+            tokenAddress,
+            exchangeAddress,
+            chainId,
+            nonce,
+            await getRecommendedGasPrice(),
+            true
+        );
+        dispatch({ type: GRANT_ALLOWANCE_SUCCESS, transactionHash });
     } catch (error) {
         toast.error(
             <FormattedMessage id="error.loopring.token.allowance.grant" />
@@ -448,6 +451,17 @@ export const registerAccount = (web3Instance) => async (dispatch) => {
         const accounts = await web3Instance.eth.getAccounts();
         const selectedAccount = accounts[0];
         const wallet = new Wallet("MetaMask", web3Instance, selectedAccount);
+        try {
+            if (await lightconeGetAccount(wallet.address)) {
+                toast.warn(
+                    <FormattedMessage id="warn.register.existing.account" />
+                );
+                console.warn("the account is already registered");
+                return;
+            }
+        } catch (error) {
+            // silently fail if the account is yet to be created
+        }
         // TODO: same todo above applies to the exchange info
         const {
             exchangeAddress,
@@ -462,7 +476,7 @@ export const registerAccount = (web3Instance) => async (dispatch) => {
         if (!keyPair || !keyPair.secretKey) {
             throw new Error("failed to generate key pair");
         }
-        await wallet.createOrUpdateAccount(
+        const txHash = await wallet.createOrUpdateAccount(
             keyPair,
             {
                 exchangeAddress,
@@ -476,10 +490,15 @@ export const registerAccount = (web3Instance) => async (dispatch) => {
             },
             true
         );
+        dispatch({ type: POST_REGISTRATION_SUCCESS, transactionHash: txHash });
     } catch (error) {
         toast.error(<FormattedMessage id="error.loopring.register" />);
         console.error("error registering user", error);
     }
+};
+
+export const deleteRegistrationTransactionHash = () => async (dispatch) => {
+    dispatch({ type: DELETE_REGISTRATION_SUCCESS_TRANSACTION_HASH });
 };
 
 export const postSelectedAsset = (asset) => async (dispatch) => {

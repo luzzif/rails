@@ -3,11 +3,12 @@ import { Flex, Box } from "reflexbox";
 import { FormattedMessage } from "react-intl";
 import { Button } from "../../components/button";
 import { useDispatch, useSelector } from "react-redux";
-import { initializeLoopring, registerAccount } from "../../actions/loopring";
+import { initializeLoopring } from "../../actions/loopring";
 import illustration from "../../images/login.png";
 import { LoginIllustration } from "./styled";
 import { BottomUpContainer } from "../../components/bottom-up-container";
 import { initializeWeb3 } from "../../actions/web3";
+import { RegistrationFlow } from "./registration-flow";
 
 export const Auth = () => {
     const dispatch = useDispatch();
@@ -37,10 +38,6 @@ export const Auth = () => {
 
     const handleLoginProceed = useCallback(() => {
         dispatch(initializeLoopring(web3Instance));
-    }, [dispatch, web3Instance]);
-
-    const handleRegisterProceed = useCallback(() => {
-        dispatch(registerAccount(web3Instance));
     }, [dispatch, web3Instance]);
 
     const handleClose = useCallback(() => {
@@ -99,25 +96,7 @@ export const Auth = () => {
                 </Flex>
             </BottomUpContainer>
             <BottomUpContainer open={open && registering} onClose={handleClose}>
-                <Flex
-                    width="100%"
-                    flexDirection="column"
-                    alignItems="center"
-                    pb={4}
-                    px={4}
-                >
-                    <Box mb={2}>
-                        <FormattedMessage id="auth.register.proceed.message.1" />
-                    </Box>
-                    <Box>
-                        <FormattedMessage id="auth.register.proceed.message.2" />
-                    </Box>
-                    <Box mt={3}>
-                        <Button onClick={handleRegisterProceed}>
-                            <FormattedMessage id="auth.register.proceed.button.title" />
-                        </Button>
-                    </Box>
-                </Flex>
+                <RegistrationFlow open={open && registering} />
             </BottomUpContainer>
         </>
     );

@@ -37,5 +37,5 @@ export const DepositConfirmation = ({ asset, transactionHash }) => (
 
 DepositConfirmation.propTypes = {
     asset: PropTypes.object.isRequired,
-    transactionHash: PropTypes.string.isRequired,
+    transactionHash: PropTypes.string,
 };
