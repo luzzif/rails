@@ -18,3 +18,8 @@ A new, shiny UI for the Loopring Pay protocol.
 - Fully responsive and designed with a mobile-first strategy
 - Internationalization-ready
 - PWA-ready (not yet implemented)
+
+The app is currently published on Netlify (even though it would be possible to just put it on IPFS and register an ENS pointer to make it truly decentralized) in two versions:
+
+- [Mainnet](https://loopring-pay-ui.netlify.app/)
+- [Goerli](https://goerli-loopring-pay-ui.netlify.app/auth)
