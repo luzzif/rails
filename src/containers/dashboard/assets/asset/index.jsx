@@ -6,7 +6,7 @@ import { weiToEther } from "../../../../utils/conversion";
 import { TokenIcon } from "../../../../components/token-icon";
 import { RootContainer } from "./styled";
 
-export const Asset = ({ asset, onClick, selectedFiat }) => {
+export const Asset = ({ asset, onClick, selectedFiat, mb }) => {
     const [etherBalance, setEtherBalance] = useState(new BigNumber("0"));
 
     useLayoutEffect(() => {
@@ -25,6 +25,7 @@ export const Asset = ({ asset, onClick, selectedFiat }) => {
             minHeight={68}
             maxHeight={68}
             px={3}
+            mb={mb}
             onClick={handleLocalClick}
         >
             <Flex alignItems="center">
@@ -55,4 +56,6 @@ export const Asset = ({ asset, onClick, selectedFiat }) => {
 Asset.propTypes = {
     asset: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
+    selectedFiat: PropTypes.object.isRequired,
+    mb: PropTypes.number.isRequired,
 };

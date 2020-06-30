@@ -72,10 +72,11 @@ export const Assets = ({ assets, onChange, onRefresh, open, selectedFiat }) => {
                     />
                 </Box>
             </Flex>
-            <Flex mb={3} width="100%" flexDirection="column" overflowY="scroll">
+            <Flex width="100%" flexDirection="column" overflowY="scroll">
                 {filteredAssets && filteredAssets.length > 0 ? (
-                    filteredAssets.map((asset) => (
+                    filteredAssets.map((asset, index) => (
                         <Asset
+                            mb={index === filteredAssets.length - 1 ? 3 : 0}
                             key={asset.id}
                             asset={asset}
                             onClick={onChange}
