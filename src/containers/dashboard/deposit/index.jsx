@@ -12,7 +12,7 @@ import { OverlayBox } from "./styled";
 import SwipeableViews from "react-swipeable-views/lib/SwipeableViews";
 import { AllowanceConfirmation } from "./allowance/confirmation";
 import { Form } from "./form";
-import { BounceLoader } from "react-spinners";
+import { BounceLoader } from "react-spinners/BounceLoader";
 import { selectedTheme } from "../../app";
 import { Flex, Box } from "reflexbox";
 import { DepositConfirmation } from "./form/confirmation";
