@@ -8,7 +8,7 @@ import { isAddress } from "web3-utils";
 import { Input } from "../../../../components/input";
 import BigNumber from "bignumber.js";
 import { getAddressFromEnsName } from "../../../../actions/ens";
-import { BounceLoader } from "react-spinners/BounceLoader";
+import BounceLoader from "react-spinners/BounceLoader";
 import { selectedTheme } from "../../../app";
 import { OverlayBox } from "./styled";
 import { useDebouncedCallback } from "use-debounce";
