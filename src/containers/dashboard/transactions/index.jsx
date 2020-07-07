@@ -4,7 +4,7 @@ import { Flex, Box } from "reflexbox";
 import { Transaction } from "./transaction";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Searchbar } from "../../../components/searchbar";
-import { BounceLoader } from "react-spinners";
+import BounceLoader from "react-spinners/BounceLoader";
 import { selectedTheme } from "../../app";
 import { ActionButton } from "../../../components/action-button";
 import { faRedo } from "@fortawesome/free-solid-svg-icons";

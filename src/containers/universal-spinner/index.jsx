@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import PropTypes from "prop-types";
 import { RootContainer } from "./styled";
 import { selectedTheme } from "../app";
-import { BounceLoader } from "react-spinners";
+import BounceLoader from "react-spinners/BounceLoader";
 
 export const UniversalSpinner = ({ timeout, open }) => {
     const [locallyOpen, setLocallyOpen] = useState(false);
