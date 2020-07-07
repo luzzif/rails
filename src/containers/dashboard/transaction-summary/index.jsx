@@ -7,6 +7,8 @@ import BigNumber from "bignumber.js";
 import { weiToEther } from "../../../utils/conversion";
 import { BoldDiv } from "./styled";
 import { Button } from "../../../components/button";
+import { CHAIN_ID } from "../../../env";
+import { getEtherscanLink } from "../../../lightcone/api/localStorgeAPI";
 
 export const TransactionSummary = ({
     sent,
@@ -49,8 +51,6 @@ export const TransactionSummary = ({
         }
         return <FormattedMessage id={id} />;
     };
-
-    const getEtherscanLink = () => `https://etherscan.com/tx/${txHash}`;
 
     return (
         <Flex width="100%" flexDirection="column" pb={4} px={4}>
@@ -105,7 +105,7 @@ export const TransactionSummary = ({
             {txHash && (
                 <Flex justifyContent="center">
                     <Box mt={4}>
-                        <Button link external href={getEtherscanLink()}>
+                        <Button link external href={`${getEtherscanLink(CHAIN_ID)}/tx/${txHash}`}>
                             <FormattedMessage id="dashboard.transaction.summary.etherscan" />
                         </Button>
                     </Box>
