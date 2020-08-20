@@ -24,7 +24,7 @@ export const Toolbar = ({
         justifyContent="space-between"
         width="100vw"
     >
-        <Box height={[32, 36, 40]}>
+        <Box height={32}>
             <Logo src={logo} />
         </Box>
         <Flex alignItems="center" height="100%">

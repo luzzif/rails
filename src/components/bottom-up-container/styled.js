@@ -3,8 +3,9 @@ import { Flex } from "reflexbox";
 
 export const Container = styled(Flex)`
     position: fixed;
-    bottom: ${(props) => (props.open ? "0" : "-100%")};
-    transition: bottom 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    bottom: 0;
+    transform: translateY(${(props) => (props.open ? "0" : "150%")});
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0px 30px 62px 0px ${(props) => props.theme.shadow};
     background: ${(props) => props.theme.background};
     border-top-left-radius: 24px;

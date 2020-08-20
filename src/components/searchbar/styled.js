@@ -5,6 +5,7 @@ export const SearchbarContainer = styled(Flex)`
     background: ${(props) =>
         props.dark ? props.theme.background : props.theme.foreground};
     border-radius: 24px;
+    transition: background 0.3s ease;
 `;
 
 export const SearchIconContainer = styled.div`
@@ -21,7 +22,9 @@ export const Input = styled.input`
     color: ${(props) => props.theme.text};
     font-family: Montserrat;
     outline: none;
+    transition: color 0.3s ease, background 0.3s ease;
     ::placeholder {
-        color: ${props => props.theme.placeholder};
+        transition: color 0.3s ease;
+        color: ${(props) => props.theme.placeholder};
     }
 `;

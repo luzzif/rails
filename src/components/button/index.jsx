@@ -32,7 +32,7 @@ const commonsStyles = css`
         ${(props) =>
             props.secondary &&
             css`
-                background: rgba(28, 96, 255, 0.2);
+                background: rgba(33, 84, 84, 0.2);
             `}
     }
     :active {

@@ -21,6 +21,8 @@ export const IconContainer = styled.div`
     font-size: ${(props) => props.faIconSize}px;
     width: ${(props) => props.faIconSize}px;
     height: ${(props) => props.faIconSize}px;
+    color: ${(props) => props.theme.text};
+    transition: color 0.3s ease;
 `;
 
 export const Title = styled(Box)`

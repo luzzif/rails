@@ -1,5 +1,5 @@
 import {
-    INTIIALIZE_SUCCESS,
+    LOGIN_SUCCESS,
     GET_BALANCES_SUCCESS,
     GET_SUPPORTED_TOKENS_SUCCESS,
     GET_TRANSACTIONS_SUCCESS,
@@ -56,7 +56,7 @@ const initialState = {
 export const loopringReducer = (state = initialState, action) => {
     const { type } = action;
     switch (type) {
-        case INTIIALIZE_SUCCESS: {
+        case LOGIN_SUCCESS: {
             return {
                 ...state,
                 account: action.account,

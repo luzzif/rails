@@ -22,7 +22,7 @@ import { getEthBalance } from "../../lightcone/api/v1/ethBalance/get";
 import { toast } from "react-toastify";
 import { FormattedMessage } from "react-intl";
 
-export const INTIIALIZE_SUCCESS = "INTIIALIZE_SUCCESS";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const POST_GET_SUPPORTED_TOKENS_LOADING =
     "POST_GET_SUPPORTED_TOKENS_LOADING";
 export const DELETE_GET_SUPPORTED_TOKENS_LOADING =
@@ -60,7 +60,7 @@ export const POST_REGISTRATION_SUCCESS = "POST_REGISTRATION_SUCCESS";
 export const DELETE_REGISTRATION_SUCCESS_TRANSACTION_HASH =
     "DELETE_REGISTRATION_SUCCESS_TRANSACTION_HASH";
 
-export const initializeLoopring = (web3Instance) => async (dispatch) => {
+export const login = (web3Instance) => async (dispatch) => {
     try {
         const accounts = await web3Instance.eth.getAccounts();
         const selectedAccount = accounts[0];
@@ -96,10 +96,10 @@ export const initializeLoopring = (web3Instance) => async (dispatch) => {
         }
         wallet.keyPair = keyPair;
         wallet.accountId = account.accountId;
-        dispatch({ type: INTIIALIZE_SUCCESS, account, wallet, exchange });
+        dispatch({ type: LOGIN_SUCCESS, account, wallet, exchange });
     } catch (error) {
-        toast.error(<FormattedMessage id="error.loopring.initialization" />);
-        console.error("error initializing loopring", error);
+        toast.error(<FormattedMessage id="error.rails.initialization" />);
+        console.error("error logging in", error);
     }
 };
 
@@ -111,8 +111,8 @@ export const getSupportedTokens = () => async (dispatch) => {
             supportedTokens: await getTokenInfo(),
         });
     } catch (error) {
-        toast.error(<FormattedMessage id="error.loopring.supported.tokens" />);
-        console.error("error getting loopring supported tokens", error);
+        toast.error(<FormattedMessage id="error.rails.supported.tokens" />);
+        console.error("error getting rails' supported tokens", error);
     }
     dispatch({ type: DELETE_GET_SUPPORTED_TOKENS_LOADING });
 };
@@ -169,8 +169,8 @@ export const getUserBalances = (
             );
         dispatch({ type: GET_BALANCES_SUCCESS, balances: allBalances });
     } catch (error) {
-        toast.error(<FormattedMessage id="error.loopring.user.balances" />);
-        console.error("error getting loopring user balances", error);
+        toast.error(<FormattedMessage id="error.rails.user.balances" />);
+        console.error("error getting rails user balances", error);
     }
     dispatch({ type: DELETE_GET_BALANCES_LOADING });
 };
@@ -194,8 +194,8 @@ export const getDepositBalance = (
             balance: new BigNumber(balance),
         });
     } catch (error) {
-        toast.error(<FormattedMessage id="error.loopring.deposit.balance" />);
-        console.error("error getting loopring user balance", error);
+        toast.error(<FormattedMessage id="error.rails.deposit.balance" />);
+        console.error("error getting rails user balance", error);
     }
 };
 
@@ -281,9 +281,9 @@ export const getTokenTransactions = (
         });
     } catch (error) {
         toast.error(
-            <FormattedMessage id="error.loopring.token.transactions" />
+            <FormattedMessage id="error.rails.token.transactions" />
         );
-        console.error("error getting loopring token transactions", error);
+        console.error("error getting rails token transactions", error);
     }
     dispatch({ type: DELETE_TRANSACTIONS_LOADING });
 };
@@ -347,8 +347,8 @@ export const postTransfer = (
         );
         dispatch({ type: POST_TRANSFER_SUCCESS, hash: transferHash });
     } catch (error) {
-        toast.error(<FormattedMessage id="error.loopring.transfer" />);
-        console.error("error posting loopring transfer", error);
+        toast.error(<FormattedMessage id="error.rails.transfer" />);
+        console.error("error posting rails transfer", error);
     }
     dispatch({ type: DELETE_TRANSFER_LOADING });
 };
@@ -373,7 +373,7 @@ export const getTokenAllowance = (
         });
     } catch (error) {
         toast.error(
-            <FormattedMessage id="error.loopring.token.allowance.get" />
+            <FormattedMessage id="error.rails.token.allowance.get" />
         );
         console.error(`error getting token ${tokenSymbol} allowance`, error);
     }
@@ -403,7 +403,7 @@ export const grantAllowance = (
         dispatch({ type: GRANT_ALLOWANCE_SUCCESS, transactionHash });
     } catch (error) {
         toast.error(
-            <FormattedMessage id="error.loopring.token.allowance.grant" />
+            <FormattedMessage id="error.rails.token.allowance.grant" />
         );
         console.error(`error requesting ${tokenSymbol} allowance`, error);
     }
@@ -437,7 +437,7 @@ export const postDeposit = (
         );
         dispatch({ type: POST_DEPOSIT_SUCCESS, transactionHash });
     } catch (error) {
-        toast.error(<FormattedMessage id="error.loopring.deposit" />);
+        toast.error(<FormattedMessage id="error.rails.deposit" />);
         console.error(`error depositing ${tokenSymbol}`, error);
     }
 };
@@ -492,7 +492,7 @@ export const registerAccount = (web3Instance) => async (dispatch) => {
         );
         dispatch({ type: POST_REGISTRATION_SUCCESS, transactionHash: txHash });
     } catch (error) {
-        toast.error(<FormattedMessage id="error.loopring.register" />);
+        toast.error(<FormattedMessage id="error.rails.register" />);
         console.error("error registering user", error);
     }
 };
@@ -528,7 +528,7 @@ export const postOnchainWithdrawal = (
         );
         dispatch({ type: POST_WITHDRAWAL_SUCCESS, transactionHash });
     } catch (error) {
-        toast.error(<FormattedMessage id="error.loopring.withdrawal" />);
+        toast.error(<FormattedMessage id="error.rails.withdrawal" />);
         console.error("error performing onchain withdrawal", error);
     }
 };

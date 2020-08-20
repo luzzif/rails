@@ -35,7 +35,7 @@ const LazyDashboard = lazy(() => import("../dashboard"));
 const commonColors = {
     error: "#c62828",
     warning: "#FF6F00",
-    primary: "#1c60ff",
+    primary: "#215454",
 };
 
 const light = {

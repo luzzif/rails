@@ -3,7 +3,7 @@ import { Flex, Box } from "reflexbox";
 import { FormattedMessage } from "react-intl";
 import { Button } from "../../components/button";
 import { useDispatch, useSelector } from "react-redux";
-import { initializeLoopring } from "../../actions/loopring";
+import { login } from "../../actions/loopring";
 import illustration from "../../images/login.png";
 import { LoginIllustration } from "./styled";
 import { BottomUpContainer } from "../../components/bottom-up-container";
@@ -41,7 +41,7 @@ const Auth = () => {
     }, [loggingIn, registering, web3Instance]);
 
     const handleLoginProceed = useCallback(() => {
-        dispatch(initializeLoopring(web3Instance));
+        dispatch(login(web3Instance));
     }, [dispatch, web3Instance]);
 
     const handleClose = useCallback(() => {

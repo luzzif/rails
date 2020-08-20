@@ -8,7 +8,7 @@ import BounceLoader from "react-spinners/BounceLoader";
 import { selectedTheme } from "../../app";
 import { ActionButton } from "../../../components/action-button";
 import { faRedo } from "@fortawesome/free-solid-svg-icons";
-import { OverlayBox, ListFlex } from "./styled";
+import { OverlayBox, ListFlex, RootFlex } from "./styled";
 import { Chip } from "../../../chip";
 
 export const Transactions = ({
@@ -83,7 +83,7 @@ export const Transactions = ({
     }, [onTypeFilterChange]);
 
     return (
-        <Flex
+        <RootFlex
             width="100%"
             height="100%"
             flexDirection="column"
@@ -219,7 +219,7 @@ export const Transactions = ({
                     />
                 </OverlayBox>
             </ListFlex>
-        </Flex>
+        </RootFlex>
     );
 };
 
