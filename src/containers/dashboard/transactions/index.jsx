@@ -88,11 +88,10 @@ export const Transactions = ({
             height="100%"
             flexDirection="column"
             alignItems="center"
-            pt={12}
-            px={2}
+            p="16px"
         >
-            <Flex px={2} width="100%" mb={12}>
-                <Box pr={3} width="100%">
+            <Flex width="100%" mb="12px">
+                <Box pr="16px" width="100%">
                     <Searchbar
                         dark
                         placeholder={formatMessage({
@@ -113,12 +112,11 @@ export const Transactions = ({
                 </Box>
             </Flex>
             <Flex
-                px={2}
+                mb="12px"
                 flexWrap="nowrap"
                 width="100%"
                 overflowX="auto"
                 minHeight={36}
-                mb={12}
             >
                 <Box mr={12} minWidth="auto">
                     <Chip
@@ -158,8 +156,7 @@ export const Transactions = ({
                 </Box>
             </Flex>
             <ListFlex
-                px={2}
-                flexGrow={1}
+                flexGrow="1"
                 flexDirection="column"
                 alignItems="center"
                 width="100%"
@@ -175,7 +172,7 @@ export const Transactions = ({
                         <FormattedMessage id="dashboard.transactions.empty" />
                     </Box>
                 )}
-                {transactions && transactions.length > 0 ? (
+                {!loading && transactions && transactions.length > 0 ? (
                     filteredTransactions && filteredTransactions.length > 0 ? (
                         filteredTransactions.map((transaction) => (
                             <Box

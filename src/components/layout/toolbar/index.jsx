@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { FlexContainer, Logo } from "./styled";
 import { Box, Flex } from "reflexbox";
 import { faMoon, faSun, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
-import logo from "../../../images/logo.svg";
+import logo from "../../../images/logo.png";
 import { ActionButton } from "../../action-button";
 
-const ACTION_SIZES = [36, 40, 44];
+const ACTION_SIZES = [32, 36, 40];
 const ACTION_ICON_SIZE = 16;
 
 export const Toolbar = ({
@@ -18,13 +18,13 @@ export const Toolbar = ({
     onLogoutClick,
 }) => (
     <FlexContainer
-        px={20}
-        py={3}
+        px="20px"
+        py="12px"
         alignItems="center"
         justifyContent="space-between"
         width="100vw"
     >
-        <Box height={32}>
+        <Box height={48}>
             <Logo src={logo} />
         </Box>
         <Flex alignItems="center" height="100%">

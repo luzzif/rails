@@ -36,7 +36,15 @@ export const GlobalStyle = createGlobalStyle`
     .custom-toast-body {
         font-size: 16px;
         font-family: "Montserrat";
-        padding: 8px 16px;
+        padding: 8px 12px;
+    }
+
+    .Toastify__toast {
+        min-height: auto !important;
+    }
+
+    .Toastify__toast-body {
+        margin: 0 !important;
     }
 
     .Toastify__toast--warning {

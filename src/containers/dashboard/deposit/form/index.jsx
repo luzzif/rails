@@ -50,14 +50,14 @@ export const Form = ({ onConfirm, asset, open }) => {
     }, [asset, depositBalance]);
 
     useEffect(() => {
-        if(!open) {
+        if (!open) {
             // reset the state on close
             setParsedUserBalance(new BigNumber("0"));
             setAmount(0);
             setStringAmount("");
             setAmountError(false);
         }
-    }, [open])
+    }, [open]);
 
     const handleAmountChange = useCallback(
         (event) => {
@@ -117,11 +117,8 @@ export const Form = ({ onConfirm, asset, open }) => {
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            pb={4}
-            pt={1}
-            px={4}
         >
-            <Box mb={4} width="100%">
+            <Box mb="24px" width="100%">
                 <Input
                     label={
                         <FormattedMessage id="deposit.form.placeholder.amount" />

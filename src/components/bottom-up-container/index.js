@@ -32,6 +32,7 @@ export const BottomUpContainer = ({ open, onClose, children, ...rest }) => {
                 open={open}
                 ref={container}
                 m="0 auto"
+                p="24px"
                 {...rest}
             >
                 {children}

@@ -52,9 +52,9 @@ export const Assets = ({ assets, onChange, onRefresh, open, selectedFiat }) => {
     }, []);
 
     return (
-        <Flex mx={[3, 4]} flexDirection="column" width="100%">
-            <Flex mb={3}>
-                <Box width="100%" pr={3}>
+        <Flex flexDirection="column" width="100%">
+            <Flex mb="24px">
+                <Box width="100%" mr="16px">
                     <Searchbar
                         placeholder={formatMessage({
                             id: "dashboard.assets.search",
@@ -72,7 +72,7 @@ export const Assets = ({ assets, onChange, onRefresh, open, selectedFiat }) => {
                     />
                 </Box>
             </Flex>
-            <Flex width="100%" flexDirection="column" overflowY="scroll">
+            <Flex width="100%" flexDirection="column" overflowY="auto">
                 {filteredAssets && filteredAssets.length > 0 ? (
                     filteredAssets.map((asset, index) => (
                         <Asset

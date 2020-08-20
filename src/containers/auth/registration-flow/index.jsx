@@ -46,16 +46,14 @@ export const RegistrationFlow = ({ open }) => {
                 flexDirection="column"
                 alignItems="center"
                 justifyContent="center"
-                pb={4}
-                px={4}
             >
-                <Box mb={2}>
+                <Box mb="16px">
                     <FormattedMessage id="auth.register.proceed.message.1" />
                 </Box>
-                <Box>
+                <Box mb="24px">
                     <FormattedMessage id="auth.register.proceed.message.2" />
                 </Box>
-                <Box mt={4}>
+                <Box>
                     <Button onClick={handleRegisterProceed}>
                         <FormattedMessage id="auth.register.proceed.button.title" />
                     </Button>
@@ -67,13 +65,11 @@ export const RegistrationFlow = ({ open }) => {
                 flexDirection="column"
                 alignItems="center"
                 justifyContent="center"
-                pb={4}
-                px={4}
             >
-                <Box>
+                <Box mb="24px">
                     <FormattedMessage id="auth.register.confirmation.message" />
                 </Box>
-                <Box mt={4}>
+                <Box>
                     <Button
                         link
                         external

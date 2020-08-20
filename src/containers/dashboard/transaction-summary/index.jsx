@@ -53,21 +53,21 @@ export const TransactionSummary = ({
     };
 
     return (
-        <Flex width="100%" flexDirection="column" pb={4} px={4}>
-            <Box mb={2}>
+        <Flex width="100%" flexDirection="column">
+            <Box mb="8px">
                 <BoldDiv>
                     <FormattedMessage id="dashboard.transaction.summary.type" />
                 </BoldDiv>
                 : {getType()}
             </Box>
-            <Box mb={2}>
+            <Box mb="8px">
                 <BoldDiv>
                     <FormattedMessage id="dashboard.transaction.summary.date" />
                 </BoldDiv>
                 : {moment(timestamp).format("L - LT")}
             </Box>
             {sent && recipientInUI && (
-                <Box mb={2}>
+                <Box mb="8px">
                     <BoldDiv>
                         <FormattedMessage id="dashboard.transaction.summary.receiver" />
                     </BoldDiv>
@@ -75,27 +75,27 @@ export const TransactionSummary = ({
                 </Box>
             )}
             {!sent && senderInUI && (
-                <Box mb={2}>
+                <Box mb="8px">
                     <BoldDiv>
                         <FormattedMessage id="dashboard.transaction.summary.sender" />
                     </BoldDiv>
                     : {senderInUI}
                 </Box>
             )}
-            <Box mb={2}>
+            <Box mb="8px">
                 <BoldDiv>
                     <FormattedMessage id="dashboard.transaction.summary.amount" />
                 </BoldDiv>
                 : {etherAmount.decimalPlaces(4).toString()} {symbol}
             </Box>
-            <Box mb={2}>
+            <Box mb="8px">
                 <BoldDiv>
                     <FormattedMessage id="dashboard.transaction.summary.amount.fee" />
                 </BoldDiv>
                 : {etherFeeAmount.decimalPlaces(4).toString()} {symbol}
             </Box>
             {progress && (
-                <Box mb={2}>
+                <Box mb="8px">
                     <BoldDiv>
                         <FormattedMessage id="dashboard.transaction.summary.progress" />
                     </BoldDiv>
@@ -104,8 +104,12 @@ export const TransactionSummary = ({
             )}
             {txHash && (
                 <Flex justifyContent="center">
-                    <Box mt={4}>
-                        <Button link external href={`${getEtherscanLink(CHAIN_ID)}/tx/${txHash}`}>
+                    <Box mt="24px">
+                        <Button
+                            link
+                            external
+                            href={`${getEtherscanLink(CHAIN_ID)}/tx/${txHash}`}
+                        >
                             <FormattedMessage id="dashboard.transaction.summary.etherscan" />
                         </Button>
                     </Box>

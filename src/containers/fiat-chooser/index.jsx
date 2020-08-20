@@ -44,11 +44,10 @@ export const supportedFiats = [
 ];
 
 export const FiatChooser = ({ onChange }) => (
-    <Flex flexDirection="column" width="100%" pb={4} px={2}>
+    <Flex flexDirection="column" width="100%">
         {supportedFiats.map((fiat) => (
             <Box
                 key={fiat.name}
-                height={68}
                 width="100%"
                 alignItems="center"
                 display="flex"

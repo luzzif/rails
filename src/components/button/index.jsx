@@ -5,7 +5,7 @@ import { UndecoratedLink } from "../undecorated-link";
 const commonsStyles = css`
     display: flex;
     white-space: nowrap;
-    padding: ${(props) => (props.secondary ? "13px 21px" : "16px 24px")};
+    padding: ${(props) => (props.secondary ? "9px 17px" : "12px 20px")};
     justify-content: center;
     font-size: 20px;
     font-family: "Montserrat";
@@ -14,20 +14,12 @@ const commonsStyles = css`
     border: ${(props) =>
         props.secondary ? `solid 3px ${props.theme.primary}` : "none"};
     border-radius: 24px;
-    font-weight: 700;
+    font-weight: 600;
     transition: all 0.3s ease;
-    box-shadow: ${(props) =>
-        props.secondary ? "none" : `0px 5px 21px 0px ${props.theme.shadow}`};
     transform: scale(1);
     outline: none;
     cursor: pointer;
     text-decoration: none;
-    :hover:not(:disabled):not(:active) {
-        box-shadow: ${(props) =>
-            props.secondary
-                ? "none"
-                : `0px 10px 26px 0px ${props.theme.shadow}`};
-    }
     :hover:not(:disabled) {
         ${(props) =>
             props.secondary &&
@@ -37,19 +29,10 @@ const commonsStyles = css`
     }
     :active {
         transform: scale(0.95);
-        ${(props) =>
-            !props.secondary &&
-            css`
-                box-shadow: ${props.secondary
-                    ? "none"
-                    : `0px 2px 10px 0px ${props.theme.shadow}`};
-            `}
     }
     :disabled {
         cursor: not-allowed;
         background: ${(props) => (props.secondary ? "none" : "grey")};
-        box-shadow: ${(props) =>
-            props.secondary ? "none" : `0px 2px 8px 0px ${props.theme.shadow}`};
         ${(props) =>
             props.secondary &&
             css`

@@ -293,7 +293,7 @@ export const App = () => {
                 position="top-right"
                 closeButton={false}
                 transition={Slide}
-                limit={3}
+                limit="24px"
             />
         </ThemeProvider>
     );

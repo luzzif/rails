@@ -21,7 +21,7 @@ const Auth = () => {
     const [open, setOpen] = useState(false);
 
     const handleLoginClick = useCallback(() => {
-        if(!web3Instance) {
+        if (!web3Instance) {
             dispatch(initializeWeb3());
         }
         setRegistering(false);
@@ -29,7 +29,7 @@ const Auth = () => {
     }, [dispatch, web3Instance]);
 
     const handleRegisterClick = useCallback(() => {
-        if(!web3Instance) {
+        if (!web3Instance) {
             dispatch(initializeWeb3());
         }
         setLoggingIn(false);
@@ -58,18 +58,18 @@ const Auth = () => {
                 width="100%"
                 height="100%"
             >
-                <Box mb={4} width={["40%", "30%", "20%", "10%"]}>
+                <Box mb="32px" width={["40%", "30%", "20%", "10%"]}>
                     <LoginIllustration src={illustration} />
                 </Box>
                 <Box
-                    mb={4}
+                    mb="24px"
                     width={["80%", "70%", "60%", "30%", "20%"]}
                     textAlign="center"
                 >
                     <FormattedMessage id="auth.summary" />
                 </Box>
                 <Flex>
-                    <Box mr={3}>
+                    <Box mr="24px">
                         <Button onClick={handleLoginClick}>
                             <FormattedMessage id="auth.login.button" />
                         </Button>
@@ -82,17 +82,11 @@ const Auth = () => {
                 </Flex>
             </Flex>
             <BottomUpContainer open={open && loggingIn} onClose={handleClose}>
-                <Flex
-                    width="100%"
-                    flexDirection="column"
-                    alignItems="center"
-                    pb={4}
-                    px={4}
-                >
-                    <Box mb={2}>
+                <Flex width="100%" flexDirection="column" alignItems="center">
+                    <Box mb="24px">
                         <FormattedMessage id="auth.login.proceed.message" />
                     </Box>
-                    <Box mt={3}>
+                    <Box>
                         <Button onClick={handleLoginProceed}>
                             <FormattedMessage id="auth.login.proceed.button.title" />
                         </Button>

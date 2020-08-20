@@ -7,13 +7,13 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 export const Searchbar = ({ placeholder, value, onChange, dark }) => (
     <SearchbarContainer
-        px={3}
+        px="16px"
         height={44}
         width="100%"
         alignItems="center"
         dark={dark}
     >
-        <Box mr={3}>
+        <Box mr="12px">
             <SearchIconContainer>
                 <FontAwesomeIcon icon={faSearch} />
             </SearchIconContainer>

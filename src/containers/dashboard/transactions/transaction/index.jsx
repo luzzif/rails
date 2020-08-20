@@ -56,13 +56,13 @@ export const Transaction = ({ asset, transaction, onClick, selectedFiat }) => {
     return (
         <HoverableContainer
             alignItems="center"
-            pl={[2, 3]}
-            pr={[3, 3]}
+            pl={["16px", "20px"]}
+            pr="24px"
             width="100%"
             height="100%"
             onClick={handleLocalClick}
         >
-            <Box pr={3} minWidth="auto">
+            <Box pr="16px" minWidth="auto">
                 <TransactionIcon
                     deposit={deposit}
                     withdraw={withdrawal}
@@ -73,10 +73,10 @@ export const Transaction = ({ asset, transaction, onClick, selectedFiat }) => {
             <Flex
                 flexDirection="column"
                 justifyContent="center"
-                flexGrow={2}
-                pr={3}
+                flexGrow="2"
+                pr="16px"
             >
-                <Box mb={1}>
+                <Box mb="4px">
                     <OneLineText>
                         {getText()} {progress && progress !== "100%" && "*"}
                     </OneLineText>
@@ -93,7 +93,7 @@ export const Transaction = ({ asset, transaction, onClick, selectedFiat }) => {
                 justifyContent="center"
                 minWidth="auto"
             >
-                <Box color={referenceColor} mb={1}>
+                <Box color={referenceColor} mb="4px">
                     {(!withdrawal && (deposit || !sent) ? "+" : "-") +
                         etherAmount.decimalPlaces(4).toString()}
                 </Box>

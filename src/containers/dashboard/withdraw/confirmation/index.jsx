@@ -13,11 +13,8 @@ export const Confirmation = ({ asset, transactionHash }) => (
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        pb={4}
-        pt={1}
-        px={4}
     >
-        <Box mb={4} width="100%">
+        <Box mb="24px" width="100%">
             <FormattedMessage
                 id="withdrawal.confirmation.message"
                 values={{ tokenSymbol: asset.symbol }}
@@ -37,5 +34,5 @@ export const Confirmation = ({ asset, transactionHash }) => (
 
 Confirmation.propTypes = {
     asset: PropTypes.object.isRequired,
-    transactionHash: PropTypes.string.isRequired,
+    transactionHash: PropTypes.string,
 };

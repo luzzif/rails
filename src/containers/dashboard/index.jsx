@@ -203,7 +203,7 @@ const Dashboard = () => {
                 height="100%"
                 pt={72}
             >
-                <Box mb={3}>
+                <Box mb="24px">
                     <Summary
                         balance={selectedAsset.balance}
                         symbol={selectedAsset.symbol}
@@ -211,7 +211,7 @@ const Dashboard = () => {
                         selectedFiat={selectedFiat}
                     />
                 </Box>
-                <Box mb={3} width={["85%", "60%", "50%", "45%"]}>
+                <Box mb="24px" width={["85%", "60%", "50%", "45%"]}>
                     <ButtonsStrip
                         onSend={handleSend}
                         onDeposit={handleDeposit}
@@ -221,7 +221,7 @@ const Dashboard = () => {
                     />
                 </Box>
                 <TransactionsContainer
-                    flexGrow={1}
+                    flexGrow="1"
                     width={["93%", "75%", "65%", "45%"]}
                 >
                     <Transactions

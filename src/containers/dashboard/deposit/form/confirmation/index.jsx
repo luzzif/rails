@@ -13,11 +13,8 @@ export const DepositConfirmation = ({ asset, transactionHash }) => (
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        pb={4}
-        pt={1}
-        px={4}
     >
-        <Box mb={4} width="100%">
+        <Box mb="24px" width="100%">
             <FormattedMessage
                 id="deposit.confirmation.message"
                 values={{ tokenSymbol: asset.symbol }}

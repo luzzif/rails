@@ -14,21 +14,21 @@ export const Fiat = ({ fiat, onClick }) => {
     return (
         <HoverableContainer
             alignItems="center"
-            pl={[2, 3]}
-            pr={[3, 3]}
+            pl="16px"
             width="100%"
             height="100%"
+            minHeight={68}
+            maxHeight={68}
             onClick={handleLocalClick}
         >
             <Box
-                pr={3}
-                minWidth="auto"
+                pr="16px"
                 height={48}
                 width={48}
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                fontSize={24}
+                fontSize={20}
             >
                 <FontAwesomeIcon icon={faIcon} />
             </Box>

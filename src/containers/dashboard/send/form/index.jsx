@@ -138,11 +138,8 @@ export const Send = ({ onConfirm, asset }) => {
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            pb={4}
-            pt={1}
-            px={4}
         >
-            <Box mb={3} width="100%">
+            <Box mb="24px" width="100%">
                 <Input
                     label={
                         <FormattedMessage id="send.form.placeholder.receiver" />
@@ -161,7 +158,7 @@ export const Send = ({ onConfirm, asset }) => {
                     }
                 />
             </Box>
-            <Box mb={3} width="100%">
+            <Box mb="24px" width="100%">
                 <Input
                     label={
                         <FormattedMessage id="send.form.placeholder.amount" />
@@ -172,7 +169,7 @@ export const Send = ({ onConfirm, asset }) => {
                     error={amountError}
                 />
             </Box>
-            <Box mb={4} width="100%">
+            <Box mb="24px" width="100%">
                 <Input
                     label={<FormattedMessage id="send.form.placeholder.memo" />}
                     placeholder="Foo Bar"
@@ -180,7 +177,7 @@ export const Send = ({ onConfirm, asset }) => {
                     onChange={handleMemoChange}
                 />
             </Box>
-            <Box>
+            <Box mb="8px">
                 <Button
                     disabled={
                         !receiver ||

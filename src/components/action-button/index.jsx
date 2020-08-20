@@ -26,7 +26,11 @@ export const ActionButton = ({
                     <FontAwesomeIcon icon={faIcon} />
                 </IconContainer>
             </OuterCircle>
-            {title && <Title mt={2} fontSize={[12, 16]}>{title}</Title>}
+            {title && (
+                <Title mt="16px" fontSize={[12, 16]}>
+                    {title}
+                </Title>
+            )}
         </Flex>
     </RootButton>
 );

@@ -11,13 +11,10 @@ export const Confirmation = ({ onClose }) => (
         justifyContent="center"
         alignItems="center"
         flexDirection="column"
-        pb={4}
-        pt={1}
-        px={4}
     >
         <Box
             width={["80%", "70%", "60%", "50%", "40%"]}
-            mb={4}
+            mb="24px"
             textAlign="center"
         >
             <FormattedMessage id="send.form.confirmation.ok" />
