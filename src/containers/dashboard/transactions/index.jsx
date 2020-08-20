@@ -164,7 +164,7 @@ export const Transactions = ({
                 alignItems="center"
                 width="100%"
             >
-                {(!transactions || transactions.length === 0) && (
+                {!loading && (!transactions || transactions.length === 0) && (
                     <Box
                         width="100%"
                         height="100%"
