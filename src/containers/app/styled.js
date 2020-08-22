@@ -34,9 +34,8 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     .custom-toast-body {
-        font-size: 16px;
         font-family: "Montserrat";
-        padding: 8px 12px;
+        padding: 4px 8px;
     }
 
     .Toastify__toast {
