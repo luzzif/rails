@@ -32,16 +32,12 @@ export const Form = ({ onConfirm, asset, open }) => {
 
     // fetch updated asset's on-chain balance
     useEffect(() => {
-        dispatch(
-            getDepositBalance(loopringWallet, asset.symbol, supportedTokens)
-        );
-    }, [
-        asset.symbol,
-        dispatch,
-        loopringAccount,
-        loopringWallet,
-        supportedTokens,
-    ]);
+        if (loopringWallet && asset && asset.symbol && supportedTokens) {
+            dispatch(
+                getDepositBalance(loopringWallet, asset.symbol, supportedTokens)
+            );
+        }
+    }, [asset, dispatch, loopringAccount, loopringWallet, supportedTokens]);
 
     useEffect(() => {
         if (depositBalance) {
