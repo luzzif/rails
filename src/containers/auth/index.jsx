@@ -4,7 +4,7 @@ import { FormattedMessage } from "react-intl";
 import { Button } from "../../components/button";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../actions/loopring";
-import illustration from "../../images/login.png";
+import logo from "../../images/logo.svg";
 import { LoginIllustration } from "./styled";
 import { BottomUpContainer } from "../../components/bottom-up-container";
 import { initializeWeb3 } from "../../actions/web3";
@@ -58,11 +58,11 @@ const Auth = () => {
                 width="100%"
                 height="100%"
             >
-                <Box mb="32px" width={["40%", "30%", "20%", "10%"]}>
-                    <LoginIllustration src={illustration} />
+                <Box mb="40px" width={["40%", "30%", "20%", "10%"]}>
+                    <LoginIllustration src={logo} />
                 </Box>
                 <Box
-                    mb="24px"
+                    mb="32px"
                     width={["80%", "70%", "60%", "30%", "20%"]}
                     textAlign="center"
                 >
