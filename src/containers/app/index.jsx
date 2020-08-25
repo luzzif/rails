@@ -63,7 +63,7 @@ const dark = {
     secondaryButtonBackground: "rgba(241, 249, 210, 0.2)",
     text: "#F1F9D2",
     textInverted: "#212121",
-    shadow: "rgba(0, 0, 0, 0.4)",
+    shadow: "rgba(255, 255, 255, 0.2)",
     placeholder: "#666666",
     loader: "#595959",
 };
