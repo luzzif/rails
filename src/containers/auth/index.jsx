@@ -4,11 +4,13 @@ import { FormattedMessage } from "react-intl";
 import { Button } from "../../components/button";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../actions/loopring";
-import logo from "../../images/logo.svg";
+import darkLogo from "../../images/logo-dark.svg";
+import lightLogo from "../../images/logo-light.svg";
 import { LoginIllustration } from "./styled";
 import { BottomUpContainer } from "../../components/bottom-up-container";
 import { initializeWeb3 } from "../../actions/web3";
 import { RegistrationFlow } from "./registration-flow";
+import { selectedTheme } from "../app";
 
 const Auth = () => {
     const dispatch = useDispatch();
@@ -59,7 +61,13 @@ const Auth = () => {
                 height="100%"
             >
                 <Box mb="40px" width={["40%", "30%", "20%", "10%"]}>
-                    <LoginIllustration src={logo} />
+                    <LoginIllustration
+                        src={
+                            selectedTheme.type === "light"
+                                ? darkLogo
+                                : lightLogo
+                        }
+                    />
                 </Box>
                 <Box
                     mb="32px"

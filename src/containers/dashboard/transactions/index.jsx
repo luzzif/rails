@@ -9,7 +9,7 @@ import { selectedTheme } from "../../app";
 import { ActionButton } from "../../../components/action-button";
 import { faRedo } from "@fortawesome/free-solid-svg-icons";
 import { OverlayBox, ListFlex, RootFlex } from "./styled";
-import { Chip } from "../../../chip";
+import { Chip } from "../../../components/chip";
 
 export const Transactions = ({
     asset,

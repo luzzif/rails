@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="550px"
+   height="550px"
+   viewBox="0 0 550 550"
+   version="1.1"
+   id="svg19"
+   sodipodi:docname="logo-dark.svg"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
+  <metadata
+     id="metadata23">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>rails_logo_a</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3840"
+     inkscape:window-height="2272"
+     id="namedview21"
+     showgrid="false"
+     inkscape:zoom="0.42909091"
+     inkscape:cx="275"
+     inkscape:cy="275"
+     inkscape:window-x="0"
+     inkscape:window-y="54"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg19" />
+  <!-- Generator: Sketch 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+  <title
+     id="title2">rails_logo_a</title>
+  <desc
+     id="desc4">Created with Sketch.</desc>
+  <defs
+     id="defs11">
+    <linearGradient
+       x1="81.1106217%"
+       y1="23.1441225%"
+       x2="34.2017671%"
+       y2="50%"
+       id="linearGradient-1">
+      <stop
+         stop-color="#FFFFFF"
+         offset="0%"
+         id="stop6" />
+      <stop
+         stop-color="#FFFFFF"
+         stop-opacity="0.210739357"
+         offset="100%"
+         id="stop8" />
+    </linearGradient>
+  </defs>
+  <g
+     id="rails_logo_a"
+     stroke="none"
+     stroke-width="1"
+     fill="none"
+     fill-rule="evenodd">
+    <circle
+       id="Oval"
+       fill="#110D27"
+       fill-rule="nonzero"
+       cx="276"
+       cy="275"
+       r="275" />
+    <g
+       id="Group-9"
+       transform="translate(172.000000, 134.000000)"
+       fill-rule="nonzero">
+      <path
+         d="M192.29281,0.0058249897 C198.920227,0.0058249897 204.29281,5.37840799 204.29281,12.005825 C204.29281,18.633242 198.920227,24.005825 192.29281,24.005825 C191.408031,24.005825 190.726907,24.0048827 189.054097,24.0018491 C171.402982,23.9698395 162.514415,24.3457876 151.312001,26.1243959 C136.351348,28.4996999 122.747782,33.1414644 109.859525,40.8458557 C101.92766,45.5873958 94.3336273,51.4649031 87.057275,58.6192621 C61.5517967,83.6971227 41.4043589,116.448406 26.6559526,157.006782 L22.555059,168.284312 L2.7000624e-13,160.082524 L4.10089362,148.804995 C20.0209717,105.0245 42.0506029,69.2135606 70.230778,41.5058463 C78.8627517,33.0185938 87.9705363,25.9694975 97.5452121,20.2459115 C113.207091,10.883494 129.703919,5.25450022 147.548656,2.42128973 C160.378874,0.384234941 170.227776,-0.032331201 189.09762,0.00188860238 C190.755509,0.00489512681 191.427666,0.0058249897 192.29281,0.0058249897 Z M204.588814,66 C204.588814,72.627417 199.216231,78 192.588814,78 L175.205368,78 C144.426777,78 119.540281,90.7876271 101.395419,112.79101 C86.7990226,130.491343 78,153.234299 78,168.584075 L78,180.584075 L54,180.584075 L54,168.584075 C54,147.442378 64.859719,119.373112 82.879185,97.5217901 C105.407398,70.2029322 136.940552,54 175.205368,54 L192.588814,54 C199.216231,54 204.588814,59.372583 204.588814,66 Z"
+         id="Combined-Shape"
+         fill="url(#linearGradient-1)" />
+      <path
+         d="M66,0 L69,0 C75.627417,-1.21743675e-15 81,5.372583 81,12 L81,269 C81,275.627417 75.627417,281 69,281 L66,281 C59.372583,281 54,275.627417 54,269 L54,12 C54,5.372583 59.372583,1.21743675e-15 66,0 Z M12,2 L15,2 C21.627417,2 27,7.372583 27,14 L27,271 C27,277.627417 21.627417,283 15,283 L12,283 C5.372583,283 8.11624501e-16,277.627417 0,271 L0,14 C-8.11624501e-16,7.372583 5.372583,2 12,2 Z"
+         id="path15"
+         fill="#FFFFFF" />
+    </g>
+  </g>
+</svg>

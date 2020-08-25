@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import MewConnect from "@myetherwallet/mewconnect-web-client";
 import Web3Modal from "web3modal";
 import { INFURA_ID } from "../../env";
+import Helmet from "react-helmet";
 import {
     getSupportedTokens,
     getUserBalances,
@@ -27,6 +28,8 @@ import {
 import { BottomUpContainer } from "../../components/bottom-up-container";
 import { FiatChooser, supportedFiats } from "../fiat-chooser";
 import { ToastContainer, Slide } from "react-toastify";
+import darkLogo from "../../images/logo-dark.svg";
+import lightLogo from "../../images/logo-light.svg";
 import "react-toastify/dist/ReactToastify.css";
 
 const LazyAuth = lazy(() => import("../auth"));
@@ -35,13 +38,16 @@ const LazyDashboard = lazy(() => import("../dashboard"));
 const commonColors = {
     error: "#c62828",
     warning: "#FF6F00",
-    primary: "#215454",
 };
 
 const light = {
     ...commonColors,
+    type: "light",
     background: "#e0e0e0",
     foreground: "#f2f2f2",
+    primary: "#0e062d",
+    secondaryButtonBackground: "rgba(14, 6, 45, 0.2)",
+    textInverted: "#e0e0e0",
     text: "#0e062d",
     shadow: "rgba(0, 0, 0, 0.4)",
     placeholder: "#b3b3b3",
@@ -50,9 +56,13 @@ const light = {
 
 const dark = {
     ...commonColors,
+    type: "dark",
     background: "#212121",
     foreground: "#333",
+    primary: "#F1F9D2",
+    secondaryButtonBackground: "rgba(241, 249, 210, 0.2)",
     text: "#F1F9D2",
+    textInverted: "#212121",
     shadow: "rgba(0, 0, 0, 0.4)",
     placeholder: "#666666",
     loader: "#595959",
@@ -123,7 +133,7 @@ export const App = () => {
     // setting up local storage -saved theme
     useEffect(() => {
         const cachedTheme =
-            localStorage.getItem("loopring-pay-theme") || "light";
+            localStorage.getItem("rails-theme") || "light";
         const lightTheme = cachedTheme === "light";
         setLightTheme(lightTheme);
         selectedTheme = lightTheme ? light : dark;
@@ -137,7 +147,7 @@ export const App = () => {
         if (selectedFiat) {
             return;
         }
-        const fiatFromLocalStorage = localStorage.getItem("loopring-pay-fiat");
+        const fiatFromLocalStorage = localStorage.getItem("rails-fiat");
         dispatch(
             postSelectedFiat(
                 fiatFromLocalStorage
@@ -225,7 +235,7 @@ export const App = () => {
     const handleThemeChange = useCallback(() => {
         const newLightTheme = !lightTheme;
         const textTheme = newLightTheme ? "light" : "dark";
-        localStorage.setItem("loopring-pay-theme", textTheme);
+        localStorage.setItem("rails-theme", textTheme);
         web3ModalOptions.theme = newLightTheme
             ? lightWeb3ModalTheme
             : darkWeb3ModalTheme;
@@ -243,7 +253,7 @@ export const App = () => {
 
     const handleFiatChange = useCallback(
         (fiat) => {
-            localStorage.setItem("loopring-pay-fiat", JSON.stringify(fiat));
+            localStorage.setItem("rails-fiat", JSON.stringify(fiat));
             dispatch(postSelectedFiat(fiat));
             setChangingFiat(false);
         },
@@ -256,6 +266,10 @@ export const App = () => {
 
     return (
         <ThemeProvider theme={lightTheme ? light : dark}>
+            <Helmet>
+                <link rel="icon" href={lightTheme ? darkLogo : lightLogo} />
+                <meta name="theme-color" content={selectedTheme.background} />
+            </Helmet>
             <GlobalStyle />
             <Layout
                 lightTheme={lightTheme}

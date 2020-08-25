@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import { FlexContainer, Logo } from "./styled";
 import { Box, Flex } from "reflexbox";
 import { faMoon, faSun, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
-import logo from "../../../images/logo.svg";
+import darkLogo from "../../../images/logo-dark.svg";
+import lightLogo from "../../../images/logo-light.svg";
 import { ActionButton } from "../../action-button";
 
 const ACTION_SIZES = [32, 36, 40];
@@ -24,7 +25,9 @@ export const Toolbar = ({
         justifyContent="space-between"
         width="100vw"
     >
-        <Box height={48}>{logged && <Logo src={logo} />}</Box>
+        <Box height={48}>
+            {logged && <Logo src={lightTheme ? darkLogo : lightLogo} />}
+        </Box>
         <Flex alignItems="center" height="100%">
             {fiat && (
                 <Box minWidth="auto" mr={[2, 3]}>

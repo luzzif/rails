@@ -10,7 +10,8 @@ const commonsStyles = css`
     font-size: 20px;
     font-family: "Montserrat";
     background: ${(props) => (props.secondary ? "none" : props.theme.primary)};
-    color: ${(props) => (props.secondary ? props.theme.primary : "#fff")};
+    color: ${(props) =>
+        props.secondary ? props.theme.primary : props.theme.textInverted};
     border: ${(props) =>
         props.secondary ? `solid 3px ${props.theme.primary}` : "none"};
     border-radius: 24px;
@@ -24,7 +25,7 @@ const commonsStyles = css`
         ${(props) =>
             props.secondary &&
             css`
-                background: rgba(33, 84, 84, 0.2);
+                background: ${props.theme.secondaryButtonBackground};
             `}
     }
     :active {

@@ -4,8 +4,9 @@ import { Flex } from "reflexbox";
 export const Container = styled(Flex)`
     font-family: Montserrat;
     outline: none;
-    padding: 8px 16px;
-    color: ${(props) => (props.active ? "#fff" : props.theme.text)};
+    padding: 4px 12px;
+    color: ${(props) =>
+        props.active ? props.theme.textInverted : props.theme.text};
     border-radius: 24px;
     background: ${(props) => {
         if (props.active) {
