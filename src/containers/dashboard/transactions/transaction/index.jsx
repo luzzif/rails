@@ -99,7 +99,7 @@ export const Transaction = ({ asset, transaction, onClick, selectedFiat }) => {
                 </Box>
                 <Box fontSize={12}>
                     <AmountText color={referenceColor}>
-                        {(deposit || !sent ? "+" : "-") +
+                        {(!withdrawal && (deposit || !sent) ? "+" : "-") +
                             etherAmount
                                 .multipliedBy(asset.fiatValue)
                                 .decimalPlaces(2)
