@@ -8,7 +8,7 @@ import BounceLoader from "react-spinners/BounceLoader";
 import { selectedTheme } from "../../app";
 import { ActionButton } from "../../../components/action-button";
 import { faRedo } from "@fortawesome/free-solid-svg-icons";
-import { OverlayBox, ListFlex, RootFlex } from "./styled";
+import { OverlayBox, ListFlex, RootFlex, StyledInfiniteScroll } from "./styled";
 import { Chip } from "../../../components/chip";
 
 export const Transactions = ({
@@ -20,6 +20,8 @@ export const Transactions = ({
     onTypeFilterChange,
     onRefresh,
     selectedFiat,
+    onLoadTransactions,
+    transactionsAmount,
 }) => {
     const { formatMessage } = useIntl();
 
@@ -27,6 +29,13 @@ export const Transactions = ({
     const [filteredTransactions, setFilteredTransactions] = useState(
         transactions
     );
+    const [hasMoreTransactions, setHasMoreTransactions] = useState(false);
+
+    useEffect(() => {
+        setHasMoreTransactions(
+            !query && !loading && transactions.length < transactionsAmount
+        );
+    }, [loading, query, transactions.length, transactionsAmount]);
 
     useEffect(() => {
         setFilteredTransactions(
@@ -175,22 +184,31 @@ export const Transactions = ({
                 )}
                 {!loading && transactions && transactions.length > 0 ? (
                     filteredTransactions && filteredTransactions.length > 0 ? (
-                        filteredTransactions.map((transaction) => (
-                            <Box
-                                key={transaction.id}
-                                height={68}
-                                width="100%"
-                                alignItems="center"
-                                display="flex"
-                            >
-                                <Transaction
-                                    transaction={transaction}
-                                    asset={asset}
-                                    onClick={onChange}
-                                    selectedFiat={selectedFiat}
-                                />
-                            </Box>
-                        ))
+                        <StyledInfiniteScroll
+                            element="span"
+                            pageStart={0}
+                            loadMore={onLoadTransactions}
+                            hasMore={hasMoreTransactions}
+                        >
+                            {filteredTransactions
+                                .sort((a, b) => b.timestamp - a.timestamp)
+                                .map((transaction) => (
+                                    <Box
+                                        key={transaction.id}
+                                        height={68}
+                                        width="100%"
+                                        alignItems="center"
+                                        display="flex"
+                                    >
+                                        <Transaction
+                                            transaction={transaction}
+                                            asset={asset}
+                                            onClick={onChange}
+                                            selectedFiat={selectedFiat}
+                                        />
+                                    </Box>
+                                ))}
+                        </StyledInfiniteScroll>
                     ) : (
                         <Box
                             width="100%"
@@ -229,4 +247,6 @@ Transactions.propTypes = {
     typeFilter: PropTypes.oneOf(["all", "deposits", "withdrawals", "transfers"])
         .isRequired,
     onTypeFilterChange: PropTypes.func.isRequired,
+    onLoadTransactions: PropTypes.func.isRequired,
+    transactionsAmount: PropTypes.number.isRequired,
 };

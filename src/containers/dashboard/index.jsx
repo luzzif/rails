@@ -13,6 +13,7 @@ import {
     deleteTransferHash,
     getUserBalances,
     postSelectedAsset,
+    resetTransactions,
 } from "../../actions/loopring";
 import { TransactionSummary } from "./transaction-summary";
 import { Summary } from "../dashboard/summary";
@@ -30,6 +31,7 @@ const Dashboard = () => {
         balances,
         transactions,
         transactionsLoading,
+        transactionsAmount,
         successfulTransferHash,
         selectedAsset,
         selectedFiat,
@@ -41,6 +43,7 @@ const Dashboard = () => {
         balances: state.loopring.balances.data,
         transactions: state.loopring.transactions.data,
         transactionsLoading: !!state.loopring.transactions.loadings,
+        transactionsAmount: state.loopring.transactions.amounts,
         successfulTransferHash: state.loopring.successfulTransferHash,
         selectedAsset: state.loopring.selectedAsset,
         selectedFiat: state.loopring.selectedFiat,
@@ -61,13 +64,23 @@ const Dashboard = () => {
         // dashboard updates before the app component (which is the one that
         // really knows if a user logged out or not), we need to check if
         // the account is still there
-        if (account && transactionsTypeFilter) {
+        if (
+            account &&
+            wallet &&
+            selectedAsset &&
+            selectedAsset.symbol &&
+            supportedTokens &&
+            supportedTokens.length > 0 &&
+            transactionsTypeFilter &&
+            transactions.length === 0
+        ) {
             dispatch(
                 getTokenTransactions(
                     account,
                     wallet,
                     selectedAsset.symbol,
                     supportedTokens,
+                    0,
                     10,
                     transactionsTypeFilter
                 )
@@ -75,10 +88,11 @@ const Dashboard = () => {
         }
     }, [
         account,
-        balances,
         dispatch,
         selectedAsset,
+        selectedAsset.symbol,
         supportedTokens,
+        transactions,
         transactionsTypeFilter,
         wallet,
     ]);
@@ -110,6 +124,7 @@ const Dashboard = () => {
     const handleAssetChange = useCallback(
         (asset) => {
             dispatch(postSelectedAsset(asset));
+            dispatch(resetTransactions());
             setChangingAsset(false);
         },
         [dispatch]
@@ -121,30 +136,35 @@ const Dashboard = () => {
     }, []);
 
     const handleTransactionsRefresh = useCallback(() => {
-        dispatch(
-            getTokenTransactions(
-                account,
-                wallet,
-                selectedAsset.symbol,
-                supportedTokens,
-                100000,
-                transactionsTypeFilter
-            )
-        );
-        // we also refresh the summarized balance in order
-        // to avoid inconsistencies
+        dispatch(resetTransactions());
         dispatch(
             getUserBalances(account, wallet, supportedTokens, selectedFiat)
         );
-    }, [
-        account,
-        dispatch,
-        selectedAsset,
-        selectedFiat,
-        supportedTokens,
-        transactionsTypeFilter,
-        wallet,
-    ]);
+    }, [account, dispatch, selectedFiat, supportedTokens, wallet]);
+
+    const handleTransactionsLoad = useCallback(
+        (page) => {
+            dispatch(
+                getTokenTransactions(
+                    account,
+                    wallet,
+                    selectedAsset.symbol,
+                    supportedTokens,
+                    page,
+                    10,
+                    transactionsTypeFilter
+                )
+            );
+        },
+        [
+            account,
+            dispatch,
+            selectedAsset.symbol,
+            supportedTokens,
+            transactionsTypeFilter,
+            wallet,
+        ]
+    );
 
     const handleAssetsRefresh = useCallback(() => {
         dispatch(
@@ -233,10 +253,16 @@ const Dashboard = () => {
                         onTypeFilterChange={setTransactionsTypeFilter}
                         onRefresh={handleTransactionsRefresh}
                         selectedFiat={selectedFiat}
+                        onLoadTransactions={handleTransactionsLoad}
+                        transactionsAmount={transactionsAmount}
                     />
                 </TransactionsContainer>
             </Flex>
-            <BottomUpContainer noBottomPadding open={changingAsset} onClose={handleClose}>
+            <BottomUpContainer
+                noBottomPadding
+                open={changingAsset}
+                onClose={handleClose}
+            >
                 <Assets
                     assets={balances}
                     onChange={handleAssetChange}

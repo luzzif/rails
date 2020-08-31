@@ -35,6 +35,7 @@ export const GET_BALANCES_SUCCESS = "GET_BALANCES_SUCCESS";
 export const GET_TRANSACTIONS_SUCCESS = "GET_TRANSACTIONS_SUCCESS";
 export const POST_TRANSACTIONS_LOADING = "POST_TRANSACTIONS_LOADING";
 export const DELETE_TRANSACTIONS_LOADING = "DELETE_TRANSACTIONS_LOADING";
+export const RESET_TRANSACTIONS = "RESET_TRANSACTIONS";
 export const POST_TRANSFER_LOADING = "POST_TRANSFER_LOADING";
 export const DELETE_TRANSFER_LOADING = "DELETE_TRANSFER_LOADING";
 export const POST_TRANSFER_SUCCESS = "POST_TRANSFER_SUCCESS";
@@ -211,22 +212,26 @@ export const getTokenTransactions = (
     wallet,
     tokenSymbol,
     supportedTokens,
-    amount,
+    page,
+    itemsPerPage,
     type
 ) => async (dispatch) => {
     dispatch({ type: POST_TRANSACTIONS_LOADING });
     try {
         const apiKey = await getLoopringApiKey(wallet, account);
         let transactions = [];
+        let transactionsAmount = 0;
+        const offset = page * itemsPerPage;
         if (type === "all" || type === "transfers") {
             const transfers = await getTransferHistory(
                 account.accountId,
                 tokenSymbol,
-                amount,
-                0,
+                itemsPerPage,
+                offset,
                 apiKey,
                 supportedTokens
             );
+            transactionsAmount += transfers.totalNum;
             transactions = transactions.concat(
                 transfers.transactions.map((transfer) => {
                     const bigNumberAmount = new BigNumber(transfer.amount);
@@ -257,11 +262,12 @@ export const getTokenTransactions = (
             const deposits = await getDepositHistory(
                 account.accountId,
                 tokenSymbol,
-                amount,
-                0,
+                itemsPerPage,
+                offset,
                 apiKey,
                 supportedTokens
             );
+            transactionsAmount += deposits.totalNum;
             transactions = transactions.concat(
                 deposits.transactions
                     .filter(
@@ -293,11 +299,12 @@ export const getTokenTransactions = (
             const withdrawals = await getWithdrawalHistory(
                 account.accountId,
                 tokenSymbol,
-                amount,
-                0,
+                itemsPerPage,
+                offset,
                 apiKey,
                 supportedTokens
             );
+            transactionsAmount += withdrawals.totalNum;
             transactions = transactions.concat(
                 withdrawals.transactions.map((withdrawal) => {
                     const bigNumberAmount = new BigNumber(withdrawal.amount);
@@ -323,16 +330,20 @@ export const getTokenTransactions = (
         }
         dispatch({
             type: GET_TRANSACTIONS_SUCCESS,
-            transactions: transactions.sort(
-                (a, b) => b.timestamp - a.timestamp
-            ),
+            transactions: transactions.slice(0, itemsPerPage + 1),
+            transactionsAmount: transactionsAmount - 1,
         });
     } catch (error) {
         toast.error(<FormattedMessage id="error.rails.token.transactions" />);
         console.error("error getting rails token transactions", error);
+    } finally {
+        dispatch({ type: DELETE_TRANSACTIONS_LOADING });
     }
-    dispatch({ type: DELETE_TRANSACTIONS_LOADING });
 };
+
+export const resetTransactions = () => ({
+    type: RESET_TRANSACTIONS,
+});
 
 export const postTransfer = (
     account,

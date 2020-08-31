@@ -28,6 +28,7 @@ import {
     DELETE_GET_SUPPORTED_TOKENS_LOADING,
     POST_REGISTRATION_SUCCESS,
     DELETE_REGISTRATION_SUCCESS_TRANSACTION_HASH,
+    RESET_TRANSACTIONS,
 } from "../../actions/loopring";
 
 const initialState = {
@@ -39,6 +40,7 @@ const initialState = {
     transactions: {
         loadings: 0,
         data: [],
+        amounts: 0,
     },
     successfulTransferHash: null,
     successfulGrantAllowanceHash: null,
@@ -122,7 +124,18 @@ export const loopringReducer = (state = initialState, action) => {
                 ...state,
                 transactions: {
                     ...state.transactions,
-                    data: action.transactions,
+                    data: [...state.transactions.data, ...action.transactions],
+                    amounts: action.transactionsAmount,
+                },
+            };
+        }
+        case RESET_TRANSACTIONS: {
+            return {
+                ...state,
+                transactions: {
+                    ...state.transactions,
+                    data: [],
+                    amounts: 0,
                 },
             };
         }
