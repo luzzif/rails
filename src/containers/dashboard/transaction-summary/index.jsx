@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Flex, Box } from "reflexbox";
 import { FormattedMessage } from "react-intl";
-import moment from "moment";
+import { DateTime } from "luxon";
 import { BoldDiv } from "./styled";
 import { Button } from "../../../components/button";
 import { CHAIN_ID } from "../../../env";
@@ -48,7 +48,10 @@ export const TransactionSummary = ({
                 <BoldDiv>
                     <FormattedMessage id="dashboard.transaction.summary.date" />
                 </BoldDiv>
-                : {moment(timestamp).format("L - LT")}
+                :{" "}
+                {DateTime.fromMillis(timestamp).toLocaleString(
+                    DateTime.DATETIME_SHORT
+                )}
             </Box>
             {sent && recipientInUI && (
                 <Box mb="8px">

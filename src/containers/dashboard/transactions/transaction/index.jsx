@@ -4,7 +4,7 @@ import { Flex, Box } from "reflexbox";
 import { OneLineText, AmountText, HoverableContainer } from "./styled";
 import { TransactionIcon } from "./icon";
 import { FormattedMessage } from "react-intl";
-import moment from "moment";
+import { DateTime } from "luxon";
 import { formatBigNumber } from "../../../../utils/conversion";
 
 export const Transaction = ({ asset, transaction, onClick, selectedFiat }) => {
@@ -77,7 +77,9 @@ export const Transaction = ({ asset, transaction, onClick, selectedFiat }) => {
                 </Box>
                 <Box>
                     <OneLineText fontSize={12}>
-                        {moment(timestamp).format("L - LT")}
+                        {DateTime.fromMillis(timestamp).toLocaleString(
+                            DateTime.DATETIME_SHORT
+                        )}
                     </OneLineText>
                 </Box>
             </Flex>
