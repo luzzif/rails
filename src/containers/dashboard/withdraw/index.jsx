@@ -63,7 +63,12 @@ export const WithdrawalFlow = ({ open, asset }) => {
                     disabled
                     style={{ overflowY: "hidden", width: "100%" }}
                 >
-                    <Form asset={asset} open={open} onConfirm={handleConfirm} />
+                    <Form
+                        asset={asset}
+                        open={open}
+                        onConfirm={handleConfirm}
+                        supportedTokens={supportedTokens}
+                    />
                     <Confirmation
                         asset={asset}
                         transactionHash={withdrawalTransactionHash}

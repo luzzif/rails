@@ -127,7 +127,7 @@ const Dashboard = () => {
                 wallet,
                 selectedAsset.symbol,
                 supportedTokens,
-                10,
+                100000,
                 transactionsTypeFilter
             )
         );
@@ -205,7 +205,7 @@ const Dashboard = () => {
             >
                 <Box mb="24px">
                     <Summary
-                        balance={selectedAsset.balance}
+                        etherBalance={selectedAsset.etherBalance}
                         symbol={selectedAsset.symbol}
                         fiatValue={selectedAsset.fiatValue}
                         selectedFiat={selectedFiat}

@@ -7,7 +7,7 @@ import { Input } from "../../../../components/input";
 import BigNumber from "bignumber.js";
 import { weiToEther } from "../../../../utils/conversion";
 
-export const Form = ({ onConfirm, asset, open }) => {
+export const Form = ({ onConfirm, supportedTokens, asset, open }) => {
     const [parsedUserBalance, setParsedUserBalance] = useState(
         new BigNumber("0")
     );
@@ -16,8 +16,10 @@ export const Form = ({ onConfirm, asset, open }) => {
     const [amountError, setAmountError] = useState(false);
 
     useEffect(() => {
-        setParsedUserBalance(weiToEther(asset.balance.decimalPlaces(4)));
-    }, [asset]);
+        setParsedUserBalance(
+            weiToEther(asset.balance, asset.symbol, supportedTokens)
+        );
+    }, [asset, supportedTokens]);
 
     useEffect(() => {
         if (!open) {
@@ -124,4 +126,5 @@ Form.propTypes = {
     onConfirm: PropTypes.func.isRequired,
     asset: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
+    supportedTokens: PropTypes.array.isRequired,
 };

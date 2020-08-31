@@ -1,26 +1,17 @@
-import React, { useState, useLayoutEffect } from "react";
+import React from "react";
 import { Flex, Box } from "reflexbox";
 import PropTypes from "prop-types";
-import { weiToEther } from "../../../utils/conversion";
 import BigNumber from "bignumber.js";
+import { formatBigNumber } from "../../../utils/conversion";
 
-export const Summary = ({ balance, fiatValue, symbol, selectedFiat }) => {
-    const [etherBalance, setEtherBalance] = useState(new BigNumber("0"));
-
-    useLayoutEffect(() => {
-        setEtherBalance(weiToEther(balance));
-    }, [balance]);
-
+export const Summary = ({ etherBalance, fiatValue, symbol, selectedFiat }) => {
     return (
         <Flex flexDirection="column" alignItems="center">
             <Box fontSize={[36, 48, 56, 64]} fontWeight={700}>
-                {etherBalance.decimalPlaces(4).toString()} {symbol}
+                {formatBigNumber(etherBalance)} {symbol}
             </Box>
             <Box fontSize={[16, 16, 20, 24, 28]}>
-                {fiatValue
-                    .multipliedBy(etherBalance)
-                    .decimalPlaces(2)
-                    .toString()}{" "}
+                {formatBigNumber(fiatValue.multipliedBy(etherBalance))}{" "}
                 {selectedFiat.symbol}
             </Box>
         </Flex>
@@ -28,7 +19,7 @@ export const Summary = ({ balance, fiatValue, symbol, selectedFiat }) => {
 };
 
 Summary.propTypes = {
-    balance: PropTypes.object.isRequired,
+    etherBalance: PropTypes.instanceOf(BigNumber).isRequired,
     symbol: PropTypes.string.isRequired,
     fiatValue: PropTypes.object.isRequired,
 };

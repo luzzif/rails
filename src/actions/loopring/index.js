@@ -21,6 +21,7 @@ import { getTokenBalance } from "../../lightcone/api/v1/tokenBalance/get";
 import { getEthBalance } from "../../lightcone/api/v1/ethBalance/get";
 import { toast } from "react-toastify";
 import { FormattedMessage } from "react-intl";
+import { weiToEther } from "../../utils/conversion";
 
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const POST_GET_SUPPORTED_TOKENS_LOADING =
@@ -156,6 +157,11 @@ export const getUserBalances = (
                     name: supportedToken.name,
                     address: supportedToken.address,
                     balance,
+                    etherBalance: weiToEther(
+                        balance,
+                        supportedTokenId,
+                        supportedTokens
+                    ),
                     fiatValue,
                     depositEnabled: supportedToken.depositEnabled,
                 });
@@ -223,9 +229,23 @@ export const getTokenTransactions = (
             );
             transactions = transactions.concat(
                 transfers.transactions.map((transfer) => {
+                    const bigNumberAmount = new BigNumber(transfer.amount);
+                    const bigNumberFeeAmount = new BigNumber(
+                        transfer.feeAmount
+                    );
                     transfer.transfer = true;
-                    transfer.amount = new BigNumber(transfer.amount);
-                    transfer.feeAmount = new BigNumber(transfer.feeAmount);
+                    transfer.amount = bigNumberAmount;
+                    transfer.etherAmount = weiToEther(
+                        bigNumberAmount,
+                        transfer.symbol,
+                        supportedTokens
+                    );
+                    transfer.feeAmount = bigNumberFeeAmount;
+                    transfer.etherFeeAmount = weiToEther(
+                        bigNumberFeeAmount,
+                        transfer.symbol,
+                        supportedTokens
+                    );
                     transfer.sent =
                         wallet.address.toLowerCase() ===
                         transfer.senderAddress.toLowerCase();
@@ -248,9 +268,23 @@ export const getTokenTransactions = (
                         (deposit) => deposit.depositType !== "create_account"
                     )
                     .map((deposit) => {
+                        const bigNumberAmount = new BigNumber(deposit.amount);
+                        const bigNumberFeeAmount = new BigNumber(
+                            deposit.feeAmount
+                        );
                         deposit.deposit = true;
-                        deposit.amount = new BigNumber(deposit.amount);
-                        deposit.feeAmount = new BigNumber(deposit.feeAmount);
+                        deposit.amount = bigNumberAmount;
+                        deposit.etherAmount = weiToEther(
+                            bigNumberAmount,
+                            deposit.symbol,
+                            supportedTokens
+                        );
+                        deposit.feeAmount = bigNumberFeeAmount;
+                        deposit.etherFeeAmount = weiToEther(
+                            bigNumberFeeAmount,
+                            "ETH",
+                            supportedTokens
+                        );
                         return deposit;
                     })
             );
@@ -266,9 +300,23 @@ export const getTokenTransactions = (
             );
             transactions = transactions.concat(
                 withdrawals.transactions.map((withdrawal) => {
+                    const bigNumberAmount = new BigNumber(withdrawal.amount);
+                    const bigNumberFeeAmount = new BigNumber(
+                        withdrawal.feeAmount
+                    );
                     withdrawal.withdrawal = true;
-                    withdrawal.amount = new BigNumber(withdrawal.amount);
-                    withdrawal.feeAmount = new BigNumber(withdrawal.feeAmount);
+                    withdrawal.amount = bigNumberAmount;
+                    withdrawal.etherAmount = weiToEther(
+                        bigNumberAmount,
+                        withdrawal.symbol,
+                        supportedTokens
+                    );
+                    withdrawal.feeAmount = bigNumberFeeAmount;
+                    withdrawal.etherFeeAmount = weiToEther(
+                        bigNumberFeeAmount,
+                        "ETH",
+                        supportedTokens
+                    );
                     return withdrawal;
                 })
             );
@@ -280,9 +328,7 @@ export const getTokenTransactions = (
             ),
         });
     } catch (error) {
-        toast.error(
-            <FormattedMessage id="error.rails.token.transactions" />
-        );
+        toast.error(<FormattedMessage id="error.rails.token.transactions" />);
         console.error("error getting rails token transactions", error);
     }
     dispatch({ type: DELETE_TRANSACTIONS_LOADING });
@@ -372,9 +418,7 @@ export const getTokenAllowance = (
             ),
         });
     } catch (error) {
-        toast.error(
-            <FormattedMessage id="error.rails.token.allowance.get" />
-        );
+        toast.error(<FormattedMessage id="error.rails.token.allowance.get" />);
         console.error(`error getting token ${tokenSymbol} allowance`, error);
     }
     dispatch({ type: DELETE_GET_ALLOWANCE_LOADING });

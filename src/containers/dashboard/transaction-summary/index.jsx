@@ -1,43 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Flex, Box } from "reflexbox";
 import { FormattedMessage } from "react-intl";
 import moment from "moment";
-import BigNumber from "bignumber.js";
-import { weiToEther } from "../../../utils/conversion";
 import { BoldDiv } from "./styled";
 import { Button } from "../../../components/button";
 import { CHAIN_ID } from "../../../env";
 import { getEtherscanLink } from "../../../lightcone/api/localStorgeAPI";
+import { formatBigNumber } from "../../../utils/conversion";
 
 export const TransactionSummary = ({
     sent,
     deposit,
     withdrawal,
     timestamp,
-    amount,
+    etherAmount,
     symbol,
     txHash,
-    feeAmount,
+    etherFeeAmount,
     progress,
     senderInUI,
     recipientInUI,
 }) => {
-    const [etherAmount, setEtherAmount] = useState(new BigNumber("0"));
-    const [etherFeeAmount, setEtherFeeAmount] = useState(new BigNumber("0"));
-
-    useEffect(() => {
-        if (amount) {
-            setEtherAmount(weiToEther(amount));
-        }
-    }, [amount]);
-
-    useEffect(() => {
-        if (feeAmount) {
-            setEtherFeeAmount(weiToEther(feeAmount));
-        }
-    }, [feeAmount]);
-
     const getType = () => {
         let id;
         if (deposit) {
@@ -86,13 +70,14 @@ export const TransactionSummary = ({
                 <BoldDiv>
                     <FormattedMessage id="dashboard.transaction.summary.amount" />
                 </BoldDiv>
-                : {etherAmount.decimalPlaces(4).toString()} {symbol}
+                : {formatBigNumber(etherAmount)} {symbol}
             </Box>
             <Box mb="8px">
                 <BoldDiv>
                     <FormattedMessage id="dashboard.transaction.summary.amount.fee" />
                 </BoldDiv>
-                : {etherFeeAmount.decimalPlaces(4).toString()} {symbol}
+                : {formatBigNumber(etherFeeAmount)}{" "}
+                {deposit || withdrawal ? "ETH" : symbol}
             </Box>
             {progress && (
                 <Box mb="8px">
@@ -124,9 +109,9 @@ TransactionSummary.propTypes = {
     deposit: PropTypes.bool,
     withdrawal: PropTypes.bool,
     timestamp: PropTypes.number.isRequired,
-    amount: PropTypes.object.isRequired,
+    etherAmount: PropTypes.object.isRequired,
     symbol: PropTypes.string.isRequired,
     txHash: PropTypes.string,
-    feeAmount: PropTypes.object.isRequired,
+    etherFeeAmount: PropTypes.object.isRequired,
     progress: PropTypes.string.isRequired,
 };

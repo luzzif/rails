@@ -20,10 +20,12 @@ export const Send = ({ onConfirm, asset }) => {
         loopringWallet,
         addressFromEns,
         loadingAddressFromEns,
+        supportedTokens,
     } = useSelector((state) => ({
         loopringWallet: state.loopring.wallet,
         addressFromEns: state.ens.address,
         loadingAddressFromEns: !!state.ens.loadings,
+        supportedTokens: state.loopring.supportedTokens.data,
     }));
 
     const [parsedUserBalance, setParsedUserBalance] = useState(
@@ -48,8 +50,10 @@ export const Send = ({ onConfirm, asset }) => {
     }, [loadingAddressFromEns, addressFromEns]);
 
     useEffect(() => {
-        setParsedUserBalance(weiToEther(asset.balance.decimalPlaces(4)));
-    }, [asset]);
+        setParsedUserBalance(
+            weiToEther(asset.balance, asset.symbol, supportedTokens)
+        );
+    }, [asset, supportedTokens]);
 
     useEffect(() => {
         if (usingEns) {

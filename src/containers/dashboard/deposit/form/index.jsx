@@ -41,9 +41,11 @@ export const Form = ({ onConfirm, asset, open }) => {
 
     useEffect(() => {
         if (depositBalance) {
-            setParsedUserBalance(weiToEther(depositBalance.decimalPlaces(4)));
+            setParsedUserBalance(
+                weiToEther(depositBalance, asset.symbol, supportedTokens)
+            );
         }
-    }, [asset, depositBalance]);
+    }, [asset, depositBalance, supportedTokens]);
 
     useEffect(() => {
         if (!open) {

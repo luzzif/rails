@@ -4,13 +4,12 @@ import { Flex, Box } from "reflexbox";
 import { OneLineText, AmountText, HoverableContainer } from "./styled";
 import { TransactionIcon } from "./icon";
 import { FormattedMessage } from "react-intl";
-import { weiToEther } from "../../../../utils/conversion";
-import BigNumber from "bignumber.js";
 import moment from "moment";
+import { formatBigNumber } from "../../../../utils/conversion";
 
 export const Transaction = ({ asset, transaction, onClick, selectedFiat }) => {
     const {
-        amount,
+        etherAmount,
         deposit,
         memo,
         sent,
@@ -18,12 +17,7 @@ export const Transaction = ({ asset, transaction, onClick, selectedFiat }) => {
         timestamp,
         progress,
     } = transaction;
-    const [etherAmount, setEtherAmount] = useState(new BigNumber("0"));
     const [referenceColor, setReferenceColor] = useState("");
-
-    useEffect(() => {
-        setEtherAmount(weiToEther(amount));
-    }, [amount]);
 
     useEffect(() => {
         let referenceColor = "";
@@ -95,15 +89,14 @@ export const Transaction = ({ asset, transaction, onClick, selectedFiat }) => {
             >
                 <Box color={referenceColor} mb="4px">
                     {(!withdrawal && (deposit || !sent) ? "+" : "-") +
-                        etherAmount.decimalPlaces(4).toString()}
+                        formatBigNumber(etherAmount)}
                 </Box>
                 <Box fontSize={12}>
                     <AmountText color={referenceColor}>
                         {(!withdrawal && (deposit || !sent) ? "+" : "-") +
-                            etherAmount
-                                .multipliedBy(asset.fiatValue)
-                                .decimalPlaces(2)
-                                .toString()}{" "}
+                            formatBigNumber(
+                                etherAmount.multipliedBy(asset.fiatValue)
+                            )}{" "}
                         {selectedFiat.symbol}
                     </AmountText>
                 </Box>
