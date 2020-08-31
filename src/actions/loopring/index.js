@@ -324,7 +324,7 @@ export const getTokenTransactions = (
         dispatch({
             type: GET_TRANSACTIONS_SUCCESS,
             transactions: transactions.sort(
-                (a, b) => a.timestamp - b.timestamp
+                (a, b) => b.timestamp - a.timestamp
             ),
         });
     } catch (error) {
