@@ -2,12 +2,6 @@ import * as ethUtil from "ethereumjs-util";
 import BN from "bn.js";
 import BigNumber from "bignumber.js";
 
-BigNumber.config({
-  EXPONENTIAL_AT: 20,
-  RANGE: [-100000, 10000000],
-  ROUNDING_MODE: 1,
-});
-
 /**
  *
  * @param mixed Buffer|number|string (hex string must be with '0x' prefix)
