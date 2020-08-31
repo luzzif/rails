@@ -2,7 +2,13 @@ import React, { useRef, useCallback, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Overlay, Container } from "./styled";
 
-export const BottomUpContainer = ({ open, onClose, children, ...rest }) => {
+export const BottomUpContainer = ({
+    open,
+    onClose,
+    children,
+    noBottomPadding,
+    ...rest
+}) => {
     const container = useRef(null);
 
     const handleClick = useCallback(
@@ -32,7 +38,9 @@ export const BottomUpContainer = ({ open, onClose, children, ...rest }) => {
                 open={open}
                 ref={container}
                 m="0 auto"
-                p="24px"
+                px="24px"
+                pt="24px"
+                pb={noBottomPadding ? "0px" : "24px"}
                 {...rest}
             >
                 {children}

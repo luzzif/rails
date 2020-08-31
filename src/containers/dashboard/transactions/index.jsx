@@ -88,7 +88,8 @@ export const Transactions = ({
             height="100%"
             flexDirection="column"
             alignItems="center"
-            p="16px"
+            px="16px"
+            pt="16px"
         >
             <Flex width="100%" mb="12px">
                 <Box pr="16px" width="100%">
@@ -112,7 +113,7 @@ export const Transactions = ({
                 </Box>
             </Flex>
             <Flex
-                mb="12px"
+                mb="8px"
                 flexWrap="nowrap"
                 width="100%"
                 overflowX="auto"

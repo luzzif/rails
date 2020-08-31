@@ -72,7 +72,12 @@ export const Assets = ({ assets, onChange, onRefresh, open, selectedFiat }) => {
                     />
                 </Box>
             </Flex>
-            <Flex width="100%" flexDirection="column" overflowY="auto">
+            <Flex
+                width="100%"
+                flexDirection="column"
+                overflowY="auto"
+                pb="24px"
+            >
                 {filteredAssets && filteredAssets.length > 0 ? (
                     filteredAssets.map((asset, index) => (
                         <Asset

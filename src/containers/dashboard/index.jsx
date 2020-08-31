@@ -236,7 +236,7 @@ const Dashboard = () => {
                     />
                 </TransactionsContainer>
             </Flex>
-            <BottomUpContainer open={changingAsset} onClose={handleClose}>
+            <BottomUpContainer noBottomPadding open={changingAsset} onClose={handleClose}>
                 <Assets
                     assets={balances}
                     onChange={handleAssetChange}
