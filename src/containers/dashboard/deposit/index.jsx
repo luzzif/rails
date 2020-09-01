@@ -8,14 +8,12 @@ import {
     deleteDepositTransactionHash,
 } from "../../../actions/loopring";
 import { Allowance } from "./allowance";
-import { OverlayBox } from "./styled";
 import SwipeableViews from "react-swipeable-views/lib/SwipeableViews";
 import { AllowanceConfirmation } from "./allowance/confirmation";
 import { Form } from "./form";
-import BounceLoader from "react-spinners/BounceLoader";
-import { selectedTheme } from "../../app";
 import { Flex, Box } from "reflexbox";
 import { DepositConfirmation } from "./form/confirmation";
+import { LoadingOverlay } from "../../../components/loading-overlay";
 
 export const DepositFlow = ({ open, asset }) => {
     const dispatch = useDispatch();
@@ -116,7 +114,6 @@ export const DepositFlow = ({ open, asset }) => {
                                 transactionHash={successfulGrantAllowanceHash}
                             />
                         )}
-                        <OverlayBox open={loadingAllowance} />
                     </SwipeableViews>
                 ) : (
                     <SwipeableViews
@@ -136,15 +133,7 @@ export const DepositFlow = ({ open, asset }) => {
                     </SwipeableViews>
                 )}
             </Box>
-            <OverlayBox
-                width="100%"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                open={loadingAllowance}
-            >
-                <BounceLoader size={60} color={selectedTheme.loader} loading />
-            </OverlayBox>
+            <LoadingOverlay open={loadingAllowance} />
         </Flex>
     );
 };

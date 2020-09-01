@@ -10,14 +10,17 @@ export const PrivateRoute = ({
 }) => (
     <Route
         {...rest}
-        render={props =>
+        render={(props) =>
             condition ? <Component {...props} /> : <Redirect to={redirectTo} />
         }
     />
 );
 
 PrivateRoute.propTypes = {
-    component: PropTypes.func.isRequired,
+    component: PropTypes.oneOfType([
+        PropTypes.func.isRequired,
+        PropTypes.object.isRequired,
+    ]),
     condition: PropTypes.bool.isRequired,
-    redirectTo: PropTypes.string.isRequired
+    redirectTo: PropTypes.string.isRequired,
 };

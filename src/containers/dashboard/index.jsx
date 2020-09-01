@@ -29,6 +29,7 @@ const Dashboard = () => {
         exchange,
         supportedTokens,
         balances,
+        balancesLoading,
         transactions,
         transactionsLoading,
         transactionsAmount,
@@ -41,6 +42,7 @@ const Dashboard = () => {
         exchange: state.loopring.exchange,
         supportedTokens: state.loopring.supportedTokens.data,
         balances: state.loopring.balances.data,
+        balancesLoading: !!state.loopring.balances.loadings,
         transactions: state.loopring.transactions.data,
         transactionsLoading: !!state.loopring.transactions.loadings,
         transactionsAmount: state.loopring.transactions.amounts,
@@ -253,13 +255,14 @@ const Dashboard = () => {
                     <Transactions
                         asset={selectedAsset}
                         transactions={transactions}
-                        loading={transactionsLoading}
+                        loading={balancesLoading || transactionsLoading}
                         typeFilter={transactionsTypeFilter}
                         onChange={handleTransactionChange}
                         onTypeFilterChange={handleTypeFilterChange}
                         onRefresh={handleTransactionsRefresh}
                         selectedFiat={selectedFiat}
                         onLoadTransactions={handleTransactionsLoad}
+                        transactionsLoading={transactionsLoading}
                         transactionsAmount={transactionsAmount}
                     />
                 </TransactionsContainer>

@@ -50,7 +50,7 @@ export const BottomUpContainer = ({
 };
 
 BottomUpContainer.propTypes = {
-    open: PropTypes.bool.isRequired,
+    open: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired,
 };

@@ -6,10 +6,8 @@ import { useIntl, FormattedMessage } from "react-intl";
 import { Searchbar } from "../../../components/searchbar";
 import { ActionButton } from "../../../components/action-button";
 import { faRedo } from "@fortawesome/free-solid-svg-icons";
-import { OverlayBox } from "./styled";
-import BounceLoader from "react-spinners/BounceLoader";
-import { selectedTheme } from "../../app";
 import { useSelector } from "react-redux";
+import { LoadingOverlay } from "../../../components/loading-overlay";
 
 export const Assets = ({ assets, onChange, onRefresh, open, selectedFiat }) => {
     const { formatMessage } = useIntl();
@@ -100,15 +98,7 @@ export const Assets = ({ assets, onChange, onRefresh, open, selectedFiat }) => {
                     </Box>
                 )}
             </Flex>
-            <OverlayBox
-                width="100%"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                open={balancesLoading}
-            >
-                <BounceLoader size={60} color={selectedTheme.loader} loading />
-            </OverlayBox>
+            <LoadingOverlay open={balancesLoading} />
         </Flex>
     );
 };

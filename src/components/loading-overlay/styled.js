@@ -1,23 +1,24 @@
-import { Box } from "reflexbox";
 import styled, { css } from "styled-components";
+import { Flex } from "reflexbox";
 
-export const OverlayBox = styled(Box)`
+export const OverlayFlex = styled(Flex)`
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    background: ${(props) => props.theme.background};
+    background: ${(props) =>
+        props.light ? props.theme.foreground : props.theme.background};
     opacity: 1;
+    color: ${(props) => props.theme.primary};
     border-top-left-radius: 24px;
     border-top-right-radius: 24px;
     transition: opacity 0.3s ease;
-    transform: translateY(0);
+    font-size: 52px;
     ${(props) =>
         !props.open &&
         css`
             opacity: 0;
-            transition: transform 0.3s ease 0.3s, opacity 0.3s ease;
-            transform: translateY(10000px);
+            pointer-events: none;
         `}
 `;

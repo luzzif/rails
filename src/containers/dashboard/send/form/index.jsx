@@ -8,11 +8,9 @@ import { isAddress } from "web3-utils";
 import { Input } from "../../../../components/input";
 import BigNumber from "bignumber.js";
 import { getAddressFromEnsName } from "../../../../actions/ens";
-import BounceLoader from "react-spinners/BounceLoader";
-import { selectedTheme } from "../../../app";
-import { OverlayBox } from "./styled";
 import { useDebouncedCallback } from "use-debounce";
 import { weiToEther } from "../../../../utils/conversion";
+import { LoadingOverlay } from "../../../../components/loading-overlay";
 
 export const Send = ({ onConfirm, asset }) => {
     const dispatch = useDispatch();
@@ -195,14 +193,7 @@ export const Send = ({ onConfirm, asset }) => {
                     <FormattedMessage id="send.form.confirm" />
                 </Button>
             </Box>
-            <OverlayBox
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                open={loadingAddressFromEns}
-            >
-                <BounceLoader size={60} color={selectedTheme.loader} loading />
-            </OverlayBox>
+            <LoadingOverlay open={loadingAddressFromEns} />
         </Flex>
     );
 };

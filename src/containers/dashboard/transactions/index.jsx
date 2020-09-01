@@ -4,12 +4,11 @@ import { Flex, Box } from "reflexbox";
 import { Transaction } from "./transaction";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Searchbar } from "../../../components/searchbar";
-import BounceLoader from "react-spinners/BounceLoader";
-import { selectedTheme } from "../../app";
 import { ActionButton } from "../../../components/action-button";
 import { faRedo } from "@fortawesome/free-solid-svg-icons";
-import { OverlayBox, ListFlex, RootFlex, StyledInfiniteScroll } from "./styled";
+import { ListFlex, RootFlex, StyledInfiniteScroll } from "./styled";
 import { Chip } from "../../../components/chip";
+import { LoadingOverlay } from "../../../components/loading-overlay";
 
 export const Transactions = ({
     asset,
@@ -21,6 +20,7 @@ export const Transactions = ({
     onRefresh,
     selectedFiat,
     onLoadTransactions,
+    transactionsLoading,
     transactionsAmount,
 }) => {
     const { formatMessage } = useIntl();
@@ -33,9 +33,11 @@ export const Transactions = ({
 
     useEffect(() => {
         setHasMoreTransactions(
-            !query && !loading && transactions.length < transactionsAmount
+            !query &&
+                !transactionsLoading &&
+                transactions.length < transactionsAmount
         );
-    }, [loading, query, transactions.length, transactionsAmount]);
+    }, [transactionsLoading, query, transactions.length, transactionsAmount]);
 
     useEffect(() => {
         setFilteredTransactions(
@@ -221,19 +223,7 @@ export const Transactions = ({
                         </Box>
                     )
                 ) : null}
-                <OverlayBox
-                    width="100%"
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    open={loading}
-                >
-                    <BounceLoader
-                        size={60}
-                        color={selectedTheme.loader}
-                        loading
-                    />
-                </OverlayBox>
+                <LoadingOverlay light open={loading} />
             </ListFlex>
         </RootFlex>
     );

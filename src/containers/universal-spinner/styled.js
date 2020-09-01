@@ -7,6 +7,8 @@ export const RootContainer = styled(Flex)`
     left: 0;
     right: 0;
     bottom: 0;
+    color: ${(props) => props.theme.primary};
+    font-size: 60px;
     background: ${(props) => props.theme.background};
     opacity: 1;
     transition: opacity 0.3s ease;

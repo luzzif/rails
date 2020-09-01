@@ -1,25 +1,25 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { RootContainer } from "./styled";
-import { selectedTheme } from "../app";
-import BounceLoader from "react-spinners/BounceLoader";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import { useDebouncedCallback } from "use-debounce/lib";
 
 export const UniversalSpinner = ({ timeout, open }) => {
     const [locallyOpen, setLocallyOpen] = useState(false);
-    let timer = useRef(null);
 
-    const onTimeout = useCallback(() => {
-        setLocallyOpen(open);
-        clearTimeout(timer);
-    }, [open, timer]);
+    const [debouncedSetLocallyOpen] = useDebouncedCallback(
+        setLocallyOpen,
+        timeout
+    );
 
     useEffect(() => {
         if (!open) {
             setLocallyOpen(false);
         } else if (!locallyOpen) {
-            timer.current = setTimeout(onTimeout, timeout);
+            debouncedSetLocallyOpen(open);
         }
-    }, [open, timeout, onTimeout, locallyOpen]);
+    }, [debouncedSetLocallyOpen, locallyOpen, open]);
 
     return (
         <RootContainer
@@ -27,7 +27,7 @@ export const UniversalSpinner = ({ timeout, open }) => {
             justifyContent="center"
             alignItems="center"
         >
-            <BounceLoader size={80} color={selectedTheme.loader} loading />
+            <FontAwesomeIcon icon={faCircleNotch} spin />
         </RootContainer>
     );
 };

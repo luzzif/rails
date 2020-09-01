@@ -86,5 +86,5 @@ export const RegistrationFlow = ({ open }) => {
 };
 
 RegistrationFlow.propTypes = {
-    open: PropTypes.bool.isRequired,
+    open: PropTypes.bool,
 };
