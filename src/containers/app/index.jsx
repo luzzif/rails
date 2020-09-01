@@ -6,6 +6,7 @@ import React, {
     Suspense,
     lazy,
 } from "react";
+import logoDark from "../../images/logo-dark.svg";
 import { Layout } from "../../components/layout";
 import { ThemeProvider } from "styled-components";
 import { PrivateRoute } from "../../components/private-route";
@@ -132,8 +133,7 @@ export const App = () => {
 
     // setting up local storage -saved theme
     useEffect(() => {
-        const cachedTheme =
-            localStorage.getItem("rails-theme") || "light";
+        const cachedTheme = localStorage.getItem("rails-theme") || "light";
         const lightTheme = cachedTheme === "light";
         setLightTheme(lightTheme);
         selectedTheme = lightTheme ? light : dark;
@@ -269,6 +269,7 @@ export const App = () => {
             <Helmet>
                 <link rel="icon" href={lightTheme ? darkLogo : lightLogo} />
                 <meta name="theme-color" content={selectedTheme.background} />
+                <meta name="twitter:image" content={logoDark} />
             </Helmet>
             <GlobalStyle />
             <Layout
