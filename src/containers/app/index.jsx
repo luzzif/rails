@@ -269,7 +269,10 @@ export const App = () => {
             <Helmet>
                 <link rel="icon" href={lightTheme ? darkLogo : lightLogo} />
                 <meta name="theme-color" content={selectedTheme.background} />
-                <meta name="twitter:image" content={logoDark} />
+                <meta
+                    name="twitter:image"
+                    content={`${window.location.origin}${logoDark}`}
+                />
             </Helmet>
             <GlobalStyle />
             <Layout
