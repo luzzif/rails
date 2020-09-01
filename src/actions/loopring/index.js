@@ -267,32 +267,31 @@ export const getTokenTransactions = (
                 apiKey,
                 supportedTokens
             );
-            transactionsAmount += deposits.totalNum;
+            const filteredDeposits = deposits.transactions.filter(
+                (deposit) => deposit.depositType !== "create_account"
+            );
+            transactionsAmount +=
+                deposits.totalNum -
+                (deposits.transactions.length - filteredDeposits.length);
             transactions = transactions.concat(
-                deposits.transactions
-                    .filter(
-                        (deposit) => deposit.depositType !== "create_account"
-                    )
-                    .map((deposit) => {
-                        const bigNumberAmount = new BigNumber(deposit.amount);
-                        const bigNumberFeeAmount = new BigNumber(
-                            deposit.feeAmount
-                        );
-                        deposit.deposit = true;
-                        deposit.amount = bigNumberAmount;
-                        deposit.etherAmount = weiToEther(
-                            bigNumberAmount,
-                            deposit.symbol,
-                            supportedTokens
-                        );
-                        deposit.feeAmount = bigNumberFeeAmount;
-                        deposit.etherFeeAmount = weiToEther(
-                            bigNumberFeeAmount,
-                            "ETH",
-                            supportedTokens
-                        );
-                        return deposit;
-                    })
+                filteredDeposits.map((deposit) => {
+                    const bigNumberAmount = new BigNumber(deposit.amount);
+                    const bigNumberFeeAmount = new BigNumber(deposit.feeAmount);
+                    deposit.deposit = true;
+                    deposit.amount = bigNumberAmount;
+                    deposit.etherAmount = weiToEther(
+                        bigNumberAmount,
+                        deposit.symbol,
+                        supportedTokens
+                    );
+                    deposit.feeAmount = bigNumberFeeAmount;
+                    deposit.etherFeeAmount = weiToEther(
+                        bigNumberFeeAmount,
+                        "ETH",
+                        supportedTokens
+                    );
+                    return deposit;
+                })
             );
         }
         if (type === "all" || type === "withdrawals") {
@@ -331,7 +330,7 @@ export const getTokenTransactions = (
         dispatch({
             type: GET_TRANSACTIONS_SUCCESS,
             transactions: transactions.slice(0, itemsPerPage + 1),
-            transactionsAmount: transactionsAmount - 1,
+            transactionsAmount,
         });
     } catch (error) {
         toast.error(<FormattedMessage id="error.rails.token.transactions" />);

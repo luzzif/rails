@@ -71,8 +71,7 @@ const Dashboard = () => {
             selectedAsset.symbol &&
             supportedTokens &&
             supportedTokens.length > 0 &&
-            transactionsTypeFilter &&
-            transactions.length === 0
+            transactionsTypeFilter
         ) {
             dispatch(
                 getTokenTransactions(
@@ -92,7 +91,6 @@ const Dashboard = () => {
         selectedAsset,
         selectedAsset.symbol,
         supportedTokens,
-        transactions,
         transactionsTypeFilter,
         wallet,
     ]);
@@ -215,6 +213,14 @@ const Dashboard = () => {
         handleClose();
     }, [handleClose, handleTransactionsRefresh]);
 
+    const handleTypeFilterChange = useCallback(
+        (filter) => {
+            dispatch(resetTransactions());
+            setTransactionsTypeFilter(filter);
+        },
+        [dispatch]
+    );
+
     return (
         <>
             <Flex
@@ -250,7 +256,7 @@ const Dashboard = () => {
                         loading={transactionsLoading}
                         typeFilter={transactionsTypeFilter}
                         onChange={handleTransactionChange}
-                        onTypeFilterChange={setTransactionsTypeFilter}
+                        onTypeFilterChange={handleTypeFilterChange}
                         onRefresh={handleTransactionsRefresh}
                         selectedFiat={selectedFiat}
                         onLoadTransactions={handleTransactionsLoad}
