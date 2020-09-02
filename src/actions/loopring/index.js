@@ -6,7 +6,7 @@ import { getExchangeInfo } from "loopring-lightcone/lib/api/v2/exchange-info";
 import { getDeposits } from "loopring-lightcone/lib/api/v2/deposits";
 import { getWithdrawals } from "loopring-lightcone/lib/api/v2/withdrawals";
 import { getBalances } from "loopring-lightcone/lib/api/v2/balances";
-import { getTokenInfo } from "../../lightcone/api/v1/tokeninfo/get";
+import { getTokens } from "loopring-lightcone/lib/api/v2/tokens";
 import { getPrice } from "../../lightcone/api/v1/price/get";
 import BigNumber from "bignumber.js";
 import { getTransferHistory } from "../../lightcone/api/v1/transfer/get";
@@ -127,7 +127,7 @@ export const getSupportedTokens = () => async (dispatch) => {
     try {
         dispatch({
             type: GET_SUPPORTED_TOKENS_SUCCESS,
-            supportedTokens: await getTokenInfo(),
+            supportedTokens: await getTokens(),
         });
     } catch (error) {
         toast.error(<FormattedMessage id="error.rails.supported.tokens" />);
@@ -534,7 +534,7 @@ export const registerAccount = (web3Instance) => async (dispatch) => {
             onchainFees,
             chainId,
         } = await getExchangeInfo();
-        const tokens = await getTokenInfo();
+        const tokens = await getTokens();
         const fee = new BigNumber(
             config.getFeeByType("create", onchainFees).fee
         ).plus(config.getFeeByType("deposit", onchainFees).fee);

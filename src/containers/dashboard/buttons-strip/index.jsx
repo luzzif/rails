@@ -29,17 +29,15 @@ export const ButtonsStrip = ({
                 />
             </Box>
         )}
-        {asset.depositEnabled && (
-            <Box>
-                <ActionButton
-                    faIcon={faPlus}
-                    title={<FormattedMessage id="dashboard.deposit" />}
-                    size={[52, 56, 60]}
-                    faIconSize={24}
-                    onClick={onDeposit}
-                />
-            </Box>
-        )}
+        <Box>
+            <ActionButton
+                faIcon={faPlus}
+                title={<FormattedMessage id="dashboard.deposit" />}
+                size={[52, 56, 60]}
+                faIconSize={24}
+                onClick={onDeposit}
+            />
+        </Box>
         {!asset.balance.isZero() && (
             <Box>
                 <ActionButton
