@@ -4,7 +4,7 @@ import Wallet from "../../lightcone/wallet";
 import { getAccount } from "loopring-lightcone/lib/api/v2/account";
 import { getExchangeInfo } from "loopring-lightcone/lib/api/v2/exchange-info";
 import { getDeposits } from "loopring-lightcone/lib/api/v2/deposits";
-import { getWithdrawalHistory } from "../../lightcone/api/LightconeAPI";
+import { getWithdrawals } from "loopring-lightcone/lib/api/v2/withdrawals";
 import { getBalances } from "../../lightcone/api/v1/balances/get";
 import { getTokenInfo } from "../../lightcone/api/v1/tokeninfo/get";
 import { getPrice } from "../../lightcone/api/v1/price/get";
@@ -311,13 +311,16 @@ export const getTokenTransactions = (
             );
         }
         if (type === "all" || type === "withdrawals") {
-            const withdrawals = await getWithdrawalHistory(
+            const withdrawals = await getWithdrawals(
                 account.accountId,
-                tokenSymbol,
-                itemsPerPage,
-                offset,
                 apiKey,
-                supportedTokens
+                null,
+                null,
+                null,
+                offset,
+                itemsPerPage,
+                null,
+                tokenSymbol
             );
             transactionsAmount += withdrawals.totalNum;
             transactions = transactions.concat(
