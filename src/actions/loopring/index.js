@@ -1,8 +1,8 @@
 import React from "react";
 import { getLoopringApiKey } from "../../utils/loopring";
 import Wallet from "../../lightcone/wallet";
+import { getAccount } from "loopring-lightcone/lib/api/v2/account";
 import {
-    lightconeGetAccount,
     getExchangeInfo,
     getDepositHistory,
     getWithdrawalHistory,
@@ -70,7 +70,7 @@ export const getAuthStatus = (address) => async (dispatch) => {
         dispatch({ type: POST_GET_AUTH_STATUS_LOADING });
         let needsRegistration = false;
         try {
-            await lightconeGetAccount(address);
+            await getAccount(address);
         } catch (error) {
             needsRegistration = true;
         }
@@ -89,7 +89,7 @@ export const login = (web3Instance, selectedAccount) => async (dispatch) => {
         // custom notification in case the account is not registered
         let account;
         try {
-            account = await lightconeGetAccount(selectedAccount);
+            account = await getAccount(selectedAccount);
         } catch (error) {
             toast.warn(<FormattedMessage id="warn.account.not.found" />);
             console.warn("account not found");
@@ -375,12 +375,8 @@ export const postTransfer = (
 ) => async (dispatch) => {
     dispatch({ type: POST_TRANSFER_LOADING });
     try {
-        const { accountNonce: nonce } = await lightconeGetAccount(
-            wallet.address
-        );
-        const { accountId: receiverAccountId } = await lightconeGetAccount(
-            receiver
-        );
+        const { accountNonce: nonce } = await getAccount(wallet.address);
+        const { accountId: receiverAccountId } = await getAccount(receiver);
         const { exchangeId, transferFees } = exchange;
         let fee = "0";
         if (transferFees) {
@@ -461,9 +457,7 @@ export const grantAllowance = (
 ) => async (dispatch) => {
     dispatch({ type: POST_GRANT_ALLOWANCE_LOADING });
     try {
-        const { accountNonce: nonce } = await lightconeGetAccount(
-            wallet.address
-        );
+        const { accountNonce: nonce } = await getAccount(wallet.address);
         const { chainId, exchangeAddress } = exchange;
         const transactionHash = await wallet.approveMax(
             tokenAddress,
@@ -525,7 +519,7 @@ export const registerAccount = (web3Instance) => async (dispatch) => {
         const selectedAccount = accounts[0];
         const wallet = new Wallet("MetaMask", web3Instance, selectedAccount);
         try {
-            if (await lightconeGetAccount(wallet.address)) {
+            if (await getAccount(wallet.address)) {
                 toast.warn(
                     <FormattedMessage id="warn.register.existing.account" />
                 );
