@@ -1,5 +1,9 @@
 {
-    "auth.summary": "Login or register to Rails to start sending and receiving crypto right away.",
+    "auth.welcome": "Welcome to Rails",
+    "auth.connect": "Connect your wallet to proceed",
+    "auth.connect.button": "Connect wallet",
+    "auth.signin.button": "Sign in",
+    "auth.signin": "Click on the button below to proceed",
     "auth.login.button": "Login",
     "auth.register.button": "Register",
     "auth.login.proceed.message": "Please pay attention to pending requests in Metamask. In some cases a popup won't appear. Click on the button below to continue.",
@@ -69,6 +73,7 @@
     "error.rails.register": "There was an error registering the new account. Please try again later.",
     "error.rails.withdrawal": "There was an error performing the on-chain withdrawal. Please try again later.",
     "error.web3.initialization": "There was an error initializing web3. Please try again later.",
+    "error.rails.auth": "There was an error checking your auth status. Please try again later.",
     "warn.account.not.found": "Seems like this account is not yet on our platform. Please register first.",
     "warn.register.existing.account": "Seems like you already own a Rails account. Please login to start using it."
 }

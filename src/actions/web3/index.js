@@ -15,7 +15,13 @@ export const initializeWeb3 = () => async (dispatch) => {
         provider.on("accountsChanged", () => {
             dispatch(postLogout());
         });
-        dispatch({ type: INITIALIZE_WEB3_SUCCESS, web3: new Web3(provider) });
+        const web3Instance = new Web3(provider);
+        const [selectedAccount] = await web3Instance.eth.getAccounts();
+        dispatch({
+            type: INITIALIZE_WEB3_SUCCESS,
+            web3: web3Instance,
+            selectedAccount,
+        });
     } catch (error) {
         console.error("error initializing web3", error);
     }

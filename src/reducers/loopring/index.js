@@ -29,9 +29,13 @@ import {
     POST_REGISTRATION_SUCCESS,
     DELETE_REGISTRATION_SUCCESS_TRANSACTION_HASH,
     RESET_TRANSACTIONS,
+    POST_GET_AUTH_STATUS_LOADING,
+    DELETE_GET_AUTH_STATUS_LOADING,
+    GET_AUTH_STATUS_SUCCESS,
 } from "../../actions/loopring";
 
 const initialState = {
+    authStatus: { loadings: 0, needsRegistration: null },
     account: null,
     wallet: null,
     exchange: null,
@@ -58,6 +62,33 @@ const initialState = {
 export const loopringReducer = (state = initialState, action) => {
     const { type } = action;
     switch (type) {
+        case POST_GET_AUTH_STATUS_LOADING: {
+            return {
+                ...state,
+                authStatus: {
+                    ...state.authStatus,
+                    loadings: state.authStatus.loadings + 1,
+                },
+            };
+        }
+        case DELETE_GET_AUTH_STATUS_LOADING: {
+            return {
+                ...state,
+                authStatus: {
+                    ...state.authStatus,
+                    loadings: state.authStatus.loadings - 1,
+                },
+            };
+        }
+        case GET_AUTH_STATUS_SUCCESS: {
+            return {
+                ...state,
+                authStatus: {
+                    ...state.authStatus,
+                    needsRegistration: action.needsRegistration,
+                },
+            };
+        }
         case LOGIN_SUCCESS: {
             return {
                 ...state,
@@ -238,7 +269,13 @@ export const loopringReducer = (state = initialState, action) => {
             return { ...state, selectedFiat: action.fiat };
         }
         case POST_LOGOUT: {
-            return { ...state, account: null, wallet: null, exchange: null };
+            return {
+                ...state,
+                account: null,
+                wallet: null,
+                exchange: null,
+                authStatus: { loadings: 0, needsRegistration: null },
+            };
         }
         case POST_REGISTRATION_SUCCESS: {
             return {

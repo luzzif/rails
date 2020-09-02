@@ -33,12 +33,13 @@ const commonsStyles = css`
     }
     :disabled {
         cursor: not-allowed;
-        background: ${(props) => (props.secondary ? "none" : "grey")};
+        background: ${(props) =>
+            props.secondary ? "none" : props.theme.disabled};
+        color: ${(props) => props.theme.textDisabled};
         ${(props) =>
             props.secondary &&
             css`
-                border: solid 3px grey;
-                color: grey;
+                border: solid 3px ${(props) => props.theme.textDisabled};
             `}
     }
 `;

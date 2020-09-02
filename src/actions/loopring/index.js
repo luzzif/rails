@@ -23,6 +23,9 @@ import { toast } from "react-toastify";
 import { FormattedMessage } from "react-intl";
 import { weiToEther } from "../../utils/conversion";
 
+export const POST_GET_AUTH_STATUS_LOADING = "POST_GET_AUTH_STATUS_LOADING";
+export const DELETE_GET_AUTH_STATUS_LOADING = "DELETE_GET_AUTH_STATUS_LOADING";
+export const GET_AUTH_STATUS_SUCCESS = "GET_AUTH_STATUS_SUCCESS";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const POST_GET_SUPPORTED_TOKENS_LOADING =
     "POST_GET_SUPPORTED_TOKENS_LOADING";
@@ -62,10 +65,26 @@ export const POST_REGISTRATION_SUCCESS = "POST_REGISTRATION_SUCCESS";
 export const DELETE_REGISTRATION_SUCCESS_TRANSACTION_HASH =
     "DELETE_REGISTRATION_SUCCESS_TRANSACTION_HASH";
 
-export const login = (web3Instance) => async (dispatch) => {
+export const getAuthStatus = (address) => async (dispatch) => {
     try {
-        const accounts = await web3Instance.eth.getAccounts();
-        const selectedAccount = accounts[0];
+        dispatch({ type: POST_GET_AUTH_STATUS_LOADING });
+        let needsRegistration = false;
+        try {
+            await lightconeGetAccount(address);
+        } catch (error) {
+            needsRegistration = true;
+        }
+        dispatch({ type: GET_AUTH_STATUS_SUCCESS, needsRegistration });
+    } catch (error) {
+        toast.error(<FormattedMessage id="error.rails.auth.status" />);
+        console.error("error checking auth status", error);
+    } finally {
+        dispatch({ type: DELETE_GET_AUTH_STATUS_LOADING });
+    }
+};
+
+export const login = (web3Instance, selectedAccount) => async (dispatch) => {
+    try {
         const wallet = new Wallet("MetaMask", web3Instance, selectedAccount);
         // custom notification in case the account is not registered
         let account;
