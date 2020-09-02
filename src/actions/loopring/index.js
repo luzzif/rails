@@ -13,10 +13,10 @@ import { getAllowance } from "loopring-lightcone/lib/api/v2/allowances";
 import { getRecommendedGasPrice } from "loopring-lightcone/lib/api/v2/recommended-gas-price";
 import { getEthereumNonce } from "loopring-lightcone/lib/api/v2/ethereum-nonce";
 import { getEtherOnChainBalance } from "loopring-lightcone/lib/api/v2/ether-onchain-balance";
+import { getEthereumTokenBalances } from "loopring-lightcone/lib/api/v2/ethereum-token-balances";
 import BigNumber from "bignumber.js";
 import config from "../../lightcone/config";
 import { submitTransfer } from "../../lightcone/api/v1/transfer";
-import { getTokenBalance } from "../../lightcone/api/v1/tokenBalance/get";
 import { toast } from "react-toastify";
 import { FormattedMessage } from "react-intl";
 import { weiToEther } from "../../utils/conversion";
@@ -207,7 +207,7 @@ export const getDepositBalance = (
         const balance =
             tokenSymbol === "ETH"
                 ? await getEtherOnChainBalance(wallet.address)
-                : await getTokenBalance(
+                : await getEthereumTokenBalances(
                       wallet.address,
                       tokenSymbol,
                       supportedTokens
