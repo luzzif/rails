@@ -3,10 +3,8 @@ import { getLoopringApiKey } from "../../utils/loopring";
 import Wallet from "../../lightcone/wallet";
 import { getAccount } from "loopring-lightcone/lib/api/v2/account";
 import { getExchangeInfo } from "loopring-lightcone/lib/api/v2/exchange-info";
-import {
-    getDepositHistory,
-    getWithdrawalHistory,
-} from "../../lightcone/api/LightconeAPI";
+import { getDeposits } from "loopring-lightcone/lib/api/v2/deposits";
+import { getWithdrawalHistory } from "../../lightcone/api/LightconeAPI";
 import { getBalances } from "../../lightcone/api/v1/balances/get";
 import { getTokenInfo } from "../../lightcone/api/v1/tokeninfo/get";
 import { getPrice } from "../../lightcone/api/v1/price/get";
@@ -278,22 +276,21 @@ export const getTokenTransactions = (
             );
         }
         if (type === "all" || type === "deposits") {
-            const deposits = await getDepositHistory(
+            const deposits = await getDeposits(
                 account.accountId,
-                tokenSymbol,
-                itemsPerPage,
-                offset,
                 apiKey,
-                supportedTokens
+                null,
+                null,
+                false,
+                null,
+                offset,
+                itemsPerPage,
+                null,
+                tokenSymbol
             );
-            const filteredDeposits = deposits.transactions.filter(
-                (deposit) => deposit.depositType !== "create_account"
-            );
-            transactionsAmount +=
-                deposits.totalNum -
-                (deposits.transactions.length - filteredDeposits.length);
+            transactionsAmount += deposits.totalNum;
             transactions = transactions.concat(
-                filteredDeposits.map((deposit) => {
+                deposits.transactions.map((deposit) => {
                     const bigNumberAmount = new BigNumber(deposit.amount);
                     const bigNumberFeeAmount = new BigNumber(deposit.feeAmount);
                     deposit.deposit = true;
