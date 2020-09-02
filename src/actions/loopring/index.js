@@ -2,8 +2,8 @@ import React from "react";
 import { getLoopringApiKey } from "../../utils/loopring";
 import Wallet from "../../lightcone/wallet";
 import { getAccount } from "loopring-lightcone/lib/api/v2/account";
+import { getExchangeInfo } from "loopring-lightcone/lib/api/v2/exchange-info";
 import {
-    getExchangeInfo,
     getDepositHistory,
     getWithdrawalHistory,
 } from "../../lightcone/api/LightconeAPI";
