@@ -10,11 +10,11 @@ import { getTokens } from "loopring-lightcone/lib/api/v2/tokens";
 import { getTokensFiatPrice } from "loopring-lightcone/lib/api/v2/fiat-price";
 import { getTransfers } from "loopring-lightcone/lib/api/v2/transfers";
 import { getAllowance } from "loopring-lightcone/lib/api/v2/allowances";
+import { getRecommendedGasPrice } from "loopring-lightcone/lib/api/v2/recommended-gas-price";
+import { getEthereumNonce } from "loopring-lightcone/lib/api/v2/ethereum-nonce";
 import BigNumber from "bignumber.js";
 import config from "../../lightcone/config";
 import { submitTransfer } from "../../lightcone/api/v1/transfer";
-import { getRecommendedGasPrice } from "../../lightcone/api/v1/recommendedGasPrice/get";
-import { getEthNonce } from "../../lightcone/api/v1/ethnonce/get";
 import { getTokenBalance } from "../../lightcone/api/v1/tokenBalance/get";
 import { getEthBalance } from "../../lightcone/api/v1/ethBalance/get";
 import { toast } from "react-toastify";
@@ -498,7 +498,7 @@ export const postDeposit = (
                 token: config.getTokenBySymbol(tokenSymbol, supportedTokens),
                 fee: config.getFeeByType("deposit", onchainFees).fee,
                 amount,
-                nonce: await getEthNonce(wallet.address),
+                nonce: await getEthereumNonce(wallet.address),
                 gasPrice: await getRecommendedGasPrice(),
             },
             true
@@ -553,7 +553,7 @@ export const registerAccount = (web3Instance) => async (dispatch) => {
                 token: config.getTokenBySymbol("ETH", tokens),
                 amount: "",
                 permission: "",
-                nonce: await getEthNonce(wallet.address),
+                nonce: await getEthereumNonce(wallet.address),
                 gasPrice: await getRecommendedGasPrice(),
             },
             true
@@ -588,7 +588,7 @@ export const postOnchainWithdrawal = (
                 chainId,
                 token: config.getTokenBySymbol(tokenSymbol, supportedTokens),
                 amount,
-                nonce: await getEthNonce(wallet.address),
+                nonce: await getEthereumNonce(wallet.address),
                 gasPrice: await getRecommendedGasPrice(),
                 fee: config.getFeeByType("withdraw", onchainFees).fee,
             },
