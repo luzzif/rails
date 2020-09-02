@@ -9,10 +9,10 @@ import { getBalances } from "loopring-lightcone/lib/api/v2/balances";
 import { getTokens } from "loopring-lightcone/lib/api/v2/tokens";
 import { getTokensFiatPrice } from "loopring-lightcone/lib/api/v2/fiat-price";
 import { getTransfers } from "loopring-lightcone/lib/api/v2/transfers";
+import { getAllowance } from "loopring-lightcone/lib/api/v2/allowances";
 import BigNumber from "bignumber.js";
 import config from "../../lightcone/config";
 import { submitTransfer } from "../../lightcone/api/v1/transfer";
-import { getAllowance } from "../../lightcone/api/v1/allowances/get";
 import { getRecommendedGasPrice } from "../../lightcone/api/v1/recommendedGasPrice/get";
 import { getEthNonce } from "../../lightcone/api/v1/ethnonce/get";
 import { getTokenBalance } from "../../lightcone/api/v1/tokenBalance/get";
@@ -433,12 +433,15 @@ export const getTokenAllowance = (
 ) => async (dispatch) => {
     dispatch({ type: POST_GET_ALLOWANCE_LOADING });
     try {
+        const [allowance] = await getAllowance(
+            wallet.address,
+            tokenSymbol,
+            supportedTokens
+        );
         dispatch({
             type: GET_ALLOWANCE_SUCCESS,
             token: tokenSymbol,
-            allowance: new BigNumber(
-                await getAllowance(wallet.address, tokenSymbol, supportedTokens)
-            ),
+            allowance: new BigNumber(allowance),
         });
     } catch (error) {
         toast.error(<FormattedMessage id="error.rails.token.allowance.get" />);
