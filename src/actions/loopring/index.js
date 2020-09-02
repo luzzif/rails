@@ -5,7 +5,7 @@ import { getAccount } from "loopring-lightcone/lib/api/v2/account";
 import { getExchangeInfo } from "loopring-lightcone/lib/api/v2/exchange-info";
 import { getDeposits } from "loopring-lightcone/lib/api/v2/deposits";
 import { getWithdrawals } from "loopring-lightcone/lib/api/v2/withdrawals";
-import { getBalances } from "../../lightcone/api/v1/balances/get";
+import { getBalances } from "loopring-lightcone/lib/api/v2/balances";
 import { getTokenInfo } from "../../lightcone/api/v1/tokeninfo/get";
 import { getPrice } from "../../lightcone/api/v1/price/get";
 import BigNumber from "bignumber.js";
@@ -146,8 +146,7 @@ export const getUserBalances = (
     try {
         const partialBalances = await getBalances(
             account.accountId,
-            await getLoopringApiKey(wallet, account),
-            supportedTokens
+            await getLoopringApiKey(wallet, account)
         );
         const fiatValues = await getPrice(selectedFiat.name);
         // we process the tokens with no balance too,
