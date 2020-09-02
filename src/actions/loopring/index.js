@@ -8,8 +8,8 @@ import { getWithdrawals } from "loopring-lightcone/lib/api/v2/withdrawals";
 import { getBalances } from "loopring-lightcone/lib/api/v2/balances";
 import { getTokens } from "loopring-lightcone/lib/api/v2/tokens";
 import { getTokensFiatPrice } from "loopring-lightcone/lib/api/v2/fiat-price";
+import { getTransfers } from "loopring-lightcone/lib/api/v2/transfers";
 import BigNumber from "bignumber.js";
-import { getTransferHistory } from "../../lightcone/api/v1/transfer/get";
 import config from "../../lightcone/config";
 import { submitTransfer } from "../../lightcone/api/v1/transfer";
 import { getAllowance } from "../../lightcone/api/v1/allowances/get";
@@ -239,13 +239,12 @@ export const getTokenTransactions = (
         let transactionsAmount = 0;
         const offset = page * itemsPerPage;
         if (type === "all" || type === "transfers") {
-            const transfers = await getTransferHistory(
+            const transfers = await getTransfers(
                 account.accountId,
                 tokenSymbol,
                 itemsPerPage,
                 offset,
-                apiKey,
-                supportedTokens
+                apiKey
             );
             transactionsAmount += transfers.totalNum;
             transactions = transactions.concat(
