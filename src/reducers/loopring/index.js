@@ -36,8 +36,10 @@ import {
 
 const initialState = {
     authStatus: { loadings: 0, needsRegistration: null },
-    account: null,
-    wallet: null,
+    accountId: null,
+    apiKey: null,
+    apiSignature: null,
+    keys: null,
     exchange: null,
     supportedTokens: { loadings: 0, data: [] },
     balances: { loadings: 0, data: [] },
@@ -92,9 +94,11 @@ export const loopringReducer = (state = initialState, action) => {
         case LOGIN_SUCCESS: {
             return {
                 ...state,
-                account: action.account,
-                wallet: action.wallet,
+                accountId: action.accountId,
+                apiKey: action.apiKey,
+                apiSignature: action.apiSignature,
                 exchange: action.exchange,
+                keys: action.keys,
             };
         }
         case GET_SUPPORTED_TOKENS_SUCCESS: {
@@ -271,9 +275,16 @@ export const loopringReducer = (state = initialState, action) => {
         case POST_LOGOUT: {
             return {
                 ...state,
-                account: null,
-                wallet: null,
+                accountId: null,
+                apiKey: null,
+                apiSignature: null,
                 exchange: null,
+                keys: null,
+                transactions: {
+                    loadings: 0,
+                    data: [],
+                    amounts: 0,
+                },
                 authStatus: { loadings: 0, needsRegistration: null },
             };
         }

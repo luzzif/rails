@@ -108,8 +108,9 @@ export const App = () => {
     const history = useHistory();
     const {
         web3Instance,
-        loopringAccount,
-        loopringWallet,
+        loopringAccountId,
+        loopringApiKey,
+        loopringApiSignature,
         loopringExchange,
         supportedTokens,
         balances,
@@ -119,8 +120,9 @@ export const App = () => {
         loadingBalances,
     } = useSelector((state) => ({
         web3Instance: state.web3.instance,
-        loopringAccount: state.loopring.account,
-        loopringWallet: state.loopring.wallet,
+        loopringAccountId: state.loopring.accountId,
+        loopringApiSignature: state.loopring.apiSignature,
+        loopringApiKey: state.loopring.apiKey,
         loopringExchange: state.loopring.exchange,
         supportedTokens: state.loopring.supportedTokens.data,
         balances: state.loopring.balances.data,
@@ -162,22 +164,20 @@ export const App = () => {
     }, [dispatch, selectedFiat]);
 
     useEffect(() => {
-        if (loopringWallet && loopringAccount) {
-            dispatch(getSupportedTokens());
-        }
-    }, [history, dispatch, loopringAccount, loopringWallet]);
+        dispatch(getSupportedTokens());
+    }, [dispatch]);
 
     useEffect(() => {
         if (
-            loopringWallet &&
-            loopringAccount &&
+            loopringApiKey &&
+            loopringAccountId &&
             supportedTokens &&
             supportedTokens.length > 0
         ) {
             dispatch(
                 getUserBalances(
-                    loopringAccount,
-                    loopringWallet,
+                    loopringAccountId,
+                    loopringApiKey,
                     supportedTokens,
                     selectedFiat
                 )
@@ -185,10 +185,10 @@ export const App = () => {
         }
     }, [
         dispatch,
-        supportedTokens,
-        loopringAccount,
-        loopringWallet,
+        loopringAccountId,
+        loopringApiKey,
         selectedFiat,
+        supportedTokens,
     ]);
 
     // setting the default-selected asset (the one with the most fiat value)
@@ -216,8 +216,9 @@ export const App = () => {
         setLogged(
             !!(
                 web3Instance &&
-                loopringAccount &&
-                loopringWallet &&
+                loopringApiKey &&
+                loopringApiSignature &&
+                loopringAccountId &&
                 loopringExchange &&
                 supportedTokens &&
                 supportedTokens.length > 0 &&
@@ -228,9 +229,10 @@ export const App = () => {
         );
     }, [
         balances,
-        loopringAccount,
+        loopringAccountId,
+        loopringApiSignature,
         loopringExchange,
-        loopringWallet,
+        loopringApiKey,
         selectedAsset,
         supportedTokens,
         web3Instance,

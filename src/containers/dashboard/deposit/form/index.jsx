@@ -11,17 +11,15 @@ import { getDepositBalance } from "../../../../actions/loopring";
 
 export const Form = ({ onConfirm, asset, open }) => {
     const dispatch = useDispatch();
-    const {
-        loopringAccount,
-        loopringWallet,
-        supportedTokens,
-        depositBalance,
-    } = useSelector((state) => ({
-        loopringAccount: state.loopring.account,
-        loopringWallet: state.loopring.wallet,
-        supportedTokens: state.loopring.supportedTokens.data,
-        depositBalance: state.loopring.depositBalance,
-    }));
+    const { ethereumAccount, supportedTokens, depositBalance } = useSelector(
+        (state) => ({
+            ethereumAccount: state.web3.selectedAccount,
+            loopringAccount: state.loopring.account,
+            loopringWallet: state.loopring.wallet,
+            supportedTokens: state.loopring.supportedTokens.data,
+            depositBalance: state.loopring.depositBalance,
+        })
+    );
 
     const [parsedUserBalance, setParsedUserBalance] = useState(
         new BigNumber("0")
@@ -32,18 +30,20 @@ export const Form = ({ onConfirm, asset, open }) => {
 
     // fetch updated asset's on-chain balance
     useEffect(() => {
-        if (loopringWallet && asset && asset.symbol && supportedTokens) {
+        if (ethereumAccount && asset && asset.symbol && supportedTokens) {
             dispatch(
-                getDepositBalance(loopringWallet, asset.symbol, supportedTokens)
+                getDepositBalance(
+                    ethereumAccount,
+                    asset.symbol,
+                    supportedTokens
+                )
             );
         }
-    }, [asset, dispatch, loopringAccount, loopringWallet, supportedTokens]);
+    }, [asset, dispatch, ethereumAccount, supportedTokens]);
 
     useEffect(() => {
         if (depositBalance) {
-            setParsedUserBalance(
-                weiToEther(depositBalance, asset.symbol, supportedTokens)
-            );
+            setParsedUserBalance(weiToEther(depositBalance, asset.decimals));
         }
     }, [asset, depositBalance, supportedTokens]);
 

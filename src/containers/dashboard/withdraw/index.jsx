@@ -13,12 +13,14 @@ import { Confirmation } from "./confirmation";
 export const WithdrawalFlow = ({ open, asset }) => {
     const dispatch = useDispatch();
     const {
-        loopringWallet,
+        web3Instance,
+        ethereumAccount,
         loopringExchange,
         supportedTokens,
         withdrawalTransactionHash,
     } = useSelector((state) => ({
-        loopringWallet: state.loopring.wallet,
+        web3Instance: state.web3.instance,
+        ethereumAccount: state.web3.selectedAccount,
         loopringExchange: state.loopring.exchange,
         supportedTokens: state.loopring.supportedTokens.data,
         withdrawalTransactionHash: state.loopring.withdrawalTransactionHash,
@@ -44,15 +46,15 @@ export const WithdrawalFlow = ({ open, asset }) => {
         (amount) => {
             dispatch(
                 postOnchainWithdrawal(
-                    loopringWallet,
+                    web3Instance,
+                    ethereumAccount,
                     loopringExchange,
-                    asset.symbol,
-                    supportedTokens,
+                    asset,
                     amount
                 )
             );
         },
-        [asset, dispatch, loopringExchange, loopringWallet, supportedTokens]
+        [asset, dispatch, ethereumAccount, loopringExchange, web3Instance]
     );
 
     return (

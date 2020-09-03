@@ -5,8 +5,6 @@ import { FormattedMessage } from "react-intl";
 import { DateTime } from "luxon";
 import { BoldDiv } from "./styled";
 import { Button } from "../../../components/button";
-import { CHAIN_ID } from "../../../env";
-import { getEtherscanLink } from "../../../lightcone/api/localStorgeAPI";
 import { formatBigNumber } from "../../../utils/conversion";
 
 export const TransactionSummary = ({
@@ -96,7 +94,7 @@ export const TransactionSummary = ({
                         <Button
                             link
                             external
-                            href={`${getEtherscanLink(CHAIN_ID)}/tx/${txHash}`}
+                            href={`https://etherscan.io/tx/${txHash}`}
                         >
                             <FormattedMessage id="dashboard.transaction.summary.etherscan" />
                         </Button>

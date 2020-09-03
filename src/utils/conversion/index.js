@@ -1,11 +1,9 @@
-export const weiToEther = (weiBigNumber, tokendIdOrSymbol, supportedTokens) => {
-    const token = supportedTokens.find(
-        (token) =>
-            token.tokenId === tokendIdOrSymbol ||
-            token.symbol === tokendIdOrSymbol
-    );
-    return weiBigNumber.dividedBy("1e" + token.decimals);
+export const weiToEther = (weiBigNumber, decimals) => {
+    return weiBigNumber.dividedBy("1e" + decimals);
 };
+
+export const etherToWei = (etherBigNumber, decimals) =>
+    etherBigNumber.multipliedBy("1e" + decimals);
 
 export const formatBigNumber = (decimal, significantDecimalPlaces = 2) => {
     const decimalPlaces = decimal.decimalPlaces();

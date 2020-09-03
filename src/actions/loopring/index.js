@@ -1,7 +1,6 @@
 import React from "react";
-import { getLoopringApiKey } from "../../utils/loopring";
-import Wallet from "../../lightcone/wallet";
 import { getAccount } from "loopring-lightcone/lib/api/v2/account";
+import { getApiKey } from "loopring-lightcone/lib/api/v2/account";
 import { getExchangeInfo } from "loopring-lightcone/lib/api/v2/exchange-info";
 import { getDeposits } from "loopring-lightcone/lib/api/v2/deposits";
 import { getWithdrawals } from "loopring-lightcone/lib/api/v2/withdrawals";
@@ -11,15 +10,22 @@ import { getTokensFiatPrice } from "loopring-lightcone/lib/api/v2/fiat-price";
 import { getTransfers } from "loopring-lightcone/lib/api/v2/transfers";
 import { getAllowance } from "loopring-lightcone/lib/api/v2/allowances";
 import { getRecommendedGasPrice } from "loopring-lightcone/lib/api/v2/recommended-gas-price";
-import { getEthereumNonce } from "loopring-lightcone/lib/api/v2/ethereum-nonce";
 import { getEtherOnChainBalance } from "loopring-lightcone/lib/api/v2/ether-onchain-balance";
 import { getEthereumTokenBalances } from "loopring-lightcone/lib/api/v2/ethereum-token-balances";
+import { postTransfer } from "loopring-lightcone/lib/api/v2/transfers";
+import {
+    getSignedTransfer,
+    generateKeyPair,
+    setMaximumTokenApproval,
+    deposit,
+    withdraw,
+    createAccount,
+} from "loopring-lightcone/lib/wallet";
+import { getApiSignature } from "loopring-lightcone/lib/signing/exchange";
 import BigNumber from "bignumber.js";
-import config from "../../lightcone/config";
-import { submitTransfer } from "../../lightcone/api/v1/transfer";
 import { toast } from "react-toastify";
 import { FormattedMessage } from "react-intl";
-import { weiToEther } from "../../utils/conversion";
+import { weiToEther, etherToWei } from "../../utils/conversion";
 
 export const POST_GET_AUTH_STATUS_LOADING = "POST_GET_AUTH_STATUS_LOADING";
 export const DELETE_GET_AUTH_STATUS_LOADING = "DELETE_GET_AUTH_STATUS_LOADING";
@@ -83,7 +89,6 @@ export const getAuthStatus = (address) => async (dispatch) => {
 
 export const login = (web3Instance, selectedAccount) => async (dispatch) => {
     try {
-        const wallet = new Wallet("MetaMask", web3Instance, selectedAccount);
         // custom notification in case the account is not registered
         let account;
         try {
@@ -95,16 +100,19 @@ export const login = (web3Instance, selectedAccount) => async (dispatch) => {
         }
         const exchange = await getExchangeInfo();
         const { exchangeAddress } = exchange;
-        const { keyPair } = await wallet.generateKeyPair(
+        const { keyNonce, accountId } = account;
+        const keys = await generateKeyPair(
+            web3Instance,
             exchangeAddress,
-            account.keyNonce
+            selectedAccount,
+            keyNonce
         );
-        if (!keyPair) {
+        if (!keys) {
             // the user most probably aborted the signing
             console.warn("The user aborted the signing process");
             return;
         }
-        const { publicKeyX, publicKeyY } = keyPair;
+        const { publicKeyX, publicKeyY, secretKey } = keys;
         if (
             account.publicKeyX !== publicKeyX ||
             account.publicKeyY !== publicKeyY
@@ -113,9 +121,26 @@ export const login = (web3Instance, selectedAccount) => async (dispatch) => {
                 "api got and locally generated public keys don't match"
             );
         }
-        wallet.keyPair = keyPair;
-        wallet.accountId = account.accountId;
-        dispatch({ type: LOGIN_SUCCESS, account, wallet, exchange });
+        const apiSignature = await getApiSignature(
+            accountId,
+            publicKeyX,
+            publicKeyY,
+            secretKey
+        );
+        const apiKey = await getApiKey(
+            accountId,
+            publicKeyX,
+            publicKeyY,
+            apiSignature
+        );
+        dispatch({
+            type: LOGIN_SUCCESS,
+            accountId,
+            apiKey,
+            apiSignature,
+            exchange,
+            keys,
+        });
     } catch (error) {
         toast.error(<FormattedMessage id="error.rails.initialization" />);
         console.error("error logging in", error);
@@ -137,17 +162,14 @@ export const getSupportedTokens = () => async (dispatch) => {
 };
 
 export const getUserBalances = (
-    account,
-    wallet,
+    accountId,
+    apiKey,
     supportedTokens,
     selectedFiat
 ) => async (dispatch) => {
     dispatch({ type: POST_GET_BALANCES_LOADING });
     try {
-        const partialBalances = await getBalances(
-            account.accountId,
-            await getLoopringApiKey(wallet, account)
-        );
+        const partialBalances = await getBalances(accountId, apiKey);
         const fiatValues = await getTokensFiatPrice(selectedFiat.name);
         // we process the tokens with no balance too,
         // saving them with a 0 balance if necessary
@@ -174,13 +196,10 @@ export const getUserBalances = (
                     name: supportedToken.name,
                     address: supportedToken.address,
                     balance,
-                    etherBalance: weiToEther(
-                        balance,
-                        supportedTokenId,
-                        supportedTokens
-                    ),
+                    etherBalance: weiToEther(balance, supportedToken.decimals),
                     fiatValue,
                     depositEnabled: supportedToken.depositEnabled,
+                    decimals: supportedToken.decimals,
                 });
                 return allBalances;
             }, [])
@@ -199,19 +218,23 @@ export const getUserBalances = (
 };
 
 export const getDepositBalance = (
-    wallet,
+    selectedAccount,
     tokenSymbol,
     supportedTokens
 ) => async (dispatch) => {
     try {
-        const balance =
-            tokenSymbol === "ETH"
-                ? await getEtherOnChainBalance(wallet.address)
-                : await getEthereumTokenBalances(
-                      wallet.address,
-                      tokenSymbol,
-                      supportedTokens
-                  );
+        let balance;
+        if (tokenSymbol === "ETH") {
+            console.log(await getEtherOnChainBalance(selectedAccount));
+            balance = await getEtherOnChainBalance(selectedAccount);
+        } else {
+            const [tokenBalance] = await getEthereumTokenBalances(
+                selectedAccount,
+                tokenSymbol,
+                supportedTokens
+            );
+            balance = tokenBalance;
+        }
         dispatch({
             type: GET_DEPOSIT_BALANCE_SUCCESS,
             balance: new BigNumber(balance),
@@ -222,25 +245,24 @@ export const getDepositBalance = (
     }
 };
 
-// FIXME: not particularly efficient (every time we fetch the whole transactions list anew)
 export const getTokenTransactions = (
-    account,
-    wallet,
-    tokenSymbol,
-    supportedTokens,
+    selectedAccount,
+    accountId,
+    apiKey,
+    token,
     page,
     itemsPerPage,
     type
 ) => async (dispatch) => {
     dispatch({ type: POST_TRANSACTIONS_LOADING });
     try {
-        const apiKey = await getLoopringApiKey(wallet, account);
+        const { symbol: tokenSymbol, decimals: tokenDecimals } = token;
         let transactions = [];
         let transactionsAmount = 0;
         const offset = page * itemsPerPage;
         if (type === "all" || type === "transfers") {
             const transfers = await getTransfers(
-                account.accountId,
+                accountId,
                 tokenSymbol,
                 itemsPerPage,
                 offset,
@@ -257,17 +279,15 @@ export const getTokenTransactions = (
                     transfer.amount = bigNumberAmount;
                     transfer.etherAmount = weiToEther(
                         bigNumberAmount,
-                        transfer.symbol,
-                        supportedTokens
+                        tokenDecimals
                     );
                     transfer.feeAmount = bigNumberFeeAmount;
                     transfer.etherFeeAmount = weiToEther(
                         bigNumberFeeAmount,
-                        transfer.symbol,
-                        supportedTokens
+                        tokenDecimals
                     );
                     transfer.sent =
-                        wallet.address.toLowerCase() ===
+                        selectedAccount.toLowerCase() ===
                         transfer.senderAddress.toLowerCase();
                     return transfer;
                 })
@@ -275,7 +295,7 @@ export const getTokenTransactions = (
         }
         if (type === "all" || type === "deposits") {
             const deposits = await getDeposits(
-                account.accountId,
+                accountId,
                 apiKey,
                 null,
                 null,
@@ -295,22 +315,17 @@ export const getTokenTransactions = (
                     deposit.amount = bigNumberAmount;
                     deposit.etherAmount = weiToEther(
                         bigNumberAmount,
-                        deposit.symbol,
-                        supportedTokens
+                        tokenDecimals
                     );
                     deposit.feeAmount = bigNumberFeeAmount;
-                    deposit.etherFeeAmount = weiToEther(
-                        bigNumberFeeAmount,
-                        "ETH",
-                        supportedTokens
-                    );
+                    deposit.etherFeeAmount = weiToEther(bigNumberFeeAmount, 18);
                     return deposit;
                 })
             );
         }
         if (type === "all" || type === "withdrawals") {
             const withdrawals = await getWithdrawals(
-                account.accountId,
+                accountId,
                 apiKey,
                 null,
                 null,
@@ -331,14 +346,12 @@ export const getTokenTransactions = (
                     withdrawal.amount = bigNumberAmount;
                     withdrawal.etherAmount = weiToEther(
                         bigNumberAmount,
-                        withdrawal.symbol,
-                        supportedTokens
+                        tokenDecimals
                     );
                     withdrawal.feeAmount = bigNumberFeeAmount;
                     withdrawal.etherFeeAmount = weiToEther(
                         bigNumberFeeAmount,
-                        "ETH",
-                        supportedTokens
+                        18
                     );
                     return withdrawal;
                 })
@@ -361,58 +374,63 @@ export const resetTransactions = () => ({
     type: RESET_TRANSACTIONS,
 });
 
-export const postTransfer = (
-    account,
-    wallet,
+export const submitTransfer = (
+    web3Instance,
+    selectedAccount,
+    keys,
+    apiSignature,
+    apiKey,
     exchange,
-    tokenSymbol,
+    token,
     receiver,
     memo,
-    amount,
-    supportedTokens
+    amount
 ) => async (dispatch) => {
     dispatch({ type: POST_TRANSFER_LOADING });
     try {
-        const { accountNonce: nonce } = await getAccount(wallet.address);
+        const {
+            accountNonce: nonce,
+            accountId: senderAccountId,
+        } = await getAccount(selectedAccount);
         const { accountId: receiverAccountId } = await getAccount(receiver);
         const { exchangeId, transferFees } = exchange;
         let fee = "0";
         if (transferFees) {
-            const transferFee = transferFees.find(
-                (fee) => fee.token === tokenSymbol
+            const wrappedTransferFee = transferFees.find(
+                (fee) => fee.token === token.symbol
             );
-            if (transferFee) {
-                fee = config.fromWEI(
-                    tokenSymbol,
-                    transferFee.fee,
-                    supportedTokens
-                );
+            if (wrappedTransferFee) {
+                fee = weiToEther(
+                    new BigNumber(wrappedTransferFee.fee),
+                    token.decimals
+                ).toFixed();
             }
         }
-        // FIXME: is this input data correct?
-        const signedData = await wallet.signTransfer(
-            {
-                exchangeId: exchangeId,
-                receiver: receiverAccountId,
-                token: tokenSymbol,
-                amount,
-                tokenF: tokenSymbol,
-                amountF: fee,
-                nonce,
-                label: config.getLabel(),
-                memo,
-            },
-            supportedTokens
+        const signedTransfer = await getSignedTransfer(
+            web3Instance,
+            selectedAccount,
+            keys.secretKey,
+            token.decimals,
+            token.id,
+            token.id,
+            amount,
+            fee,
+            exchangeId,
+            senderAccountId,
+            receiverAccountId,
+            1234,
+            nonce,
+            memo
         );
-        if (!signedData) {
+        if (!signedTransfer) {
             // the user aborted the signing procedure
             return;
         }
-        const { transfer, ecdsaSig } = signedData;
-        const transferHash = await submitTransfer(
-            transfer,
-            ecdsaSig,
-            await getLoopringApiKey(wallet, account)
+        console.log(signedTransfer);
+        const transferHash = await postTransfer(
+            signedTransfer,
+            apiSignature,
+            apiKey
         );
         dispatch({ type: POST_TRANSFER_SUCCESS, hash: transferHash });
     } catch (error) {
@@ -427,14 +445,14 @@ export const deleteTransferHash = () => async (dispatch) => {
 };
 
 export const getTokenAllowance = (
-    wallet,
+    selectedAccount,
     tokenSymbol,
     supportedTokens
 ) => async (dispatch) => {
     dispatch({ type: POST_GET_ALLOWANCE_LOADING });
     try {
         const [allowance] = await getAllowance(
-            wallet.address,
+            selectedAccount,
             tokenSymbol,
             supportedTokens
         );
@@ -451,29 +469,28 @@ export const getTokenAllowance = (
 };
 
 export const grantAllowance = (
-    wallet,
+    web3Instance,
+    selectedAccount,
     exchange,
-    tokenSymbol,
-    tokenAddress
+    token
 ) => async (dispatch) => {
     dispatch({ type: POST_GRANT_ALLOWANCE_LOADING });
     try {
-        const { accountNonce: nonce } = await getAccount(wallet.address);
-        const { chainId, exchangeAddress } = exchange;
-        const transactionHash = await wallet.approveMax(
-            tokenAddress,
+        const { exchangeAddress } = exchange;
+        setMaximumTokenApproval(
+            web3Instance,
+            selectedAccount,
+            token.address,
             exchangeAddress,
-            chainId,
-            nonce,
-            await getRecommendedGasPrice(),
-            true
-        );
-        dispatch({ type: GRANT_ALLOWANCE_SUCCESS, transactionHash });
+            await getRecommendedGasPrice()
+        ).once("transactionHash", (transactionHash) => {
+            dispatch({ type: GRANT_ALLOWANCE_SUCCESS, transactionHash });
+        });
     } catch (error) {
         toast.error(
             <FormattedMessage id="error.rails.token.allowance.grant" />
         );
-        console.error(`error requesting ${tokenSymbol} allowance`, error);
+        console.error(`error requesting ${token.symbol} allowance`, error);
     }
     dispatch({ type: DELETE_GRANT_ALLOWANCE_LOADING });
 };
@@ -483,30 +500,27 @@ export const deleteGrantAllowanceTransactionHash = () => async (dispatch) => {
 };
 
 export const postDeposit = (
-    wallet,
+    web3Instance,
+    selectedAccount,
     exchange,
-    supportedTokens,
-    tokenSymbol,
+    token,
     amount
 ) => async (dispatch) => {
     try {
-        const { chainId, exchangeAddress, onchainFees } = exchange;
-        const transactionHash = await wallet.depositTo(
-            {
-                exchangeAddress,
-                chainId,
-                token: config.getTokenBySymbol(tokenSymbol, supportedTokens),
-                fee: config.getFeeByType("deposit", onchainFees).fee,
-                amount,
-                nonce: await getEthereumNonce(wallet.address),
-                gasPrice: await getRecommendedGasPrice(),
-            },
-            true
-        );
-        dispatch({ type: POST_DEPOSIT_SUCCESS, transactionHash });
+        const { exchangeAddress } = exchange;
+        deposit(
+            web3Instance,
+            selectedAccount,
+            token,
+            etherToWei(new BigNumber(amount), token.decimals).toFixed(),
+            exchangeAddress,
+            await getRecommendedGasPrice()
+        ).once("transactionHash", (transactionHash) => {
+            dispatch({ type: POST_DEPOSIT_SUCCESS, transactionHash });
+        });
     } catch (error) {
         toast.error(<FormattedMessage id="error.rails.deposit" />);
-        console.error(`error depositing ${tokenSymbol}`, error);
+        console.error(`error depositing ${token.symbol}`, error);
     }
 };
 
@@ -514,13 +528,12 @@ export const deleteDepositTransactionHash = () => async (dispatch) => {
     dispatch({ type: DELETE_DEPOSIT_TRANSACTION_HASH });
 };
 
-export const registerAccount = (web3Instance) => async (dispatch) => {
+export const registerAccount = (web3Instance, selectedAccount) => async (
+    dispatch
+) => {
     try {
-        const accounts = await web3Instance.eth.getAccounts();
-        const selectedAccount = accounts[0];
-        const wallet = new Wallet("MetaMask", web3Instance, selectedAccount);
         try {
-            if (await getAccount(wallet.address)) {
+            if (await getAccount(selectedAccount)) {
                 toast.warn(
                     <FormattedMessage id="warn.register.existing.account" />
                 );
@@ -530,35 +543,28 @@ export const registerAccount = (web3Instance) => async (dispatch) => {
         } catch (error) {
             // silently fail if the account is yet to be created
         }
-        // TODO: same todo above applies to the exchange info
-        const {
+        const { exchangeAddress } = await getExchangeInfo();
+        const keys = await generateKeyPair(
+            web3Instance,
             exchangeAddress,
-            onchainFees,
-            chainId,
-        } = await getExchangeInfo();
-        const tokens = await getTokens();
-        const fee = new BigNumber(
-            config.getFeeByType("create", onchainFees).fee
-        ).plus(config.getFeeByType("deposit", onchainFees).fee);
-        const { keyPair } = await wallet.generateKeyPair(exchangeAddress, 0);
-        if (!keyPair || !keyPair.secretKey) {
+            selectedAccount,
+            0
+        );
+        if (!keys || !keys.secretKey) {
             throw new Error("failed to generate key pair");
         }
-        const txHash = await wallet.createOrUpdateAccount(
-            keyPair,
-            {
-                exchangeAddress,
-                fee: fee.toString(),
-                chainId: chainId,
-                token: config.getTokenBySymbol("ETH", tokens),
-                amount: "",
-                permission: "",
-                nonce: await getEthereumNonce(wallet.address),
-                gasPrice: await getRecommendedGasPrice(),
-            },
-            true
-        );
-        dispatch({ type: POST_REGISTRATION_SUCCESS, transactionHash: txHash });
+        const { publicKeyX, publicKeyY } = keys;
+        createAccount(
+            web3Instance,
+            selectedAccount,
+            publicKeyX,
+            publicKeyY,
+            "",
+            exchangeAddress,
+            await getRecommendedGasPrice()
+        ).once("transactionHash", (transactionHash) => {
+            dispatch({ type: POST_REGISTRATION_SUCCESS, transactionHash });
+        });
     } catch (error) {
         toast.error(<FormattedMessage id="error.rails.register" />);
         console.error("error registering user", error);
@@ -574,27 +580,26 @@ export const postSelectedAsset = (asset) => async (dispatch) => {
 };
 
 export const postOnchainWithdrawal = (
-    wallet,
+    web3Instance,
+    selectedAccount,
     exchange,
-    tokenSymbol,
-    supportedTokens,
+    token,
     amount
 ) => async (dispatch) => {
     try {
-        const { exchangeAddress, chainId, onchainFees } = exchange;
-        const transactionHash = await wallet.onchainWithdrawal(
-            {
-                exchangeAddress,
-                chainId,
-                token: config.getTokenBySymbol(tokenSymbol, supportedTokens),
-                amount,
-                nonce: await getEthereumNonce(wallet.address),
-                gasPrice: await getRecommendedGasPrice(),
-                fee: config.getFeeByType("withdraw", onchainFees).fee,
-            },
-            true
-        );
-        dispatch({ type: POST_WITHDRAWAL_SUCCESS, transactionHash });
+        const { exchangeAddress, onchainFees } = exchange;
+        const wrappedFee = onchainFees.find((fee) => fee.type === "withdraw");
+        withdraw(
+            web3Instance,
+            selectedAccount,
+            token,
+            etherToWei(new BigNumber(amount), token.decimals).toFixed(),
+            wrappedFee.fee,
+            exchangeAddress,
+            await getRecommendedGasPrice()
+        ).once("transactionHash", (transactionHash) => {
+            dispatch({ type: POST_WITHDRAWAL_SUCCESS, transactionHash });
+        });
     } catch (error) {
         toast.error(<FormattedMessage id="error.rails.withdrawal" />);
         console.error("error performing onchain withdrawal", error);

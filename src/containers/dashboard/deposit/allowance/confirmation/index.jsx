@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import { Flex, Box } from "reflexbox";
 import { FormattedMessage } from "react-intl";
 import { Button } from "../../../../../components/button";
-import { getEtherscanLink } from "../../../../../lightcone/api/localStorgeAPI";
-import { CHAIN_ID } from "../../../../../env";
 
 export const AllowanceConfirmation = ({ asset, transactionHash }) => (
     <Flex
@@ -24,7 +22,7 @@ export const AllowanceConfirmation = ({ asset, transactionHash }) => (
             <Button
                 link
                 external
-                href={`${getEtherscanLink(CHAIN_ID)}/tx/${transactionHash}`}
+                href={`https://etherscan.io/tx/${transactionHash}`}
             >
                 <FormattedMessage id="deposit.allowance.confirmation.button.title" />
             </Button>

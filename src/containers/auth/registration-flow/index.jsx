@@ -9,21 +9,22 @@ import {
     deleteRegistrationTransactionHash,
 } from "../../../actions/loopring";
 import SwipeableViews from "react-swipeable-views/lib/SwipeableViews";
-import { getEtherscanLink } from "../../../lightcone/api/localStorgeAPI";
-import { CHAIN_ID } from "../../../env";
 
 export const RegistrationFlow = ({ open }) => {
     const dispatch = useDispatch();
-    const { web3Instance, transactionHash } = useSelector((state) => ({
-        web3Instance: state.web3.instance,
-        transactionHash: state.loopring.successfulRegistrationHash,
-    }));
+    const { web3Instance, selectedAccount, transactionHash } = useSelector(
+        (state) => ({
+            web3Instance: state.web3.instance,
+            selectedAccount: state.web3.selectedAccount,
+            transactionHash: state.loopring.successfulRegistrationHash,
+        })
+    );
 
     const [index, setIndex] = useState(0);
 
     const handleRegisterProceed = useCallback(() => {
-        dispatch(registerAccount(web3Instance));
-    }, [dispatch, web3Instance]);
+        dispatch(registerAccount(web3Instance, selectedAccount));
+    }, [dispatch, web3Instance, selectedAccount]);
 
     useEffect(() => {
         if (transactionHash) {
@@ -73,9 +74,7 @@ export const RegistrationFlow = ({ open }) => {
                     <Button
                         link
                         external
-                        href={`${getEtherscanLink(
-                            CHAIN_ID
-                        )}/tx/${transactionHash}`}
+                        href={`https://etherscan.io/tx/${transactionHash}`}
                     >
                         <FormattedMessage id="auth.register.confirmation.button.title" />
                     </Button>

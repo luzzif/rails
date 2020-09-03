@@ -48,9 +48,7 @@ export const Send = ({ onConfirm, asset }) => {
     }, [loadingAddressFromEns, addressFromEns]);
 
     useEffect(() => {
-        setParsedUserBalance(
-            weiToEther(asset.balance, asset.symbol, supportedTokens)
-        );
+        setParsedUserBalance(weiToEther(asset.balance, asset.decimals));
     }, [asset, supportedTokens]);
 
     useEffect(() => {

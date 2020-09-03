@@ -16,9 +16,7 @@ export const Form = ({ onConfirm, supportedTokens, asset, open }) => {
     const [amountError, setAmountError] = useState(false);
 
     useEffect(() => {
-        setParsedUserBalance(
-            weiToEther(asset.balance, asset.symbol, supportedTokens)
-        );
+        setParsedUserBalance(weiToEther(asset.balance, asset.decimals));
     }, [asset, supportedTokens]);
 
     useEffect(() => {

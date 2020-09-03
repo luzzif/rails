@@ -9,27 +9,24 @@ import { grantAllowance } from "../../../../actions/loopring";
 
 export const Allowance = ({ asset }) => {
     const dispatch = useDispatch();
-    const { loopringWallet, loopringExchange } = useSelector((state) => ({
-        loopringWallet: state.loopring.wallet,
-        loopringExchange: state.loopring.exchange,
-    }));
+    const { web3Instance, ethereumAccount, loopringExchange } = useSelector(
+        (state) => ({
+            web3Instance: state.web3.instance,
+            ethereumAccount: state.web3.selectedAccount,
+            loopringExchange: state.loopring.exchange,
+        })
+    );
 
     const handleClick = useCallback(() => {
         dispatch(
             grantAllowance(
-                loopringWallet,
+                web3Instance,
+                ethereumAccount,
                 loopringExchange,
-                asset.symbol,
-                asset.address
+                asset
             )
         );
-    }, [
-        asset.address,
-        asset.symbol,
-        dispatch,
-        loopringExchange,
-        loopringWallet,
-    ]);
+    }, [asset, dispatch, ethereumAccount, loopringExchange, web3Instance]);
 
     return (
         <Flex

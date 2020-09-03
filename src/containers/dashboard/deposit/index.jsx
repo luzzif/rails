@@ -18,7 +18,8 @@ import { LoadingOverlay } from "../../../components/loading-overlay";
 export const DepositFlow = ({ open, asset }) => {
     const dispatch = useDispatch();
     const {
-        loopringWallet,
+        web3Instance,
+        ethereumAccount,
         loopringExchange,
         supportedTokens,
         loadingAllowance,
@@ -26,7 +27,8 @@ export const DepositFlow = ({ open, asset }) => {
         successfulGrantAllowanceHash,
         depositTransactionHash,
     } = useSelector((state) => ({
-        loopringWallet: state.loopring.wallet,
+        web3Instance: state.web3.instance,
+        ethereumAccount: state.web3.selectedAccount,
         loopringExchange: state.loopring.exchange,
         supportedTokens: state.loopring.supportedTokens.data,
         loadingAllowance: !!state.loopring.allowances.loadings,
@@ -47,10 +49,14 @@ export const DepositFlow = ({ open, asset }) => {
     useEffect(() => {
         if (open && !isEther) {
             dispatch(
-                getTokenAllowance(loopringWallet, asset.symbol, supportedTokens)
+                getTokenAllowance(
+                    ethereumAccount,
+                    asset.symbol,
+                    supportedTokens
+                )
             );
         }
-    }, [open, dispatch, isEther, loopringWallet, asset, supportedTokens]);
+    }, [open, dispatch, isEther, ethereumAccount, asset, supportedTokens]);
 
     useEffect(() => {
         setNeedsAllowance(!isEther && allowance && allowance.isZero());
@@ -81,21 +87,15 @@ export const DepositFlow = ({ open, asset }) => {
         (amount) => {
             dispatch(
                 postDeposit(
-                    loopringWallet,
+                    web3Instance,
+                    ethereumAccount,
                     loopringExchange,
-                    supportedTokens,
-                    asset.symbol,
+                    asset,
                     amount
                 )
             );
         },
-        [
-            asset.symbol,
-            dispatch,
-            loopringExchange,
-            loopringWallet,
-            supportedTokens,
-        ]
+        [asset, dispatch, ethereumAccount, loopringExchange, web3Instance]
     );
 
     return (

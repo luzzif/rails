@@ -8,12 +8,3 @@ if (NODE_ENV !== "production") {
 export const INFURA_ID = env("REACT_APP_INFURA_ID", {
     required: true,
 });
-
-export const CHAIN_ID = env("REACT_APP_CHAIN_ID", {
-    required: true,
-    parse: parseInt,
-});
-
-export const LOOPRING_API_HOST = `${
-    CHAIN_ID === 1 ? "api" : "uat"
-}.loopring.io`;

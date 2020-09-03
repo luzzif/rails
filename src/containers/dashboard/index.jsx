@@ -9,11 +9,11 @@ import { ButtonsStrip } from "./buttons-strip";
 import { Assets } from "./assets";
 import {
     getTokenTransactions,
-    postTransfer,
     deleteTransferHash,
     getUserBalances,
     postSelectedAsset,
     resetTransactions,
+    submitTransfer,
 } from "../../actions/loopring";
 import { TransactionSummary } from "./transaction-summary";
 import { Summary } from "../dashboard/summary";
@@ -24,8 +24,12 @@ import { BottomUpContainer } from "../../components/bottom-up-container";
 
 const Dashboard = () => {
     const {
-        account,
-        wallet,
+        keys,
+        web3Instance,
+        ethereumAccount,
+        accountId,
+        apiKey,
+        apiSignature,
         exchange,
         supportedTokens,
         balances,
@@ -37,8 +41,12 @@ const Dashboard = () => {
         selectedAsset,
         selectedFiat,
     } = useSelector((state) => ({
-        account: state.loopring.account,
-        wallet: state.loopring.wallet,
+        keys: state.loopring.keys,
+        web3Instance: state.web3.instance,
+        ethereumAccount: state.web3.selectedAccount,
+        accountId: state.loopring.accountId,
+        apiKey: state.loopring.apiKey,
+        apiSignature: state.loopring.apiSignature,
         exchange: state.loopring.exchange,
         supportedTokens: state.loopring.supportedTokens.data,
         balances: state.loopring.balances.data,
@@ -67,8 +75,8 @@ const Dashboard = () => {
         // really knows if a user logged out or not), we need to check if
         // the account is still there
         if (
-            account &&
-            wallet &&
+            accountId &&
+            apiKey &&
             selectedAsset &&
             selectedAsset.symbol &&
             supportedTokens &&
@@ -77,8 +85,9 @@ const Dashboard = () => {
         ) {
             dispatch(
                 getTokenTransactions(
-                    account,
-                    wallet,
+                    ethereumAccount,
+                    accountId,
+                    apiKey,
                     selectedAsset.symbol,
                     supportedTokens,
                     0,
@@ -88,13 +97,13 @@ const Dashboard = () => {
             );
         }
     }, [
-        account,
+        accountId,
+        apiKey,
         dispatch,
+        ethereumAccount,
         selectedAsset,
-        selectedAsset.symbol,
         supportedTokens,
         transactionsTypeFilter,
-        wallet,
     ]);
 
     // when balances change (for example on selected fiat change, the selected asset has to be updated)
@@ -138,39 +147,41 @@ const Dashboard = () => {
     const handleTransactionsRefresh = useCallback(() => {
         dispatch(resetTransactions());
         dispatch(
-            getUserBalances(account, wallet, supportedTokens, selectedFiat)
+            getUserBalances(accountId, apiKey, supportedTokens, selectedFiat)
         );
-    }, [account, dispatch, selectedFiat, supportedTokens, wallet]);
+    }, [accountId, dispatch, selectedFiat, supportedTokens, apiKey]);
 
     const handleTransactionsLoad = useCallback(
         (page) => {
             dispatch(
                 getTokenTransactions(
-                    account,
-                    wallet,
+                    ethereumAccount,
+                    accountId,
+                    apiKey,
                     selectedAsset.symbol,
                     supportedTokens,
-                    page,
+                    0,
                     10,
                     transactionsTypeFilter
                 )
             );
         },
         [
-            account,
+            accountId,
+            apiKey,
             dispatch,
+            ethereumAccount,
             selectedAsset.symbol,
             supportedTokens,
             transactionsTypeFilter,
-            wallet,
         ]
     );
 
     const handleAssetsRefresh = useCallback(() => {
         dispatch(
-            getUserBalances(account, wallet, supportedTokens, selectedFiat)
+            getUserBalances(accountId, apiKey, supportedTokens, selectedFiat)
         );
-    }, [account, dispatch, selectedFiat, supportedTokens, wallet]);
+    }, [accountId, apiKey, dispatch, selectedFiat, supportedTokens]);
 
     const handleSend = useCallback(() => {
         setSending(true);
@@ -179,19 +190,30 @@ const Dashboard = () => {
     const handleSendConfirm = useCallback(
         (resolvedReceived, amount, memo) => {
             dispatch(
-                postTransfer(
-                    account,
-                    wallet,
+                submitTransfer(
+                    web3Instance,
+                    ethereumAccount,
+                    keys,
+                    apiSignature,
+                    apiKey,
                     exchange,
-                    selectedAsset.symbol,
+                    selectedAsset,
                     resolvedReceived,
                     memo,
-                    amount,
-                    supportedTokens
+                    amount
                 )
             );
         },
-        [account, dispatch, exchange, selectedAsset, supportedTokens, wallet]
+        [
+            apiKey,
+            dispatch,
+            ethereumAccount,
+            exchange,
+            keys,
+            selectedAsset,
+            apiSignature,
+            web3Instance,
+        ]
     );
 
     // on a succesful transfer, we set the correct index and delete the hash
