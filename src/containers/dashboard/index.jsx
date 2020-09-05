@@ -65,6 +65,7 @@ const Dashboard = () => {
     const [sendIndex, setSendIndex] = useState(0);
     const [selectedTransaction, setSelectedTransaction] = useState(null);
     const [transactionsTypeFilter, setTransactionsTypeFilter] = useState("all");
+    const [latestLoadedPage, setLatestLoadedPage] = useState(0);
 
     // getting transactions history (deposits, transfers and withdrawals)
     useEffect(() => {
@@ -92,6 +93,7 @@ const Dashboard = () => {
                     transactionsTypeFilter
                 )
             );
+            setLatestLoadedPage(0);
         }
     }, [
         accountId,
@@ -141,7 +143,6 @@ const Dashboard = () => {
     }, []);
 
     const handleTransactionsRefresh = useCallback(() => {
-        dispatch(resetTransactions());
         dispatch(
             getUserBalances(accountId, apiKey, supportedTokens, selectedFiat)
         );
@@ -149,6 +150,9 @@ const Dashboard = () => {
 
     const handleTransactionsLoad = useCallback(
         (page) => {
+            if (page <= latestLoadedPage) {
+                return;
+            }
             dispatch(
                 getTokenTransactions(
                     ethereumAccount,
@@ -160,19 +164,20 @@ const Dashboard = () => {
                     transactionsTypeFilter
                 )
             );
+            setLatestLoadedPage(page);
         },
         [
             accountId,
             apiKey,
             dispatch,
             ethereumAccount,
+            latestLoadedPage,
             selectedAsset,
             transactionsTypeFilter,
         ]
     );
 
     const handleAssetsRefresh = useCallback(() => {
-        dispatch(resetTransactions());
         dispatch(
             getUserBalances(accountId, apiKey, supportedTokens, selectedFiat)
         );

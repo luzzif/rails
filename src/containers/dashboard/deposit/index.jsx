@@ -56,7 +56,14 @@ export const DepositFlow = ({ open, asset }) => {
                 )
             );
         }
-    }, [open, dispatch, isEther, ethereumAccount, asset, supportedTokens]);
+    }, [
+        asset.symbol,
+        dispatch,
+        ethereumAccount,
+        isEther,
+        open,
+        supportedTokens,
+    ]);
 
     useEffect(() => {
         setNeedsAllowance(!isEther && allowance && allowance.isZero());

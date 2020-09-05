@@ -9,6 +9,7 @@ import { faRedo } from "@fortawesome/free-solid-svg-icons";
 import { ListFlex, RootFlex, StyledInfiniteScroll } from "./styled";
 import { Chip } from "../../../components/chip";
 import { LoadingOverlay } from "../../../components/loading-overlay";
+import { useRef } from "react";
 
 export const Transactions = ({
     asset,
@@ -25,6 +26,7 @@ export const Transactions = ({
 }) => {
     const { formatMessage } = useIntl();
 
+    const scrollParentRef = useRef(null);
     const [query, setQuery] = useState("");
     const [filteredTransactions, setFilteredTransactions] = useState(
         transactions
@@ -92,6 +94,10 @@ export const Transactions = ({
     const handleTransfersChipClick = useCallback(() => {
         onTypeFilterChange("transfers");
     }, [onTypeFilterChange]);
+
+    const handleGetScrollParent = useCallback(() => scrollParentRef.current, [
+        scrollParentRef,
+    ]);
 
     return (
         <RootFlex
@@ -172,6 +178,7 @@ export const Transactions = ({
                 flexDirection="column"
                 alignItems="center"
                 width="100%"
+                ref={scrollParentRef}
             >
                 {!loading && (!transactions || transactions.length === 0) && (
                     <Box
@@ -191,6 +198,8 @@ export const Transactions = ({
                             pageStart={0}
                             loadMore={onLoadTransactions}
                             hasMore={hasMoreTransactions}
+                            useWindow={false}
+                            getScrollParent={handleGetScrollParent}
                         >
                             {filteredTransactions
                                 .sort((a, b) => b.timestamp - a.timestamp)

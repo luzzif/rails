@@ -267,7 +267,7 @@ export const getTokenTransactions = (
                 offset,
                 apiKey
             );
-            transactionsAmount += transfers.totalNum;
+            transactionsAmount += transfers.total;
             transactions = transactions.concat(
                 transfers.transactions.map((transfer) => {
                     const bigNumberAmount = new BigNumber(transfer.amount);
@@ -358,7 +358,9 @@ export const getTokenTransactions = (
         }
         dispatch({
             type: GET_TRANSACTIONS_SUCCESS,
-            transactions: transactions.slice(0, itemsPerPage + 1),
+            transactions: transactions
+                .sort((a, b) => b.timestamp - a.timestamp)
+                .slice(0, itemsPerPage + 1),
             transactionsAmount,
         });
     } catch (error) {
