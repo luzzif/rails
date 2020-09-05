@@ -1,5 +1,6 @@
 {
     "auth.welcome": "Welcome to Rails",
+    "auth.chain.invalid": "Invalid chain detected. Please switch to mainnet or Goerli",
     "auth.connect": "Connect your wallet to proceed",
     "auth.connect.button": "Connect wallet",
     "auth.signin.button": "Sign in",

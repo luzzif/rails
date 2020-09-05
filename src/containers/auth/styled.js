@@ -12,6 +12,10 @@ export const WelcomeTextBox = styled(Box)`
     text-align: center;
 `;
 
+export const InvalidChainText = styled.span`
+    color: ${(props) => props.theme.error};
+`;
+
 export const FullWidthButton = styled(Button)`
     width: 100%;
 `;

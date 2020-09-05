@@ -6,32 +6,61 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, getAuthStatus } from "../../actions/loopring";
 import darkLogo from "../../images/logo-dark.svg";
 import lightLogo from "../../images/logo-light.svg";
-import { LoginIllustration, WelcomeTextBox, FullWidthButton } from "./styled";
+import {
+    LoginIllustration,
+    WelcomeTextBox,
+    FullWidthButton,
+    InvalidChainText,
+} from "./styled";
 import { BottomUpContainer } from "../../components/bottom-up-container";
 import { initializeWeb3 } from "../../actions/web3";
 import { RegistrationFlow } from "./registration-flow";
 import { selectedTheme } from "../app";
 import { getShortenedEthereumAddress } from "../../utils/conversion";
+import {
+    disableTestMode,
+    enableTestMode,
+} from "loopring-lightcone/lib/request";
+
+const VALID_CHAIN_IDS = [1, 5];
 
 const Auth = () => {
     const dispatch = useDispatch();
-    const { web3Instance, selectedAccount, needsRegistration } = useSelector(
-        (state) => ({
-            web3Instance: state.web3.instance,
-            selectedAccount: state.web3.selectedAccount,
-            needsRegistration: state.loopring.authStatus.needsRegistration,
-        })
-    );
+    const {
+        web3Instance,
+        chainId,
+        selectedAccount,
+        needsRegistration,
+    } = useSelector((state) => ({
+        web3Instance: state.web3.instance,
+        chainId: state.web3.chainId,
+        selectedAccount: state.web3.selectedAccount,
+        needsRegistration: state.loopring.authStatus.needsRegistration,
+    }));
 
+    const [invalidChainId, setInvalidChainId] = useState(false);
     const [loggingIn, setLoggingIn] = useState(false);
     const [registering, setRegistering] = useState(false);
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
+        if (chainId) {
+            setInvalidChainId(VALID_CHAIN_IDS.indexOf(chainId) < 0);
+            if (chainId === 1) {
+                console.log("enabling production mode...");
+                disableTestMode();
+                return;
+            }
+            console.log("enabling test mode...");
+            enableTestMode();
+        }
+    }, [chainId]);
+
+    useEffect(() => {
         if (selectedAccount) {
             dispatch(getAuthStatus(selectedAccount));
         }
-    }, [dispatch, selectedAccount]);
+    }, [dispatch, selectedAccount, chainId]);
 
     const handleConnectClick = useCallback(() => {
         if (!web3Instance) {
@@ -76,6 +105,7 @@ const Auth = () => {
                 flexDirection="column"
                 width="100%"
                 height="100%"
+                p="24px"
             >
                 <Box mb="20px" width="80px">
                     <LoginIllustration
@@ -90,13 +120,19 @@ const Auth = () => {
                     <FormattedMessage id="auth.welcome" />
                 </WelcomeTextBox>
                 <Box mb="32px" textAlign="center">
-                    <FormattedMessage
-                        id={
-                            needsRegistration !== null && selectedAccount
-                                ? "auth.signin"
-                                : "auth.connect"
-                        }
-                    />
+                    {invalidChainId ? (
+                        <InvalidChainText>
+                            <FormattedMessage id={"auth.chain.invalid"} />
+                        </InvalidChainText>
+                    ) : (
+                        <FormattedMessage
+                            id={
+                                needsRegistration !== null && selectedAccount
+                                    ? "auth.signin"
+                                    : "auth.connect"
+                            }
+                        />
+                    )}
                 </Box>
                 <Flex
                     flexDirection="column"
@@ -107,7 +143,8 @@ const Auth = () => {
                         <FullWidthButton
                             onClick={handleConnectClick}
                             disabled={
-                                needsRegistration !== null && selectedAccount
+                                invalidChainId ||
+                                (needsRegistration !== null && selectedAccount)
                             }
                         >
                             {needsRegistration !== null && selectedAccount ? (
@@ -117,23 +154,29 @@ const Auth = () => {
                             )}
                         </FullWidthButton>
                     </Box>
-                    {needsRegistration === null && (
+                    {(needsRegistration === null || invalidChainId) && (
                         <Box>
                             <FullWidthButton disabled>
                                 <FormattedMessage id="auth.signin.button" />
                             </FullWidthButton>
                         </Box>
                     )}
-                    {needsRegistration === true && (
+                    {!invalidChainId && needsRegistration === true && (
                         <Box>
-                            <FullWidthButton onClick={handleRegisterClick}>
+                            <FullWidthButton
+                                disabled={invalidChainId}
+                                onClick={handleRegisterClick}
+                            >
                                 <FormattedMessage id="auth.register.button" />
                             </FullWidthButton>
                         </Box>
                     )}
-                    {needsRegistration === false && (
+                    {!invalidChainId && needsRegistration === false && (
                         <Box>
-                            <FullWidthButton onClick={handleLoginClick}>
+                            <FullWidthButton
+                                disabled={invalidChainId}
+                                onClick={handleLoginClick}
+                            >
                                 <FormattedMessage id="auth.login.button" />
                             </FullWidthButton>
                         </Box>
