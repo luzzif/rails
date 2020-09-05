@@ -80,6 +80,7 @@ const Dashboard = () => {
             supportedTokens.length > 0 &&
             transactionsTypeFilter
         ) {
+            dispatch(resetTransactions());
             dispatch(
                 getTokenTransactions(
                     ethereumAccount,
