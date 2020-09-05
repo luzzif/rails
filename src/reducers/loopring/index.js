@@ -38,7 +38,6 @@ const initialState = {
     authStatus: { loadings: 0, needsRegistration: null },
     accountId: null,
     apiKey: null,
-    apiSignature: null,
     keys: null,
     exchange: null,
     supportedTokens: { loadings: 0, data: [] },
@@ -96,7 +95,6 @@ export const loopringReducer = (state = initialState, action) => {
                 ...state,
                 accountId: action.accountId,
                 apiKey: action.apiKey,
-                apiSignature: action.apiSignature,
                 exchange: action.exchange,
                 keys: action.keys,
             };
@@ -277,7 +275,6 @@ export const loopringReducer = (state = initialState, action) => {
                 ...state,
                 accountId: null,
                 apiKey: null,
-                apiSignature: null,
                 exchange: null,
                 keys: null,
                 transactions: {

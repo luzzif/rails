@@ -29,7 +29,6 @@ const Dashboard = () => {
         ethereumAccount,
         accountId,
         apiKey,
-        apiSignature,
         exchange,
         supportedTokens,
         balances,
@@ -46,7 +45,6 @@ const Dashboard = () => {
         ethereumAccount: state.web3.selectedAccount,
         accountId: state.loopring.accountId,
         apiKey: state.loopring.apiKey,
-        apiSignature: state.loopring.apiSignature,
         exchange: state.loopring.exchange,
         supportedTokens: state.loopring.supportedTokens.data,
         balances: state.loopring.balances.data,
@@ -78,7 +76,6 @@ const Dashboard = () => {
             accountId &&
             apiKey &&
             selectedAsset &&
-            selectedAsset.symbol &&
             supportedTokens &&
             supportedTokens.length > 0 &&
             transactionsTypeFilter
@@ -88,8 +85,7 @@ const Dashboard = () => {
                     ethereumAccount,
                     accountId,
                     apiKey,
-                    selectedAsset.symbol,
-                    supportedTokens,
+                    selectedAsset,
                     0,
                     10,
                     transactionsTypeFilter
@@ -149,7 +145,7 @@ const Dashboard = () => {
         dispatch(
             getUserBalances(accountId, apiKey, supportedTokens, selectedFiat)
         );
-    }, [accountId, dispatch, selectedFiat, supportedTokens, apiKey]);
+    }, [accountId, apiKey, dispatch, selectedFiat, supportedTokens]);
 
     const handleTransactionsLoad = useCallback(
         (page) => {
@@ -158,9 +154,8 @@ const Dashboard = () => {
                     ethereumAccount,
                     accountId,
                     apiKey,
-                    selectedAsset.symbol,
-                    supportedTokens,
-                    0,
+                    selectedAsset,
+                    page,
                     10,
                     transactionsTypeFilter
                 )
@@ -171,8 +166,7 @@ const Dashboard = () => {
             apiKey,
             dispatch,
             ethereumAccount,
-            selectedAsset.symbol,
-            supportedTokens,
+            selectedAsset,
             transactionsTypeFilter,
         ]
     );
@@ -194,7 +188,6 @@ const Dashboard = () => {
                     web3Instance,
                     ethereumAccount,
                     keys,
-                    apiSignature,
                     apiKey,
                     exchange,
                     selectedAsset,
@@ -211,7 +204,6 @@ const Dashboard = () => {
             exchange,
             keys,
             selectedAsset,
-            apiSignature,
             web3Instance,
         ]
     );
