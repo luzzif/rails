@@ -225,7 +225,6 @@ export const getDepositBalance = (
     try {
         let balance;
         if (tokenSymbol === "ETH") {
-            console.log(await getEtherOnChainBalance(selectedAccount));
             balance = await getEtherOnChainBalance(selectedAccount);
         } else {
             const [tokenBalance] = await getEthereumTokenBalances(
@@ -378,7 +377,6 @@ export const submitTransfer = (
     web3Instance,
     selectedAccount,
     keys,
-    apiSignature,
     apiKey,
     exchange,
     token,
@@ -400,20 +398,16 @@ export const submitTransfer = (
                 (fee) => fee.token === token.symbol
             );
             if (wrappedTransferFee) {
-                fee = weiToEther(
-                    new BigNumber(wrappedTransferFee.fee),
-                    token.decimals
-                ).toFixed();
+                fee = wrappedTransferFee.fee;
             }
         }
-        const signedTransfer = await getSignedTransfer(
+        const signedBundle = await getSignedTransfer(
             web3Instance,
             selectedAccount,
             keys.secretKey,
-            token.decimals,
             token.id,
             token.id,
-            amount,
+            etherToWei(new BigNumber(amount), token.decimals).toFixed(),
             fee,
             exchangeId,
             senderAccountId,
@@ -422,14 +416,14 @@ export const submitTransfer = (
             nonce,
             memo
         );
-        if (!signedTransfer) {
+        if (!signedBundle) {
             // the user aborted the signing procedure
             return;
         }
-        console.log(signedTransfer);
+        const { ecdsaSignature, signedTransfer } = signedBundle;
         const transferHash = await postTransfer(
             signedTransfer,
-            apiSignature,
+            ecdsaSignature,
             apiKey
         );
         dispatch({ type: POST_TRANSFER_SUCCESS, hash: transferHash });
