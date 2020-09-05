@@ -172,6 +172,7 @@ const Dashboard = () => {
     );
 
     const handleAssetsRefresh = useCallback(() => {
+        dispatch(resetTransactions());
         dispatch(
             getUserBalances(accountId, apiKey, supportedTokens, selectedFiat)
         );
