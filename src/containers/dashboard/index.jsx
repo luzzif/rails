@@ -130,7 +130,6 @@ const Dashboard = () => {
     const handleAssetChange = useCallback(
         (asset) => {
             dispatch(postSelectedAsset(asset));
-            dispatch(resetTransactions());
             setChangingAsset(false);
         },
         [dispatch]
