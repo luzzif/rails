@@ -110,7 +110,6 @@ export const App = () => {
         web3Instance,
         loopringAccountId,
         loopringApiKey,
-        loopringApiSignature,
         loopringExchange,
         supportedTokens,
         balances,
@@ -121,7 +120,6 @@ export const App = () => {
     } = useSelector((state) => ({
         web3Instance: state.web3.instance,
         loopringAccountId: state.loopring.accountId,
-        loopringApiSignature: state.loopring.apiSignature,
         loopringApiKey: state.loopring.apiKey,
         loopringExchange: state.loopring.exchange,
         supportedTokens: state.loopring.supportedTokens.data,
@@ -217,7 +215,6 @@ export const App = () => {
             !!(
                 web3Instance &&
                 loopringApiKey &&
-                loopringApiSignature &&
                 loopringAccountId &&
                 loopringExchange &&
                 supportedTokens &&
@@ -230,7 +227,6 @@ export const App = () => {
     }, [
         balances,
         loopringAccountId,
-        loopringApiSignature,
         loopringExchange,
         loopringApiKey,
         selectedAsset,
