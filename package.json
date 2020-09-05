@@ -11,32 +11,32 @@
         "lint:commit-message": "commitlint -e"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-svg-core": "^1.2.27",
-        "@fortawesome/free-solid-svg-icons": "^5.12.1",
-        "@fortawesome/react-fontawesome": "^0.1.8",
+        "@fortawesome/fontawesome-svg-core": "^1.2.30",
+        "@fortawesome/free-solid-svg-icons": "^5.14.0",
+        "@fortawesome/react-fontawesome": "^0.1.11",
         "@mondora/env": "^1.3.0",
-        "@myetherwallet/mewconnect-web-client": "^2.1.0-RC.5.5",
+        "@myetherwallet/mewconnect-web-client": "^2.1.4",
         "bignumber.js": "^9.0.0",
-        "loopring-lightcone": "^1.5.3",
+        "loopring-lightcone": "^1.5.12",
         "luxon": "^1.25.0",
         "platform": "^1.3.6",
-        "react": "^16.12.0",
-        "react-dom": "^16.12.0",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
         "react-helmet": "^6.1.0",
         "react-infinite-scroller": "^1.2.4",
-        "react-intl": "^3.12.0",
-        "react-redux": "^7.2.0",
-        "react-router-dom": "^5.1.2",
-        "react-scripts": "3.4.0",
+        "react-intl": "^5.8.0",
+        "react-redux": "^7.2.1",
+        "react-router-dom": "^5.2.0",
+        "react-scripts": "3.4.3",
         "react-swipeable-views": "^0.13.9",
-        "react-toastify": "^6.0.6",
+        "react-toastify": "^6.0.8",
         "redux": "^4.0.5",
         "redux-thunk": "^2.3.0",
         "reflexbox": "^4.0.6",
-        "styled-components": "^5.0.1",
-        "use-debounce": "^3.4.2",
-        "web3": "^1.2.6",
-        "web3modal": "^1.7.0"
+        "styled-components": "^5.2.0",
+        "use-debounce": "^4.0.0",
+        "web3": "^1.2.11",
+        "web3modal": "^1.9.0"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -54,11 +54,11 @@
         ]
     },
     "devDependencies": {
-        "@commitlint/cli": "^8.3.5",
-        "@commitlint/config-conventional": "^8.3.4",
+        "@commitlint/cli": "^9.1.2",
+        "@commitlint/config-conventional": "^9.1.2",
         "copy": "^0.3.2",
         "husky": "^4.2.5",
         "rimraf": "^3.0.2",
-        "source-map-explorer": "^2.4.2"
+        "source-map-explorer": "^2.5.0"
     }
 }
