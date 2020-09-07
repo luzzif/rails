@@ -101,12 +101,21 @@ export const login = (web3Instance, selectedAccount) => async (dispatch) => {
         const exchange = await getExchangeInfo();
         const { exchangeAddress } = exchange;
         const { keyNonce, accountId } = account;
-        const keys = await generateKeyPair(
-            web3Instance,
-            exchangeAddress,
-            selectedAccount,
-            keyNonce
-        );
+        let keys;
+        try {
+            keys = await generateKeyPair(
+                web3Instance,
+                exchangeAddress,
+                selectedAccount,
+                keyNonce
+            );
+        } catch (error) {
+            console.error(
+                "the user most probably rejected signing the required message",
+                error
+            );
+            return;
+        }
         if (!keys) {
             // the user most probably aborted the signing
             console.warn("The user aborted the signing process");
