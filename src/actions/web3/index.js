@@ -13,6 +13,7 @@ export const initializeWeb3 = () => async (dispatch) => {
         provider.on("chainChanged", (hexChainId) => {
             const chainId = parseInt(hexChainId, 16);
             dispatch({ type: CHAIN_ID_DETECTION_SUCCESS, chainId });
+            dispatch(postLogout());
         });
         provider.on("accountsChanged", () => {
             dispatch(postLogout());
