@@ -21,7 +21,6 @@ export const DepositFlow = ({ open, asset }) => {
         web3Instance,
         ethereumAccount,
         loopringExchange,
-        supportedTokens,
         loadingAllowance,
         allowance,
         successfulGrantAllowanceHash,
@@ -30,7 +29,6 @@ export const DepositFlow = ({ open, asset }) => {
         web3Instance: state.web3.instance,
         ethereumAccount: state.web3.selectedAccount,
         loopringExchange: state.loopring.exchange,
-        supportedTokens: state.loopring.supportedTokens.data,
         loadingAllowance: !!state.loopring.allowances.loadings,
         allowance: state.loopring.allowances[asset.symbol],
         successfulGrantAllowanceHash:
@@ -50,19 +48,21 @@ export const DepositFlow = ({ open, asset }) => {
         if (open && !isEther) {
             dispatch(
                 getTokenAllowance(
+                    web3Instance,
                     ethereumAccount,
-                    asset.symbol,
-                    supportedTokens
+                    loopringExchange,
+                    asset
                 )
             );
         }
     }, [
-        asset.symbol,
+        asset,
         dispatch,
         ethereumAccount,
         isEther,
+        loopringExchange,
         open,
-        supportedTokens,
+        web3Instance,
     ]);
 
     useEffect(() => {

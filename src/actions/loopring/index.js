@@ -8,7 +8,7 @@ import { getBalances } from "loopring-lightcone/lib/api/v2/balances";
 import { getTokens } from "loopring-lightcone/lib/api/v2/tokens";
 import { getTokensFiatPrice } from "loopring-lightcone/lib/api/v2/fiat-price";
 import { getTransfers } from "loopring-lightcone/lib/api/v2/transfers";
-import { getAllowance } from "loopring-lightcone/lib/api/v2/allowances";
+import { getOnchainTokenAllowance } from "loopring-lightcone/lib/wallet";
 import { getRecommendedGasPrice } from "loopring-lightcone/lib/api/v2/recommended-gas-price";
 import { getEtherOnChainBalance } from "loopring-lightcone/lib/api/v2/ether-onchain-balance";
 import { getEthereumTokenBalances } from "loopring-lightcone/lib/api/v2/ethereum-token-balances";
@@ -454,25 +454,28 @@ export const deleteTransferHash = () => async (dispatch) => {
 };
 
 export const getTokenAllowance = (
+    web3Instance,
     selectedAccount,
-    tokenSymbol,
-    supportedTokens
+    exchange,
+    token
 ) => async (dispatch) => {
     dispatch({ type: POST_GET_ALLOWANCE_LOADING });
+    const { symbol, address } = token;
     try {
-        const [allowance] = await getAllowance(
+        const allowance = await getOnchainTokenAllowance(
+            web3Instance,
             selectedAccount,
-            tokenSymbol,
-            supportedTokens
+            address,
+            exchange.exchangeAddress
         );
         dispatch({
             type: GET_ALLOWANCE_SUCCESS,
-            token: tokenSymbol,
+            token: symbol,
             allowance: new BigNumber(allowance),
         });
     } catch (error) {
         toast.error(<FormattedMessage id="error.rails.token.allowance.get" />);
-        console.error(`error getting token ${tokenSymbol} allowance`, error);
+        console.error(`error getting token ${symbol} allowance`, error);
     }
     dispatch({ type: DELETE_GET_ALLOWANCE_LOADING });
 };
