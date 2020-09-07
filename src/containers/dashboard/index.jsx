@@ -140,25 +140,24 @@ const Dashboard = () => {
 
     const handleTransactionsRefresh = useCallback(() => {
         dispatch(resetTransactions());
+        // getting user balances triffers selected asset
+        // setting, which in turn triggers
         dispatch(
-            getTokenTransactions(
-                ethereumAccount,
+            getUserBalances(
+                web3Instance,
                 accountId,
                 apiKey,
-                selectedAsset,
-                0,
-                latestLoadedPage * 10 + 10,
-                transactionsTypeFilter
+                supportedTokens,
+                selectedFiat
             )
         );
     }, [
         accountId,
         apiKey,
         dispatch,
-        ethereumAccount,
-        latestLoadedPage,
-        selectedAsset,
-        transactionsTypeFilter,
+        selectedFiat,
+        supportedTokens,
+        web3Instance,
     ]);
 
     const handleTransactionsLoad = useCallback(
