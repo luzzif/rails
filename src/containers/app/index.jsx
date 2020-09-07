@@ -163,7 +163,7 @@ export const App = () => {
 
     useEffect(() => {
         if (web3Instance) {
-            // only when the wallet has been connected the correct 
+            // only when the wallet has been connected the correct
             // api environment has been selected
             dispatch(getSupportedTokens());
         }
@@ -178,6 +178,7 @@ export const App = () => {
         ) {
             dispatch(
                 getUserBalances(
+                    web3Instance,
                     loopringAccountId,
                     loopringApiKey,
                     supportedTokens,
@@ -191,6 +192,7 @@ export const App = () => {
         loopringApiKey,
         selectedFiat,
         supportedTokens,
+        web3Instance,
     ]);
 
     // setting the default-selected asset (the one with the most fiat value)

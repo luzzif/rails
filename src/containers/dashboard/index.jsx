@@ -192,9 +192,22 @@ const Dashboard = () => {
 
     const handleAssetsRefresh = useCallback(() => {
         dispatch(
-            getUserBalances(accountId, apiKey, supportedTokens, selectedFiat)
+            getUserBalances(
+                web3Instance,
+                accountId,
+                apiKey,
+                supportedTokens,
+                selectedFiat
+            )
         );
-    }, [accountId, apiKey, dispatch, selectedFiat, supportedTokens]);
+    }, [
+        accountId,
+        apiKey,
+        dispatch,
+        selectedFiat,
+        supportedTokens,
+        web3Instance,
+    ]);
 
     const handleSend = useCallback(() => {
         setSending(true);

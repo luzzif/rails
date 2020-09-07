@@ -171,6 +171,7 @@ export const getSupportedTokens = () => async (dispatch) => {
 };
 
 export const getUserBalances = (
+    web3Instance,
     accountId,
     apiKey,
     supportedTokens,
@@ -203,7 +204,9 @@ export const getUserBalances = (
                     id: supportedTokenId,
                     symbol: supportedTokenSymbol,
                     name: supportedToken.name,
-                    address: supportedToken.address,
+                    address: web3Instance.utils.toChecksumAddress(
+                        supportedToken.address
+                    ),
                     balance,
                     etherBalance: weiToEther(balance, supportedToken.decimals),
                     fiatValue,
