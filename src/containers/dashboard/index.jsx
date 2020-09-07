@@ -4,7 +4,6 @@ import { Send } from "./send/form";
 import { Box, Flex } from "reflexbox";
 import { Transactions } from "./transactions";
 import { useSelector, useDispatch } from "react-redux";
-import SwipeableViews from "react-swipeable-views";
 import { ButtonsStrip } from "./buttons-strip";
 import { Assets } from "./assets";
 import {
@@ -17,7 +16,6 @@ import {
 } from "../../actions/loopring";
 import { TransactionSummary } from "./transaction-summary";
 import { Summary } from "../dashboard/summary";
-import { Confirmation } from "./send/confirmation";
 import { DepositFlow } from "./deposit";
 import { WithdrawalFlow } from "./withdraw";
 import { BottomUpContainer } from "../../components/bottom-up-container";
@@ -62,7 +60,6 @@ const Dashboard = () => {
     const [showingTransaction, setShowingTransaction] = useState(false);
     const [depositing, setDepositing] = useState(false);
     const [withdrawing, setWithdrawing] = useState(false);
-    const [sendIndex, setSendIndex] = useState(0);
     const [selectedTransaction, setSelectedTransaction] = useState(null);
     const [transactionsTypeFilter, setTransactionsTypeFilter] = useState("all");
     const [latestLoadedPage, setLatestLoadedPage] = useState(0);
@@ -122,7 +119,6 @@ const Dashboard = () => {
         setShowingTransaction(false);
         setDepositing(false);
         setWithdrawing(false);
-        setSendIndex(0);
     }, []);
 
     const handleAssets = useCallback(() => {
@@ -143,10 +139,27 @@ const Dashboard = () => {
     }, []);
 
     const handleTransactionsRefresh = useCallback(() => {
+        dispatch(resetTransactions());
         dispatch(
-            getUserBalances(accountId, apiKey, supportedTokens, selectedFiat)
+            getTokenTransactions(
+                ethereumAccount,
+                accountId,
+                apiKey,
+                selectedAsset,
+                0,
+                latestLoadedPage * 10 + 10,
+                transactionsTypeFilter
+            )
         );
-    }, [accountId, apiKey, dispatch, selectedFiat, supportedTokens]);
+    }, [
+        accountId,
+        apiKey,
+        dispatch,
+        ethereumAccount,
+        latestLoadedPage,
+        selectedAsset,
+        transactionsTypeFilter,
+    ]);
 
     const handleTransactionsLoad = useCallback(
         (page) => {
@@ -217,10 +230,11 @@ const Dashboard = () => {
     // on a succesful transfer, we set the correct index and delete the hash
     useEffect(() => {
         if (successfulTransferHash) {
-            setSendIndex(1);
             dispatch(deleteTransferHash());
+            dispatch(getTokenTransactions);
+            handleClose();
         }
-    }, [dispatch, successfulTransferHash]);
+    }, [dispatch, handleClose, successfulTransferHash]);
 
     const handleDeposit = useCallback(() => {
         setDepositing(true);
@@ -229,11 +243,6 @@ const Dashboard = () => {
     const handleWithdraw = useCallback(() => {
         setWithdrawing(true);
     }, []);
-
-    const handleTransferConfirmationClose = useCallback(() => {
-        handleTransactionsRefresh();
-        handleClose();
-    }, [handleClose, handleTransactionsRefresh]);
 
     const handleTypeFilterChange = useCallback(
         (filter) => {
@@ -302,19 +311,7 @@ const Dashboard = () => {
             </BottomUpContainer>
             <BottomUpContainer open={sending} onClose={handleClose}>
                 {sending && (
-                    <SwipeableViews
-                        index={sendIndex}
-                        disabled
-                        style={{ overflowY: "hidden", width: "100%" }}
-                    >
-                        <Send
-                            asset={selectedAsset}
-                            onConfirm={handleSendConfirm}
-                        />
-                        <Confirmation
-                            onClose={handleTransferConfirmationClose}
-                        />
-                    </SwipeableViews>
+                    <Send asset={selectedAsset} onConfirm={handleSendConfirm} />
                 )}
             </BottomUpContainer>
             <BottomUpContainer open={showingTransaction} onClose={handleClose}>

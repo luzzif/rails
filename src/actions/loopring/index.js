@@ -437,6 +437,7 @@ export const submitTransfer = (
             ecdsaSignature,
             apiKey
         );
+        toast.success(<FormattedMessage id="send.confirmation.ok" />);
         dispatch({ type: POST_TRANSFER_SUCCESS, hash: transferHash });
     } catch (error) {
         toast.error(<FormattedMessage id="error.rails.transfer" />);

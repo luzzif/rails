@@ -46,7 +46,7 @@
     "send.form.receiver.resolved": "Resolved address: {address}",
     "send.form.placeholder.amount": "Amount",
     "send.form.placeholder.memo": "Memo",
-    "send.form.confirmation.ok": "The transfer was successfully processed",
+    "send.confirmation.ok": "The transfer was successfully processed",
     "send.form.confirmation.button.close": "Close",
     "deposit.allowance.message": "Before performing a {tokenSymbol} deposit on Rails, you need to give us permission to move tokens on your behalf on-chain (this is a one-time operation, and you can revoke the permission whenever you want).",
     "deposit.allowance.button.title": "Grant allowance",
