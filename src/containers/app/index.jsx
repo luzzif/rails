@@ -162,8 +162,12 @@ export const App = () => {
     }, [dispatch, selectedFiat]);
 
     useEffect(() => {
-        dispatch(getSupportedTokens());
-    }, [dispatch]);
+        if (web3Instance) {
+            // only when the wallet has been connected the correct 
+            // api environment has been selected
+            dispatch(getSupportedTokens());
+        }
+    }, [dispatch, web3Instance]);
 
     useEffect(() => {
         if (
