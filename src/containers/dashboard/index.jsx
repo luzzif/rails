@@ -62,7 +62,7 @@ const Dashboard = () => {
     const [withdrawing, setWithdrawing] = useState(false);
     const [selectedTransaction, setSelectedTransaction] = useState(null);
     const [transactionsTypeFilter, setTransactionsTypeFilter] = useState("all");
-    const [latestLoadedPage, setLatestLoadedPage] = useState(0);
+    const [latestLoadedPage, setLatestLoadedPage] = useState(-1);
 
     // getting transactions history (deposits, transfers and withdrawals)
     useEffect(() => {
@@ -76,7 +76,8 @@ const Dashboard = () => {
             selectedAsset &&
             supportedTokens &&
             supportedTokens.length > 0 &&
-            transactionsTypeFilter
+            transactionsTypeFilter &&
+            latestLoadedPage < 0
         ) {
             dispatch(resetTransactions());
             dispatch(
@@ -100,6 +101,7 @@ const Dashboard = () => {
         selectedAsset,
         supportedTokens,
         transactionsTypeFilter,
+        latestLoadedPage,
     ]);
 
     // when balances change (for example on selected fiat change, the selected asset has to be updated)
