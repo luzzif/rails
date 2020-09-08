@@ -9847,10 +9847,10 @@ loglevel@^1.6.8:
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.7.0.tgz#728166855a740d59d38db01cf46f042caa041bb0"
   integrity sha512-i2sY04nal5jDcagM3FMfG++T69GEEM8CYuOfeOIvmXzOIcwE9a/CJPR0MFM97pYMj/u10lzz7/zd7+qwhrBTqQ==
 
-loopring-lightcone@^1.6.2:
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/loopring-lightcone/-/loopring-lightcone-1.6.2.tgz#9afb9fcde1922c165295d2735c60d85e85d3de2b"
-  integrity sha512-BsUex994jt//4gj/QmxhNfLE4S75QRQAo+HxSSFDZvMq3euHEidN6I7pzSCnEiiaHy0/9Jr8YAodxQbEW6gSUg==
+loopring-lightcone@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/loopring-lightcone/-/loopring-lightcone-1.7.1.tgz#dcdc19adb009b99b5486eead9a3d555f69229bd8"
+  integrity sha512-+G/jwcwF1yodRMUcqu+EHW4dY/FobAkf1YjOifYJc6AbHCEQoEfg5dfm4YHiuNzup1rMmnjIdxt0FrE9Dt6Wrg==
   dependencies:
     bignumber.js "^9.0.0"
     blake-hash "^2.0.0"

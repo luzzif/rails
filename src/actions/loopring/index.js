@@ -268,6 +268,7 @@ export const getTokenTransactions = (
     dispatch({ type: POST_TRANSACTIONS_LOADING });
     try {
         const { symbol: tokenSymbol, decimals: tokenDecimals } = token;
+        const now = Date.now();
         let transactions = [];
         let transactionsAmount = 0;
         const offset = page * itemsPerPage;
@@ -277,7 +278,9 @@ export const getTokenTransactions = (
                 tokenSymbol,
                 itemsPerPage,
                 offset,
-                apiKey
+                apiKey,
+                0,
+                now
             );
             transactionsAmount += transfers.total;
             transactions = transactions.concat(
@@ -308,8 +311,8 @@ export const getTokenTransactions = (
             const deposits = await getDeposits(
                 accountId,
                 apiKey,
-                null,
-                null,
+                0,
+                now,
                 false,
                 null,
                 offset,
@@ -338,8 +341,8 @@ export const getTokenTransactions = (
             const withdrawals = await getWithdrawals(
                 accountId,
                 apiKey,
-                null,
-                null,
+                0,
+                now,
                 null,
                 offset,
                 itemsPerPage,
