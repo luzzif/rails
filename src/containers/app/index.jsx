@@ -31,6 +31,8 @@ import { FiatChooser, supportedFiats } from "../fiat-chooser";
 import { ToastContainer, Slide } from "react-toastify";
 import darkLogo from "../../images/logo-dark.svg";
 import lightLogo from "../../images/logo-light.svg";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import Authereum from "authereum";
 import "react-toastify/dist/ReactToastify.css";
 
 const LazyAuth = lazy(() => import("../auth"));
@@ -95,6 +97,15 @@ const web3ModalOptions = {
             options: {
                 infuraId: INFURA_ID,
             },
+        },
+        walletconnect: {
+            package: WalletConnectProvider,
+            options: {
+                infuraId: INFURA_ID,
+            },
+        },
+        authereum: {
+            package: Authereum, // required
         },
     },
 };
