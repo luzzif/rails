@@ -15,12 +15,12 @@ import { LoadingOverlay } from "../../../../components/loading-overlay";
 export const Send = ({ onConfirm, asset }) => {
     const dispatch = useDispatch();
     const {
-        loopringWallet,
+        web3Instance,
         addressFromEns,
         loadingAddressFromEns,
         supportedTokens,
     } = useSelector((state) => ({
-        loopringWallet: state.loopring.wallet,
+        web3Instance: state.web3.instance,
         addressFromEns: state.ens.address,
         loadingAddressFromEns: !!state.ens.loadings,
         supportedTokens: state.loopring.supportedTokens.data,
@@ -37,8 +37,8 @@ export const Send = ({ onConfirm, asset }) => {
     const [usingEns, setUsingEns] = useState(false);
     const [memo, setMemo] = useState("");
     const [receiverError, setReceiverError] = useState(false);
-    const [debouncedEnsLookup] = useDebouncedCallback((name) => {
-        dispatch(getAddressFromEnsName(loopringWallet, name));
+    const [debouncedEnsLookup] = useDebouncedCallback((web3Instance, name) => {
+        dispatch(getAddressFromEnsName(web3Instance, name));
     }, 500);
 
     useEffect(() => {
@@ -112,7 +112,7 @@ export const Send = ({ onConfirm, asset }) => {
                 newReceiver !== "0" &&
                 !newReceiver.startsWith("0x")
             ) {
-                debouncedEnsLookup(newReceiver);
+                debouncedEnsLookup(web3Instance, newReceiver);
                 setUsingEns(true);
             } else {
                 setUsingEns(false);
@@ -121,7 +121,7 @@ export const Send = ({ onConfirm, asset }) => {
             }
             setReceiver(newReceiver);
         },
-        [debouncedEnsLookup]
+        [debouncedEnsLookup, web3Instance]
     );
 
     const handleMemoChange = useCallback((event) => {
