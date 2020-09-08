@@ -4,6 +4,7 @@ import { Button } from "../../components/button";
 
 export const LoginIllustration = styled.img`
     width: 100%;
+    height: 100%;
 `;
 
 export const WelcomeTextBox = styled(Box)`
