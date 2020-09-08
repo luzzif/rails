@@ -1,10 +1,10 @@
 {
-    "auth.welcome": "Welcome to Rails",
+    "auth.welcome": "Welcome",
     "auth.chain.invalid": "Invalid chain detected. Please switch to mainnet or Goerli",
     "auth.connect": "Connect your wallet to proceed",
     "auth.connect.button": "Connect wallet",
     "auth.signin.button": "Sign in",
-    "auth.signin": "Click on the button below to proceed",
+    "auth.signin": "Click the button below to proceed",
     "auth.login.button": "Login",
     "auth.register.button": "Register",
     "auth.login.proceed.message": "Please pay attention to pending requests in Metamask. In some cases a popup won't appear. Click on the button below to continue.",
