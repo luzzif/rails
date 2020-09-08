@@ -47,5 +47,5 @@ const formatIntegerString = (integer) => {
 export const getShortenedEthereumAddress = (address) =>
     `${address.substring(0, 5)}...${address.substring(
         address.length - 6,
-        address.length - 1
+        address.length
     )}`;
