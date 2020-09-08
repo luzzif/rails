@@ -59,7 +59,7 @@ export const TransactionSummary = ({
                     <BoldDiv>
                         <FormattedMessage id="dashboard.transaction.summary.receiver" />
                     </BoldDiv>
-                    : {getShortenedEthereumAddress(receiverAddress)}
+                    : {receiverAddress}
                 </Box>
             )}
             {!sent && senderAddress && (
@@ -67,7 +67,7 @@ export const TransactionSummary = ({
                     <BoldDiv>
                         <FormattedMessage id="dashboard.transaction.summary.sender" />
                     </BoldDiv>
-                    : {getShortenedEthereumAddress(senderAddress)}
+                    : {senderAddress}
                 </Box>
             )}
             <Box mb="8px">
