@@ -5,10 +5,7 @@ import { FormattedMessage } from "react-intl";
 import { DateTime } from "luxon";
 import { BoldDiv } from "./styled";
 import { Button } from "../../../components/button";
-import {
-    formatBigNumber,
-    getShortenedEthereumAddress,
-} from "../../../utils/conversion";
+import { formatBigNumber } from "../../../utils/conversion";
 
 export const TransactionSummary = ({
     sent,
