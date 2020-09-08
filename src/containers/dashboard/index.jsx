@@ -112,6 +112,7 @@ const Dashboard = () => {
                     balances.find((balance) => balance.id === selectedAsset.id)
                 )
             );
+            setLatestLoadedPage(-1);
         }
     }, [balances, dispatch, selectedAsset]);
 
