@@ -40,7 +40,7 @@ export const Transaction = ({ asset, transaction, onClick, selectedFiat }) => {
         if (withdrawal) {
             return <FormattedMessage id="dashboard.transactions.withdrawal" />;
         }
-        return memo;
+        return memo || "-";
     };
 
     const handleLocalClick = useCallback(() => {
