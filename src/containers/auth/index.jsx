@@ -4,8 +4,8 @@ import { FormattedMessage } from "react-intl";
 import { Button } from "../../components/button";
 import { useDispatch, useSelector } from "react-redux";
 import { login, getAuthStatus } from "../../actions/loopring";
-import darkLogo from "../../images/logo-dark.svg";
-import lightLogo from "../../images/logo-light.svg";
+import darkLogoBig from "../../images/logo-dark-big.svg";
+import lightLogoBig from "../../images/logo-light-big.svg";
 import {
     LoginIllustration,
     WelcomeTextBox,
@@ -107,12 +107,12 @@ const Auth = () => {
                 height="100%"
                 p="24px"
             >
-                <Box mb="20px" width="80px">
+                <Box mb="20px" width="280px" height="60px">
                     <LoginIllustration
                         src={
                             selectedTheme.type === "light"
-                                ? darkLogo
-                                : lightLogo
+                                ? darkLogoBig
+                                : lightLogoBig
                         }
                     />
                 </Box>
