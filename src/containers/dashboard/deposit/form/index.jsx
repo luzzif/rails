@@ -15,7 +15,6 @@ export const Form = ({ onConfirm, asset, open }) => {
         (state) => ({
             ethereumAccount: state.web3.selectedAccount,
             loopringAccount: state.loopring.account,
-            loopringWallet: state.loopring.wallet,
             supportedTokens: state.loopring.supportedTokens.data,
             depositBalance: state.loopring.depositBalance,
         })
