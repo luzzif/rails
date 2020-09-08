@@ -5,7 +5,10 @@ import { FormattedMessage } from "react-intl";
 import { DateTime } from "luxon";
 import { BoldDiv } from "./styled";
 import { Button } from "../../../components/button";
-import { formatBigNumber } from "../../../utils/conversion";
+import {
+    formatBigNumber,
+    getShortenedEthereumAddress,
+} from "../../../utils/conversion";
 
 export const TransactionSummary = ({
     sent,
@@ -17,8 +20,8 @@ export const TransactionSummary = ({
     txHash,
     etherFeeAmount,
     progress,
-    senderInUI,
-    recipientInUI,
+    senderAddress,
+    receiverAddress,
 }) => {
     const getType = () => {
         let id;
@@ -51,20 +54,20 @@ export const TransactionSummary = ({
                     DateTime.DATETIME_SHORT
                 )}
             </Box>
-            {sent && recipientInUI && (
+            {sent && receiverAddress && (
                 <Box mb="8px">
                     <BoldDiv>
                         <FormattedMessage id="dashboard.transaction.summary.receiver" />
                     </BoldDiv>
-                    : {recipientInUI}
+                    : {getShortenedEthereumAddress(receiverAddress)}
                 </Box>
             )}
-            {!sent && senderInUI && (
+            {!sent && senderAddress && (
                 <Box mb="8px">
                     <BoldDiv>
                         <FormattedMessage id="dashboard.transaction.summary.sender" />
                     </BoldDiv>
-                    : {senderInUI}
+                    : {getShortenedEthereumAddress(senderAddress)}
                 </Box>
             )}
             <Box mb="8px">
