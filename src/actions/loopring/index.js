@@ -320,8 +320,7 @@ export const getTokenTransactions = (
                 false,
                 null,
                 offset,
-                itemsPerPage,
-                null
+                itemsPerPage
             );
             transactionsAmount += deposits.totalNum;
             transactions = transactions.concat(
@@ -334,10 +333,7 @@ export const getTokenTransactions = (
                     const bigNumberFeeAmount = new BigNumber(deposit.feeAmount);
                     deposit.deposit = true;
                     deposit.amount = bigNumberAmount;
-                    deposit.etherAmount = weiToEther(
-                        bigNumberAmount,
-                        decimals
-                    );
+                    deposit.etherAmount = weiToEther(bigNumberAmount, decimals);
                     deposit.feeAmount = bigNumberFeeAmount;
                     deposit.etherFeeAmount = weiToEther(bigNumberFeeAmount, 18);
                     return deposit;
