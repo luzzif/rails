@@ -64,45 +64,44 @@ const Dashboard = () => {
     const [transactionsTypeFilter, setTransactionsTypeFilter] = useState("all");
     const [latestLoadedPage, setLatestLoadedPage] = useState(-1);
 
-    // getting transactions history (deposits, transfers and withdrawals)
-    useEffect(() => {
-        // if a logout happens, loopring's state will be wiped clean. Since the
-        // dashboard updates before the app component (which is the one that
-        // really knows if a user logged out or not), we need to check if
-        // the account is still there
-        if (
-            accountId &&
-            apiKey &&
-            selectedAsset &&
-            supportedTokens &&
-            supportedTokens.length > 0 &&
-            transactionsTypeFilter &&
-            latestLoadedPage < 0
-        ) {
-            dispatch(resetTransactions());
-            dispatch(
-                getTokenTransactions(
-                    ethereumAccount,
-                    accountId,
-                    apiKey,
-                    selectedAsset,
-                    0,
-                    10,
-                    transactionsTypeFilter
-                )
-            );
-            setLatestLoadedPage(0);
-        }
+    const handleTransactionsRefresh = useCallback(() => {
+        dispatch(resetTransactions());
+        dispatch(
+            getTokenTransactions(
+                ethereumAccount,
+                accountId,
+                apiKey,
+                supportedTokens,
+                0,
+                10,
+                transactionsTypeFilter
+            )
+        );
+        setLatestLoadedPage(0);
+        dispatch(
+            getUserBalances(
+                web3Instance,
+                accountId,
+                apiKey,
+                supportedTokens,
+                selectedFiat
+            )
+        );
     }, [
         accountId,
         apiKey,
         dispatch,
         ethereumAccount,
-        selectedAsset,
+        selectedFiat,
         supportedTokens,
         transactionsTypeFilter,
-        latestLoadedPage,
+        web3Instance,
     ]);
+
+    // getting transactions history (deposits, transfers and withdrawals)
+    useEffect(() => {
+        handleTransactionsRefresh();
+    }, [handleTransactionsRefresh]);
 
     // when balances change (for example on selected fiat change, the selected asset has to be updated)
     useEffect(() => {
@@ -141,28 +140,6 @@ const Dashboard = () => {
         setShowingTransaction(true);
     }, []);
 
-    const handleTransactionsRefresh = useCallback(() => {
-        dispatch(resetTransactions());
-        // getting user balances triffers selected asset
-        // setting, which in turn triggers
-        dispatch(
-            getUserBalances(
-                web3Instance,
-                accountId,
-                apiKey,
-                supportedTokens,
-                selectedFiat
-            )
-        );
-    }, [
-        accountId,
-        apiKey,
-        dispatch,
-        selectedFiat,
-        supportedTokens,
-        web3Instance,
-    ]);
-
     const handleTransactionsLoad = useCallback(
         (page) => {
             if (page <= latestLoadedPage) {
@@ -173,7 +150,7 @@ const Dashboard = () => {
                     ethereumAccount,
                     accountId,
                     apiKey,
-                    selectedAsset,
+                    supportedTokens,
                     page,
                     10,
                     transactionsTypeFilter
@@ -185,9 +162,9 @@ const Dashboard = () => {
             accountId,
             apiKey,
             dispatch,
+            supportedTokens,
             ethereumAccount,
             latestLoadedPage,
-            selectedAsset,
             transactionsTypeFilter,
         ]
     );
@@ -297,7 +274,7 @@ const Dashboard = () => {
                     width={["93%", "75%", "65%", "45%"]}
                 >
                     <Transactions
-                        asset={selectedAsset}
+                        balances={balances}
                         transactions={transactions}
                         loading={balancesLoading || transactionsLoading}
                         typeFilter={transactionsTypeFilter}

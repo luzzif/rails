@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "analyze": "source-map-explorer 'build/static/js/*.js'",
-        "start": "HTTPS=true react-scripts start",
+        "start": "react-scripts start",
         "build": "react-scripts build && copy _redirects ./build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",

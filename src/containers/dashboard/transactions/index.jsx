@@ -12,7 +12,7 @@ import { LoadingOverlay } from "../../../components/loading-overlay";
 import { useRef } from "react";
 
 export const Transactions = ({
-    asset,
+    balances,
     transactions,
     loading,
     onChange,
@@ -213,7 +213,7 @@ export const Transactions = ({
                                     >
                                         <Transaction
                                             transaction={transaction}
-                                            asset={asset}
+                                            balances={balances}
                                             onClick={onChange}
                                             selectedFiat={selectedFiat}
                                         />
@@ -239,7 +239,7 @@ export const Transactions = ({
 };
 
 Transactions.propTypes = {
-    asset: PropTypes.object.isRequired,
+    balances: PropTypes.array.isRequired,
     transactions: PropTypes.array.isRequired,
     loading: PropTypes.bool.isRequired,
     onChange: PropTypes.func.isRequired,

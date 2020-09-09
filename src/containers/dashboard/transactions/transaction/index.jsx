@@ -6,8 +6,14 @@ import { TransactionIcon } from "./icon";
 import { FormattedMessage } from "react-intl";
 import { DateTime } from "luxon";
 import { formatBigNumber } from "../../../../utils/conversion";
+import { findTokenBySymbol } from "../../../../utils";
 
-export const Transaction = ({ asset, transaction, onClick, selectedFiat }) => {
+export const Transaction = ({
+    balances,
+    transaction,
+    onClick,
+    selectedFiat,
+}) => {
     const {
         etherAmount,
         deposit,
@@ -16,8 +22,10 @@ export const Transaction = ({ asset, transaction, onClick, selectedFiat }) => {
         withdrawal,
         timestamp,
         progress,
+        symbol,
     } = transaction;
     const [referenceColor, setReferenceColor] = useState("");
+    const [fiatValue, setFiatValue] = useState("0");
 
     useEffect(() => {
         let referenceColor = "";
@@ -32,6 +40,13 @@ export const Transaction = ({ asset, transaction, onClick, selectedFiat }) => {
         }
         setReferenceColor(referenceColor);
     }, [deposit, progress, sent, withdrawal]);
+
+    useEffect(() => {
+        if (balances && balances.length > 0) {
+            const { fiatValue } = findTokenBySymbol(balances, symbol);
+            setFiatValue(fiatValue);
+        }
+    }, [symbol, balances]);
 
     const getText = () => {
         if (deposit) {
@@ -91,13 +106,14 @@ export const Transaction = ({ asset, transaction, onClick, selectedFiat }) => {
             >
                 <Box color={referenceColor} mb="4px">
                     {(!withdrawal && (deposit || !sent) ? "+" : "-") +
-                        formatBigNumber(etherAmount)}
+                        formatBigNumber(etherAmount)}{" "}
+                    {symbol}
                 </Box>
                 <Box fontSize={12}>
                     <AmountText color={referenceColor}>
                         {(!withdrawal && (deposit || !sent) ? "+" : "-") +
                             formatBigNumber(
-                                etherAmount.multipliedBy(asset.fiatValue)
+                                etherAmount.multipliedBy(fiatValue)
                             )}{" "}
                         {selectedFiat.symbol}
                     </AmountText>
@@ -108,7 +124,8 @@ export const Transaction = ({ asset, transaction, onClick, selectedFiat }) => {
 };
 
 Transaction.propTypes = {
-    asset: PropTypes.object.isRequired,
+    balances: PropTypes.array.isRequired,
     transaction: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
+    selectedFiat: PropTypes.object.isRequired,
 };

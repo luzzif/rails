@@ -26,6 +26,7 @@ import BigNumber from "bignumber.js";
 import { toast } from "react-toastify";
 import { FormattedMessage } from "react-intl";
 import { weiToEther, etherToWei } from "../../utils/conversion";
+import { findTokenBySymbol } from "../../utils";
 
 export const POST_GET_AUTH_STATUS_LOADING = "POST_GET_AUTH_STATUS_LOADING";
 export const DELETE_GET_AUTH_STATUS_LOADING = "DELETE_GET_AUTH_STATUS_LOADING";
@@ -260,14 +261,13 @@ export const getTokenTransactions = (
     selectedAccount,
     accountId,
     apiKey,
-    token,
+    supportedTokens,
     page,
     itemsPerPage,
     type
 ) => async (dispatch) => {
     dispatch({ type: POST_TRANSACTIONS_LOADING });
     try {
-        const { symbol: tokenSymbol, decimals: tokenDecimals } = token;
         const now = Date.now();
         let transactions = [];
         let transactionsAmount = 0;
@@ -275,7 +275,7 @@ export const getTokenTransactions = (
         if (type === "all" || type === "transfers") {
             const transfers = await getTransfers(
                 accountId,
-                tokenSymbol,
+                null,
                 itemsPerPage,
                 offset,
                 apiKey,
@@ -289,16 +289,20 @@ export const getTokenTransactions = (
                     const bigNumberFeeAmount = new BigNumber(
                         transfer.feeAmount
                     );
+                    const { decimals } = findTokenBySymbol(
+                        supportedTokens,
+                        transfer.symbol
+                    );
                     transfer.transfer = true;
                     transfer.amount = bigNumberAmount;
                     transfer.etherAmount = weiToEther(
                         bigNumberAmount,
-                        tokenDecimals
+                        decimals
                     );
                     transfer.feeAmount = bigNumberFeeAmount;
                     transfer.etherFeeAmount = weiToEther(
                         bigNumberFeeAmount,
-                        tokenDecimals
+                        decimals
                     );
                     transfer.sent =
                         selectedAccount.toLowerCase() ===
@@ -317,19 +321,22 @@ export const getTokenTransactions = (
                 null,
                 offset,
                 itemsPerPage,
-                null,
-                tokenSymbol
+                null
             );
             transactionsAmount += deposits.totalNum;
             transactions = transactions.concat(
                 deposits.transactions.map((deposit) => {
+                    const { decimals } = findTokenBySymbol(
+                        supportedTokens,
+                        deposit.symbol
+                    );
                     const bigNumberAmount = new BigNumber(deposit.amount);
                     const bigNumberFeeAmount = new BigNumber(deposit.feeAmount);
                     deposit.deposit = true;
                     deposit.amount = bigNumberAmount;
                     deposit.etherAmount = weiToEther(
                         bigNumberAmount,
-                        tokenDecimals
+                        decimals
                     );
                     deposit.feeAmount = bigNumberFeeAmount;
                     deposit.etherFeeAmount = weiToEther(bigNumberFeeAmount, 18);
@@ -346,12 +353,15 @@ export const getTokenTransactions = (
                 null,
                 offset,
                 itemsPerPage,
-                null,
-                tokenSymbol
+                null
             );
             transactionsAmount += withdrawals.totalNum;
             transactions = transactions.concat(
                 withdrawals.transactions.map((withdrawal) => {
+                    const { decimals } = findTokenBySymbol(
+                        supportedTokens,
+                        withdrawal.symbol
+                    );
                     const bigNumberAmount = new BigNumber(withdrawal.amount);
                     const bigNumberFeeAmount = new BigNumber(
                         withdrawal.feeAmount
@@ -360,7 +370,7 @@ export const getTokenTransactions = (
                     withdrawal.amount = bigNumberAmount;
                     withdrawal.etherAmount = weiToEther(
                         bigNumberAmount,
-                        tokenDecimals
+                        decimals
                     );
                     withdrawal.feeAmount = bigNumberFeeAmount;
                     withdrawal.etherFeeAmount = weiToEther(
