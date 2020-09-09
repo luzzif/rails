@@ -201,24 +201,22 @@ export const Transactions = ({
                             useWindow={false}
                             getScrollParent={handleGetScrollParent}
                         >
-                            {filteredTransactions
-                                .sort((a, b) => b.timestamp - a.timestamp)
-                                .map((transaction) => (
-                                    <Box
-                                        key={transaction.id}
-                                        height={68}
-                                        width="100%"
-                                        alignItems="center"
-                                        display="flex"
-                                    >
-                                        <Transaction
-                                            transaction={transaction}
-                                            balances={balances}
-                                            onClick={onChange}
-                                            selectedFiat={selectedFiat}
-                                        />
-                                    </Box>
-                                ))}
+                            {filteredTransactions.map((transaction) => (
+                                <Box
+                                    key={transaction.id}
+                                    height={68}
+                                    width="100%"
+                                    alignItems="center"
+                                    display="flex"
+                                >
+                                    <Transaction
+                                        transaction={transaction}
+                                        balances={balances}
+                                        onClick={onChange}
+                                        selectedFiat={selectedFiat}
+                                    />
+                                </Box>
+                            ))}
                         </StyledInfiniteScroll>
                     ) : (
                         <Box

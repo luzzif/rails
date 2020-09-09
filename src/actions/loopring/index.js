@@ -271,13 +271,13 @@ export const getTokenTransactions = (
         const now = Date.now();
         let transactions = [];
         let transactionsAmount = 0;
-        const offset = page * itemsPerPage;
+        const limit = (page + 1) * itemsPerPage;
         if (type === "all" || type === "transfers") {
             const transfers = await getTransfers(
                 accountId,
                 null,
-                itemsPerPage,
-                offset,
+                limit,
+                0,
                 apiKey,
                 0,
                 now
@@ -319,8 +319,8 @@ export const getTokenTransactions = (
                 now,
                 false,
                 null,
-                offset,
-                itemsPerPage
+                0,
+                limit
             );
             transactionsAmount += deposits.totalNum;
             transactions = transactions.concat(
@@ -347,8 +347,8 @@ export const getTokenTransactions = (
                 0,
                 now,
                 null,
-                offset,
-                itemsPerPage,
+                0,
+                limit,
                 null
             );
             transactionsAmount += withdrawals.totalNum;
@@ -381,7 +381,7 @@ export const getTokenTransactions = (
             type: GET_TRANSACTIONS_SUCCESS,
             transactions: transactions
                 .sort((a, b) => b.timestamp - a.timestamp)
-                .slice(0, itemsPerPage + 1),
+                .slice(0, limit + 1),
             transactionsAmount,
         });
     } catch (error) {

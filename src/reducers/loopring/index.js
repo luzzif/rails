@@ -157,7 +157,7 @@ export const loopringReducer = (state = initialState, action) => {
                 ...state,
                 transactions: {
                     ...state.transactions,
-                    data: [...state.transactions.data, ...action.transactions],
+                    data: action.transactions,
                     amounts: action.transactionsAmount,
                 },
             };
