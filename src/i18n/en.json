@@ -7,7 +7,7 @@
     "auth.signin": "Click the button below to proceed",
     "auth.login.button": "Login",
     "auth.register.button": "Register",
-    "auth.login.proceed.message": "Please pay attention to pending requests in Metamask. In some cases a popup won't appear. Click on the button below to continue.",
+    "auth.login.proceed.message": "Please pay attention to pending requests in Metamask. In some cases a popup won't appear.",
     "auth.login.proceed.button.title": "Continue",
     "auth.register.proceed.message.1": "The registration consists in tying your on-chain Ethereum address to the Loopring Pay L2 system which powers Rails. The process usually takes from 5 to 30 minutes to fully complete.",
     "auth.register.proceed.message.2": "Please pay attention to pending requests in Metamask. In some cases a popup won't appear. Click on the button below to continue.",

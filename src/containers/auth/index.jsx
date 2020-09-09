@@ -1,7 +1,6 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { Flex, Box } from "reflexbox";
 import { FormattedMessage } from "react-intl";
-import { Button } from "../../components/button";
 import { useDispatch, useSelector } from "react-redux";
 import { login, getAuthStatus } from "../../actions/loopring";
 import darkLogoBig from "../../images/logo-dark-big.svg";
@@ -74,7 +73,8 @@ const Auth = () => {
         }
         setRegistering(false);
         setLoggingIn(true);
-    }, [dispatch, web3Instance]);
+        dispatch(login(web3Instance, selectedAccount));
+    }, [dispatch, selectedAccount, web3Instance]);
 
     const handleRegisterClick = useCallback(() => {
         if (!web3Instance) {
@@ -87,10 +87,6 @@ const Auth = () => {
     useEffect(() => {
         setOpen(web3Instance && (loggingIn || registering));
     }, [loggingIn, registering, web3Instance]);
-
-    const handleLoginProceed = useCallback(() => {
-        dispatch(login(web3Instance, selectedAccount));
-    }, [dispatch, selectedAccount, web3Instance]);
 
     const handleClose = useCallback(() => {
         setLoggingIn(false);
@@ -185,13 +181,8 @@ const Auth = () => {
             </Flex>
             <BottomUpContainer open={open && loggingIn} onClose={handleClose}>
                 <Flex width="100%" flexDirection="column" alignItems="center">
-                    <Box mb="24px">
-                        <FormattedMessage id="auth.login.proceed.message" />
-                    </Box>
                     <Box>
-                        <Button onClick={handleLoginProceed}>
-                            <FormattedMessage id="auth.login.proceed.button.title" />
-                        </Button>
+                        <FormattedMessage id="auth.login.proceed.message" />
                     </Box>
                 </Flex>
             </BottomUpContainer>
