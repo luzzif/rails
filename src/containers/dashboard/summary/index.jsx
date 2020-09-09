@@ -8,7 +8,7 @@ export const Summary = ({ etherBalance, fiatValue, symbol, selectedFiat }) => {
     return (
         <Flex flexDirection="column" alignItems="center">
             <Box fontSize={[36, 48, 56, 64]} fontWeight={700}>
-                {formatBigNumber(etherBalance)} {symbol}
+                {formatBigNumber(etherBalance, 4)} {symbol}
             </Box>
             <Box fontSize={[16, 16, 20, 24, 28]}>
                 {formatBigNumber(fiatValue.multipliedBy(etherBalance))}{" "}
