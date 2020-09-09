@@ -23,9 +23,7 @@ export const Form = ({ onConfirm, asset, open }) => {
     const [parsedUserBalance, setParsedUserBalance] = useState(
         new BigNumber("0")
     );
-    const [amount, setAmount] = useState(0);
-    const [stringAmount, setStringAmount] = useState("");
-    const [amountError, setAmountError] = useState(false);
+    const [amount, setAmount] = useState("");
 
     // fetch updated asset's on-chain balance
     useEffect(() => {
@@ -50,55 +48,21 @@ export const Form = ({ onConfirm, asset, open }) => {
         if (!open) {
             // reset the state on close
             setParsedUserBalance(new BigNumber("0"));
-            setAmount(0);
-            setStringAmount("");
-            setAmountError(false);
+            setAmount("");
         }
     }, [open]);
 
     const handleAmountChange = useCallback(
         (event) => {
-            const newAmount = event.target.value;
-            if (newAmount === "0") {
-                setAmount(0);
-                setStringAmount(newAmount);
-                setAmountError(true);
-                return;
-            }
-            let numericAmount = parseFloat(newAmount);
-            if (
-                !newAmount ||
-                newAmount.indexOf(",") >= 0 ||
-                newAmount.indexOf(" ") >= 0 ||
-                newAmount.indexOf("-") >= 0 ||
-                numericAmount < 0 ||
-                isNaN(numericAmount)
-            ) {
-                setAmountError(true);
-                setStringAmount("");
-                setAmount(0);
-                return;
-            }
-            if (newAmount.endsWith(".") || numericAmount === 0) {
-                setAmountError(true);
+            let newAmount = event.target.value.replace(",", "");
+            if (/^(\d+)?(\.\d*)?$/.test(newAmount)) {
+                if (parsedUserBalance.isLessThan(newAmount)) {
+                    newAmount = parsedUserBalance.decimalPlaces(4).toFixed();
+                }
+                setAmount(newAmount);
             } else {
-                setAmountError(false);
+                setAmount("");
             }
-            if (
-                /\.{2,}|[a-zA-Z]/.test(newAmount) ||
-                newAmount.split(".").length > 2
-            ) {
-                return;
-            }
-            setStringAmount(newAmount);
-            let properNumericValue = new BigNumber(
-                isNaN(numericAmount) ? "0" : numericAmount.toString()
-            );
-            if (parsedUserBalance.isLessThan(properNumericValue)) {
-                properNumericValue = parsedUserBalance.decimalPlaces(4);
-                setStringAmount(properNumericValue.toString());
-            }
-            setAmount(properNumericValue.toNumber());
         },
         [parsedUserBalance]
     );
@@ -121,7 +85,7 @@ export const Form = ({ onConfirm, asset, open }) => {
                         <FormattedMessage id="deposit.form.placeholder.amount" />
                     }
                     placeholder="12.5"
-                    value={stringAmount}
+                    value={amount}
                     onChange={handleAmountChange}
                     message={
                         <FormattedMessage
@@ -133,14 +97,10 @@ export const Form = ({ onConfirm, asset, open }) => {
                             }}
                         />
                     }
-                    error={amountError}
                 />
             </Box>
             <Box>
-                <Button
-                    disabled={!amount || amountError}
-                    onClick={handleConfirm}
-                >
+                <Button disabled={!amount} onClick={handleConfirm}>
                     <FormattedMessage id="deposit.form.confirm" />
                 </Button>
             </Box>
