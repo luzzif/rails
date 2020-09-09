@@ -43,6 +43,12 @@ const Auth = () => {
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
+        if (!web3Instance) {
+            dispatch(initializeWeb3());
+        }
+    }, [dispatch, web3Instance]);
+
+    useEffect(() => {
         if (chainId) {
             setInvalidChainId(VALID_CHAIN_IDS.indexOf(chainId) < 0);
             if (chainId === 1) {

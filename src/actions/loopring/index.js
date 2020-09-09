@@ -583,9 +583,13 @@ export const registerAccount = (web3Instance, selectedAccount) => async (
             "",
             exchangeAddress,
             await getRecommendedGasPrice()
-        ).once("transactionHash", (transactionHash) => {
-            dispatch({ type: POST_REGISTRATION_SUCCESS, transactionHash });
-        });
+        )
+            .once("transactionHash", (transactionHash) => {
+                dispatch({ type: POST_REGISTRATION_SUCCESS, transactionHash });
+            })
+            .once("recepit", () => {
+                dispatch(getAuthStatus(selectedAccount));
+            });
     } catch (error) {
         toast.error(<FormattedMessage id="error.rails.register" />);
         console.error("error registering user", error);
