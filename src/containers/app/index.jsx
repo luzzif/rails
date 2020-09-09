@@ -105,7 +105,7 @@ const web3ModalOptions = {
             },
         },
         authereum: {
-            package: Authereum, // required
+            package: Authereum,
         },
     },
 };
