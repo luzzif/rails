@@ -65,28 +65,30 @@ const Dashboard = () => {
     const [latestLoadedPage, setLatestLoadedPage] = useState(-1);
 
     const handleTransactionsRefresh = useCallback(() => {
-        dispatch(resetTransactions());
-        dispatch(
-            getTokenTransactions(
-                ethereumAccount,
-                accountId,
-                apiKey,
-                supportedTokens,
-                0,
-                10,
-                transactionsTypeFilter
-            )
-        );
-        setLatestLoadedPage(0);
-        dispatch(
-            getUserBalances(
-                web3Instance,
-                accountId,
-                apiKey,
-                supportedTokens,
-                selectedFiat
-            )
-        );
+        if (accountId) {
+            dispatch(resetTransactions());
+            dispatch(
+                getTokenTransactions(
+                    ethereumAccount,
+                    accountId,
+                    apiKey,
+                    supportedTokens,
+                    0,
+                    10,
+                    transactionsTypeFilter
+                )
+            );
+            setLatestLoadedPage(0);
+            dispatch(
+                getUserBalances(
+                    web3Instance,
+                    accountId,
+                    apiKey,
+                    supportedTokens,
+                    selectedFiat
+                )
+            );
+        }
     }, [
         accountId,
         apiKey,
