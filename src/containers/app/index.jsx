@@ -90,7 +90,7 @@ const darkWeb3ModalTheme = {
 };
 
 const web3ModalOptions = {
-    cacheProvider: false,
+    cacheProvider: true,
     providerOptions: {
         mewconnect: {
             package: MewConnect,
