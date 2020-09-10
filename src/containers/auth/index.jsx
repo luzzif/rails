@@ -12,7 +12,7 @@ import {
     InvalidChainText,
 } from "./styled";
 import { BottomUpContainer } from "../../components/bottom-up-container";
-import { initializeWeb3 } from "../../actions/web3";
+import { initializeWeb3, initializeCachedWeb3 } from "../../actions/web3";
 import { RegistrationFlow } from "./registration-flow";
 import { selectedTheme } from "../app";
 import { getShortenedEthereumAddress } from "../../utils/conversion";
@@ -44,9 +44,9 @@ const Auth = () => {
 
     useEffect(() => {
         if (!web3Instance) {
-            dispatch(initializeWeb3());
+            dispatch(initializeCachedWeb3());
         }
-    }, [dispatch, web3Instance]);
+    }, [chainId, dispatch, web3Instance]);
 
     useEffect(() => {
         if (chainId) {
