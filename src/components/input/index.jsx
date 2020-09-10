@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { StyledInput, Label, Message } from "./styled";
 
-export const Input = ({ label, message, ...rest }) => (
+export const Input = ({ label, message, innerRef, ...rest }) => (
     <Flex flexDirection="column">
         {label && (
             <Box pl="16px" mb="8px">
@@ -11,7 +11,7 @@ export const Input = ({ label, message, ...rest }) => (
             </Box>
         )}
         <Box>
-            <StyledInput {...rest} />
+            <StyledInput {...rest} ref={innerRef} />
         </Box>
         {message && (
             <Box pl="16px" mt="8px">

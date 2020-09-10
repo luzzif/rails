@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { Flex, Box } from "reflexbox";
@@ -14,6 +14,7 @@ import { LoadingOverlay } from "../../../../components/loading-overlay";
 
 export const Send = ({ onConfirm, asset }) => {
     const dispatch = useDispatch();
+    const receiverInputRef = useRef(null);
     const {
         web3Instance,
         addressFromEns,
@@ -29,9 +30,7 @@ export const Send = ({ onConfirm, asset }) => {
     const [parsedUserBalance, setParsedUserBalance] = useState(
         new BigNumber("0")
     );
-    const [amount, setAmount] = useState(0);
-    const [stringAmount, setStringAmount] = useState("");
-    const [amountError, setAmountError] = useState(false);
+    const [amount, setAmount] = useState("");
     const [receiver, setReceiver] = useState("");
     const [resolvedReceiver, setResolvedReceiver] = useState("");
     const [usingEns, setUsingEns] = useState(false);
@@ -48,6 +47,17 @@ export const Send = ({ onConfirm, asset }) => {
     }, [loadingAddressFromEns, addressFromEns]);
 
     useEffect(() => {
+        if(!receiverInputRef.current) {
+            return;
+        }
+        if (loadingAddressFromEns) {
+            receiverInputRef.current.blur();
+        } else {
+            receiverInputRef.current.focus();
+        }
+    }, [loadingAddressFromEns, receiverInputRef]);
+
+    useEffect(() => {
         setParsedUserBalance(weiToEther(asset.balance, asset.decimals));
     }, [asset, supportedTokens]);
 
@@ -59,47 +69,15 @@ export const Send = ({ onConfirm, asset }) => {
 
     const handleAmountChange = useCallback(
         (event) => {
-            const newAmount = event.target.value;
-            if (newAmount === "0") {
-                setAmount(0);
-                setStringAmount(newAmount);
-                setAmountError(true);
-                return;
-            }
-            let numericAmount = parseFloat(newAmount);
-            if (
-                !newAmount ||
-                newAmount.indexOf(",") >= 0 ||
-                newAmount.indexOf(" ") >= 0 ||
-                newAmount.indexOf("-") >= 0 ||
-                numericAmount < 0 ||
-                isNaN(numericAmount)
-            ) {
-                setAmountError(true);
-                setStringAmount("");
-                setAmount(0);
-                return;
-            }
-            if (newAmount.endsWith(".") || numericAmount === 0) {
-                setAmountError(true);
+            let newAmount = event.target.value.replace(",", "");
+            if (/^(\d+)?(\.\d*)?$/.test(newAmount)) {
+                if (parsedUserBalance.isLessThan(newAmount)) {
+                    newAmount = parsedUserBalance.decimalPlaces(4).toFixed();
+                }
+                setAmount(newAmount);
             } else {
-                setAmountError(false);
+                setAmount("");
             }
-            if (
-                /\.{2,}|[a-zA-Z]/.test(newAmount) ||
-                newAmount.split(".").length > 2
-            ) {
-                return;
-            }
-            setStringAmount(newAmount);
-            let properNumericValue = new BigNumber(
-                isNaN(numericAmount) ? "0" : numericAmount.toString()
-            );
-            if (parsedUserBalance.isLessThan(properNumericValue)) {
-                properNumericValue = parsedUserBalance.decimalPlaces(4);
-                setStringAmount(properNumericValue.toString());
-            }
-            setAmount(properNumericValue.toNumber());
         },
         [parsedUserBalance]
     );
@@ -145,6 +123,7 @@ export const Send = ({ onConfirm, asset }) => {
                         <FormattedMessage id="send.form.placeholder.receiver" />
                     }
                     placeholder="foo.eth"
+                    innerRef={receiverInputRef}
                     value={receiver}
                     onChange={handleReceiverChange}
                     error={receiverError}
@@ -164,9 +143,8 @@ export const Send = ({ onConfirm, asset }) => {
                         <FormattedMessage id="send.form.placeholder.amount" />
                     }
                     placeholder="12.5"
-                    value={stringAmount}
+                    value={amount}
                     onChange={handleAmountChange}
-                    error={amountError}
                 />
             </Box>
             <Box mb="24px" width="100%">
@@ -183,7 +161,6 @@ export const Send = ({ onConfirm, asset }) => {
                         !receiver ||
                         !amount ||
                         receiverError ||
-                        amountError ||
                         loadingAddressFromEns
                     }
                     onClick={handleConfirm}
