@@ -29,6 +29,7 @@
     "dashboard.transactions.chip.deposits": "Deposits",
     "dashboard.transactions.chip.withdrawals": "Withdrawals",
     "dashboard.transactions.chip.transfers": "Transfers",
+    "dashboard.transactions.progress": "in progress",
     "dashboard.transaction.summary.type": "Type",
     "dashboard.transaction.summary.type.deposit": "deposit",
     "dashboard.transaction.summary.type.withdrawal": "withdrawal",

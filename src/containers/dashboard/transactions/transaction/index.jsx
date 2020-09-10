@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Flex, Box } from "reflexbox";
 import { OneLineText, AmountText, HoverableContainer } from "./styled";
 import { TransactionIcon } from "./icon";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { DateTime } from "luxon";
 import { formatBigNumber } from "../../../../utils/conversion";
 import { findTokenBySymbol } from "../../../../utils";
@@ -14,6 +14,7 @@ export const Transaction = ({
     onClick,
     selectedFiat,
 }) => {
+    const { formatMessage } = useIntl();
     const {
         etherAmount,
         deposit,
@@ -87,7 +88,12 @@ export const Transaction = ({
             >
                 <Box mb="4px">
                     <OneLineText>
-                        {getText()} {progress && progress !== "100%" && "*"}
+                        {getText()}{" "}
+                        {progress &&
+                            progress !== "100%" &&
+                            `(${formatMessage({
+                                id: "dashboard.transactions.progress",
+                            })}`}
                     </OneLineText>
                 </Box>
                 <Box>
