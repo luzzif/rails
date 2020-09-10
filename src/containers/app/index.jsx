@@ -54,7 +54,7 @@ const light = {
     secondaryButtonBackground: "rgba(14, 6, 45, 0.2)",
     textInverted: "#e0e0e0",
     text: "#0e062d",
-    shadow: "rgba(0, 0, 0, 0.3)",
+    shadow: "rgba(0, 0, 0, 0.2)",
     placeholder: "#b3b3b3",
     loader: "#a6a6a6",
 };
@@ -70,7 +70,7 @@ const dark = {
     secondaryButtonBackground: "rgba(241, 249, 210, 0.2)",
     text: "#F1F9D2",
     textInverted: "#212121",
-    shadow: "rgba(255, 255, 255, 0.3)",
+    shadow: "rgba(255, 255, 255, 0.2)",
     placeholder: "#666666",
     loader: "#595959",
 };

@@ -11,8 +11,7 @@ export const OverlayFlex = styled(Flex)`
         props.light ? props.theme.foreground : props.theme.background};
     opacity: 1;
     color: ${(props) => props.theme.primary};
-    border-top-left-radius: 24px;
-    border-top-right-radius: 24px;
+    border-radius: 24px;
     transition: opacity 0.3s ease;
     font-size: 52px;
     ${(props) =>
