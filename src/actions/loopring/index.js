@@ -545,9 +545,23 @@ export const postDeposit = (
             etherToWei(new BigNumber(amount), token.decimals).toFixed(),
             exchangeAddress,
             await getRecommendedGasPrice()
-        ).once("transactionHash", (transactionHash) => {
-            dispatch({ type: POST_DEPOSIT_SUCCESS, transactionHash });
-        });
+        )
+            .once("transactionHash", (transactionHash) => {
+                dispatch({ type: POST_DEPOSIT_SUCCESS, transactionHash });
+            })
+            .once("receipt", () => {
+                toast.success(
+                    <FormattedMessage
+                        id="success.deposit"
+                        values={{
+                            tokenSymbol: token.symbol,
+                            amount: new BigNumber(amount)
+                                .decimalPlaces(4)
+                                .toFixed(),
+                        }}
+                    />
+                );
+            });
     } catch (error) {
         toast.error(<FormattedMessage id="error.rails.deposit" />);
         console.error(`error depositing ${token.symbol}`, error);
