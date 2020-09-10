@@ -22,3 +22,9 @@ export const OneLineText = styled(Box)`
     overflow: hidden;
     text-overflow: ellipsis;
 `;
+
+export const RightBlockFlex = styled(Flex)`
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+`;

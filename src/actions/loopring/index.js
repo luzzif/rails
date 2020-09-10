@@ -631,9 +631,23 @@ export const postOnchainWithdrawal = (
             wrappedFee.fee,
             exchangeAddress,
             await getRecommendedGasPrice()
-        ).once("transactionHash", (transactionHash) => {
-            dispatch({ type: POST_WITHDRAWAL_SUCCESS, transactionHash });
-        });
+        )
+            .once("transactionHash", (transactionHash) => {
+                dispatch({ type: POST_WITHDRAWAL_SUCCESS, transactionHash });
+            })
+            .once("receipt", () => {
+                toast.success(
+                    <FormattedMessage
+                        id="success.withdrawal"
+                        values={{
+                            tokenSymbol: token.symbol,
+                            amount: new BigNumber(amount)
+                                .decimalPlaces(4)
+                                .toFixed(),
+                        }}
+                    />
+                );
+            });
     } catch (error) {
         toast.error(<FormattedMessage id="error.rails.withdrawal" />);
         console.error("error performing onchain withdrawal", error);

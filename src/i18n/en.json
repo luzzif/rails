@@ -78,5 +78,6 @@
     "error.rails.auth": "There was an error checking your auth status. Please try again later.",
     "warn.account.not.found": "Seems like this account is not yet on our platform. Please register first.",
     "warn.register.existing.account": "Seems like you already own a Rails account. Please login to start using it.",
-    "success.allowance": "Allowance request confirmed. You can now deposit your {tokenSymbol}."
+    "success.allowance": "Allowance request confirmed. You can now deposit your {tokenSymbol}.",
+    "success.withdrawal": "Successfully withdrew {amount} {tokenSymbol}. Refresh the transactions list to check the progress."
 }

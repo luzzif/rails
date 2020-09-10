@@ -1,7 +1,12 @@
 import React, { useEffect, useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import { Flex, Box } from "reflexbox";
-import { OneLineText, AmountText, HoverableContainer } from "./styled";
+import {
+    OneLineText,
+    AmountText,
+    HoverableContainer,
+    RightBlockFlex,
+} from "./styled";
 import { TransactionIcon } from "./icon";
 import { FormattedMessage, useIntl } from "react-intl";
 import { DateTime } from "luxon";
@@ -93,7 +98,7 @@ export const Transaction = ({
                             progress !== "100%" &&
                             `(${formatMessage({
                                 id: "dashboard.transactions.progress",
-                            })}`}
+                            })})`}
                     </OneLineText>
                 </Box>
                 <Box>
@@ -104,7 +109,7 @@ export const Transaction = ({
                     </OneLineText>
                 </Box>
             </Flex>
-            <Flex
+            <RightBlockFlex
                 flexDirection="column"
                 alignItems="flex-end"
                 justifyContent="center"
@@ -124,7 +129,7 @@ export const Transaction = ({
                         {selectedFiat.symbol}
                     </AmountText>
                 </Box>
-            </Flex>
+            </RightBlockFlex>
         </HoverableContainer>
     );
 };
