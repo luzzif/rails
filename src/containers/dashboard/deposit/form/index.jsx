@@ -100,7 +100,14 @@ export const Form = ({ onConfirm, asset, open }) => {
                 />
             </Box>
             <Box>
-                <Button disabled={!amount} onClick={handleConfirm}>
+                <Button
+                    disabled={
+                        !amount ||
+                        parseFloat(amount) === 0 ||
+                        isNaN(parseFloat(amount))
+                    }
+                    onClick={handleConfirm}
+                >
                     <FormattedMessage id="deposit.form.confirm" />
                 </Button>
             </Box>

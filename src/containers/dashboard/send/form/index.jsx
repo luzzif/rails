@@ -161,6 +161,8 @@ export const Send = ({ onConfirm, asset }) => {
                     disabled={
                         !receiver ||
                         !amount ||
+                        parseFloat(amount) === 0 ||
+                        isNaN(parseFloat(amount)) ||
                         receiverError ||
                         loadingAddressFromEns
                     }
