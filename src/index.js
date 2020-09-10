@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { App } from "./containers/app";
+import { App } from "./views/app";
 import { BrowserRouter } from "react-router-dom";
 import { IntlProvider } from "react-intl";
 import en from "./i18n/en.json";

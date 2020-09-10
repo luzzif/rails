@@ -1,4 +1,4 @@
-import { getWeb3Modal } from "../../containers/app";
+import { getWeb3Modal } from "../../views/app";
 import { postLogout } from "../loopring";
 import Web3 from "web3";
 

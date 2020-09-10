@@ -15,7 +15,7 @@ import {
     submitTransfer,
 } from "../../actions/loopring";
 import { TransactionSummary } from "./transaction-summary";
-import { Summary } from "../dashboard/summary";
+import { Summary } from "./summary";
 import { DepositFlow } from "./deposit";
 import { WithdrawalFlow } from "./withdraw";
 import { BottomUpContainer } from "../../components/bottom-up-container";
