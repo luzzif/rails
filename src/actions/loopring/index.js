@@ -504,9 +504,18 @@ export const grantAllowance = (
             token.address,
             exchangeAddress,
             await getRecommendedGasPrice()
-        ).once("transactionHash", (transactionHash) => {
-            dispatch({ type: GRANT_ALLOWANCE_SUCCESS, transactionHash });
-        });
+        )
+            .once("transactionHash", (transactionHash) => {
+                dispatch({ type: GRANT_ALLOWANCE_SUCCESS, transactionHash });
+            })
+            .once("receipt", () => {
+                toast.success(
+                    <FormattedMessage
+                        id="success.allowance"
+                        values={{ tokenSymbol: token.symbol }}
+                    />
+                );
+            });
     } catch (error) {
         toast.error(
             <FormattedMessage id="error.rails.token.allowance.grant" />
