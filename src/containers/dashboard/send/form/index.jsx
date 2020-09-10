@@ -47,7 +47,7 @@ export const Send = ({ onConfirm, asset }) => {
     }, [loadingAddressFromEns, addressFromEns]);
 
     useEffect(() => {
-        if(!receiverInputRef.current) {
+        if (!receiverInputRef.current) {
             return;
         }
         if (loadingAddressFromEns) {
@@ -88,7 +88,8 @@ export const Send = ({ onConfirm, asset }) => {
             if (
                 newReceiver &&
                 newReceiver !== "0" &&
-                !newReceiver.startsWith("0x")
+                !newReceiver.startsWith("0x") &&
+                newReceiver.endsWith(".eth")
             ) {
                 debouncedEnsLookup(web3Instance, newReceiver);
                 setUsingEns(true);
