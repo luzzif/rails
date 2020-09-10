@@ -5,14 +5,22 @@ import { Button } from "../../../../components/button";
 import { FormattedMessage } from "react-intl";
 import { Input } from "../../../../components/input";
 import BigNumber from "bignumber.js";
-import { weiToEther } from "../../../../utils/conversion";
+import { weiToEther, formatBigNumber } from "../../../../utils/conversion";
+import { ErrorText } from "../../../../components/error-text/styled";
 
-export const Form = ({ onConfirm, supportedTokens, asset, open }) => {
+export const Form = ({
+    onConfirm,
+    supportedTokens,
+    asset,
+    open,
+    loopringExchange,
+}) => {
     const [parsedUserBalance, setParsedUserBalance] = useState(
         new BigNumber("0")
     );
     const [amount, setAmount] = useState("");
     const [amountError, setAmountError] = useState(false);
+    const [feeAmount, setFeeAmount] = useState(new BigNumber(0));
 
     useEffect(() => {
         setParsedUserBalance(weiToEther(asset.balance, asset.decimals));
@@ -25,6 +33,17 @@ export const Form = ({ onConfirm, supportedTokens, asset, open }) => {
             setAmountError(false);
         }
     }, [asset, open]);
+
+    useEffect(() => {
+        if (loopringExchange && loopringExchange.onchainFees) {
+            const wrappedFee = loopringExchange.onchainFees.find(
+                (fee) => fee.type === "withdraw"
+            );
+            if (wrappedFee && wrappedFee.fee) {
+                setFeeAmount(weiToEther(new BigNumber(wrappedFee.fee), 18));
+            }
+        }
+    }, [loopringExchange]);
 
     const handleAmountChange = useCallback(
         (event) => {
@@ -74,6 +93,16 @@ export const Form = ({ onConfirm, supportedTokens, asset, open }) => {
                     error={amountError}
                 />
             </Box>
+            {feeAmount && !feeAmount.isZero() && (
+                <Box mb="24px">
+                    <ErrorText>
+                        <FormattedMessage
+                            id="withdrawal.form.fee"
+                            values={{ amount: formatBigNumber(feeAmount, 4) }}
+                        />
+                    </ErrorText>
+                </Box>
+            )}
             <Box>
                 <Button
                     disabled={
@@ -96,4 +125,5 @@ Form.propTypes = {
     asset: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
     supportedTokens: PropTypes.array.isRequired,
+    loopringExchange: PropTypes.object,
 };

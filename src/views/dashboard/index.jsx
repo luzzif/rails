@@ -306,7 +306,11 @@ const Dashboard = () => {
             </BottomUpContainer>
             <BottomUpContainer open={sending} onClose={handleClose}>
                 {sending && (
-                    <Send asset={selectedAsset} onConfirm={handleSendConfirm} />
+                    <Send
+                        asset={selectedAsset}
+                        onConfirm={handleSendConfirm}
+                        exchange={exchange}
+                    />
                 )}
             </BottomUpContainer>
             <BottomUpContainer open={showingTransaction} onClose={handleClose}>

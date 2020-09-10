@@ -6,24 +6,30 @@ import { Button } from "../../../../components/button";
 import { FormattedMessage } from "react-intl";
 import { Input } from "../../../../components/input";
 import BigNumber from "bignumber.js";
-import { weiToEther } from "../../../../utils/conversion";
+import { weiToEther, formatBigNumber } from "../../../../utils/conversion";
 import { getDepositBalance } from "../../../../actions/loopring";
+import { ErrorText } from "../../../../components/error-text/styled";
 
 export const Form = ({ onConfirm, asset, open }) => {
     const dispatch = useDispatch();
-    const { ethereumAccount, supportedTokens, depositBalance } = useSelector(
-        (state) => ({
-            ethereumAccount: state.web3.selectedAccount,
-            loopringAccount: state.loopring.account,
-            supportedTokens: state.loopring.supportedTokens.data,
-            depositBalance: state.loopring.depositBalance,
-        })
-    );
+    const {
+        ethereumAccount,
+        loopringExchange,
+        supportedTokens,
+        depositBalance,
+    } = useSelector((state) => ({
+        ethereumAccount: state.web3.selectedAccount,
+        loopringExchange: state.loopring.exchange,
+        loopringAccount: state.loopring.account,
+        supportedTokens: state.loopring.supportedTokens.data,
+        depositBalance: state.loopring.depositBalance,
+    }));
 
     const [parsedUserBalance, setParsedUserBalance] = useState(
         new BigNumber("0")
     );
     const [amount, setAmount] = useState("");
+    const [feeAmount, setFeeAmount] = useState(new BigNumber(0));
 
     // fetch updated asset's on-chain balance
     useEffect(() => {
@@ -37,6 +43,17 @@ export const Form = ({ onConfirm, asset, open }) => {
             );
         }
     }, [asset, dispatch, ethereumAccount, supportedTokens]);
+
+    useEffect(() => {
+        if (loopringExchange && loopringExchange.onchainFees) {
+            const wrappedFee = loopringExchange.onchainFees.find(
+                (fee) => fee.type === "deposit"
+            );
+            if (wrappedFee) {
+                setFeeAmount(weiToEther(new BigNumber(wrappedFee.fee), 18));
+            }
+        }
+    }, [loopringExchange]);
 
     useEffect(() => {
         if (depositBalance) {
@@ -99,6 +116,16 @@ export const Form = ({ onConfirm, asset, open }) => {
                     }
                 />
             </Box>
+            {feeAmount && !feeAmount.isZero() && (
+                <Box mb="24px">
+                    <ErrorText>
+                        <FormattedMessage
+                            id="deposit.form.fee"
+                            values={{ amount: formatBigNumber(feeAmount, 4) }}
+                        />
+                    </ErrorText>
+                </Box>
+            )}
             <Box>
                 <Button
                     disabled={

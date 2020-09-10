@@ -70,6 +70,7 @@ export const WithdrawalFlow = ({ open, asset }) => {
                         open={open}
                         onConfirm={handleConfirm}
                         supportedTokens={supportedTokens}
+                        loopringExchange={loopringExchange}
                     />
                     <Confirmation
                         asset={asset}

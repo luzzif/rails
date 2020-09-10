@@ -9,10 +9,12 @@ import { Input } from "../../../../components/input";
 import BigNumber from "bignumber.js";
 import { getAddressFromEnsName } from "../../../../actions/ens";
 import { useDebouncedCallback } from "use-debounce";
-import { weiToEther } from "../../../../utils/conversion";
+import { weiToEther, formatBigNumber } from "../../../../utils/conversion";
 import { LoadingOverlay } from "../../../../components/loading-overlay";
+import { ErrorText } from "../../../../components/error-text/styled";
+import { getTokenBySymbol } from "loopring-lightcone/lib/utils";
 
-export const Send = ({ onConfirm, asset }) => {
+export const Send = ({ onConfirm, asset, exchange }) => {
     const dispatch = useDispatch();
     const receiverInputRef = useRef(null);
     const {
@@ -31,6 +33,7 @@ export const Send = ({ onConfirm, asset }) => {
         new BigNumber("0")
     );
     const [amount, setAmount] = useState("");
+    const [feeAmount, setFeeAmount] = useState(new BigNumber(0));
     const [receiver, setReceiver] = useState("");
     const [resolvedReceiver, setResolvedReceiver] = useState("");
     const [usingEns, setUsingEns] = useState(false);
@@ -39,6 +42,23 @@ export const Send = ({ onConfirm, asset }) => {
     const [debouncedEnsLookup] = useDebouncedCallback((web3Instance, name) => {
         dispatch(getAddressFromEnsName(web3Instance, name));
     }, 500);
+
+    useEffect(() => {
+        if (exchange && exchange.transferFees) {
+            const wrappedFee = exchange.transferFees.find(
+                (fee) => fee.token === asset.symbol
+            );
+            if (wrappedFee) {
+                const { decimals } = getTokenBySymbol(
+                    asset.symbol,
+                    supportedTokens
+                );
+                setFeeAmount(
+                    weiToEther(new BigNumber(wrappedFee.fee), decimals)
+                );
+            }
+        }
+    }, [asset.symbol, exchange, supportedTokens]);
 
     useEffect(() => {
         if (!loadingAddressFromEns && addressFromEns) {
@@ -156,6 +176,19 @@ export const Send = ({ onConfirm, asset }) => {
                     onChange={handleMemoChange}
                 />
             </Box>
+            {feeAmount && !feeAmount.isZero() && (
+                <Box mb="24px">
+                    <ErrorText>
+                        <FormattedMessage
+                            id="send.form.fee"
+                            values={{
+                                amount: formatBigNumber(feeAmount, 4),
+                                tokenSymbol: asset.symbol,
+                            }}
+                        />
+                    </ErrorText>
+                </Box>
+            )}
             <Box mb="8px">
                 <Button
                     disabled={
@@ -179,4 +212,5 @@ export const Send = ({ onConfirm, asset }) => {
 Send.propTypes = {
     onConfirm: PropTypes.func.isRequired,
     asset: PropTypes.object.isRequired,
+    exchange: PropTypes.object.isRequired,
 };
