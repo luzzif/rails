@@ -15,6 +15,10 @@ export const OuterCircle = styled(Box)`
         props.dark ? props.theme.background : props.theme.foreground};
     transition: background 0.3s ease;
     color: ${(props) => props.theme.text};
+    transition: transform 0.3s ease;
+    :active {
+        transform: scale(0.95);
+    }
 `;
 
 export const IconContainer = styled.div`
