@@ -273,6 +273,7 @@ const Dashboard = () => {
                 </Box>
                 <TransactionsContainer
                     flexGrow="1"
+                    mb="16px"
                     width={["93%", "75%", "65%", "45%"]}
                 >
                     <Transactions
