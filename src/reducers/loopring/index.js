@@ -28,7 +28,6 @@ import {
     DELETE_GET_SUPPORTED_TOKENS_LOADING,
     POST_REGISTRATION_SUCCESS,
     DELETE_REGISTRATION_SUCCESS_TRANSACTION_HASH,
-    RESET_TRANSACTIONS,
     POST_GET_AUTH_STATUS_LOADING,
     DELETE_GET_AUTH_STATUS_LOADING,
     GET_AUTH_STATUS_SUCCESS,
@@ -159,16 +158,6 @@ export const loopringReducer = (state = initialState, action) => {
                     ...state.transactions,
                     data: action.transactions,
                     amounts: action.transactionsAmount,
-                },
-            };
-        }
-        case RESET_TRANSACTIONS: {
-            return {
-                ...state,
-                transactions: {
-                    ...state.transactions,
-                    data: [],
-                    amounts: 0,
                 },
             };
         }

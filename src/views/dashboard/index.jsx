@@ -11,7 +11,6 @@ import {
     deleteTransferHash,
     getUserBalances,
     postSelectedAsset,
-    resetTransactions,
     submitTransfer,
 } from "../../actions/loopring";
 import { TransactionSummary } from "./transaction-summary";
@@ -68,7 +67,6 @@ const Dashboard = () => {
 
     const handleTransactionsRefresh = useCallback(() => {
         if (accountId) {
-            dispatch(resetTransactions());
             dispatch(
                 getTokenTransactions(
                     ethereumAccount,
@@ -146,7 +144,6 @@ const Dashboard = () => {
     const handleTransactionsPageChange = useCallback(
         (page) => {
             if (accountId) {
-                dispatch(resetTransactions());
                 dispatch(
                     getTokenTransactions(
                         ethereumAccount,
@@ -252,7 +249,6 @@ const Dashboard = () => {
     const handleTypeFilterChange = useCallback(
         (filter) => {
             if (accountId) {
-                dispatch(resetTransactions());
                 dispatch(
                     getTokenTransactions(
                         ethereumAccount,

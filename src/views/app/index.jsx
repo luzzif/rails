@@ -54,7 +54,7 @@ const light = {
     secondaryButtonBackground: "rgba(14, 6, 45, 0.2)",
     textInverted: "#e0e0e0",
     text: "#0e062d",
-    shadow: "rgba(0, 0, 0, 0.2)",
+    shadow: "rgba(0, 0, 0, 0.4)",
     placeholder: "#b3b3b3",
     loader: "#a6a6a6",
 };

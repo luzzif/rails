@@ -43,7 +43,6 @@ export const GET_BALANCES_SUCCESS = "GET_BALANCES_SUCCESS";
 export const GET_TRANSACTIONS_SUCCESS = "GET_TRANSACTIONS_SUCCESS";
 export const POST_TRANSACTIONS_LOADING = "POST_TRANSACTIONS_LOADING";
 export const DELETE_TRANSACTIONS_LOADING = "DELETE_TRANSACTIONS_LOADING";
-export const RESET_TRANSACTIONS = "RESET_TRANSACTIONS";
 export const POST_TRANSFER_LOADING = "POST_TRANSFER_LOADING";
 export const DELETE_TRANSFER_LOADING = "DELETE_TRANSFER_LOADING";
 export const POST_TRANSFER_SUCCESS = "POST_TRANSFER_SUCCESS";
@@ -389,10 +388,6 @@ export const getTokenTransactions = (
         dispatch({ type: DELETE_TRANSACTIONS_LOADING });
     }
 };
-
-export const resetTransactions = () => ({
-    type: RESET_TRANSACTIONS,
-});
 
 export const submitTransfer = (
     web3Instance,
