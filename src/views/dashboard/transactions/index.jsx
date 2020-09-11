@@ -6,10 +6,10 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { Searchbar } from "../../../components/searchbar";
 import { ActionButton } from "../../../components/action-button";
 import { faRedo } from "@fortawesome/free-solid-svg-icons";
-import { ListFlex, RootFlex, StyledInfiniteScroll } from "./styled";
+import { ListFlex, RootFlex } from "./styled";
 import { Chip } from "../../../components/chip";
 import { LoadingOverlay } from "../../../components/loading-overlay";
-import { useRef } from "react";
+import { Pagination } from "../../../components/pagination";
 
 export const Transactions = ({
     balances,
@@ -20,26 +20,16 @@ export const Transactions = ({
     onTypeFilterChange,
     onRefresh,
     selectedFiat,
-    onLoadTransactions,
-    transactionsLoading,
+    onPageChange,
+    page,
     transactionsAmount,
 }) => {
     const { formatMessage } = useIntl();
 
-    const scrollParentRef = useRef(null);
     const [query, setQuery] = useState("");
     const [filteredTransactions, setFilteredTransactions] = useState(
         transactions
     );
-    const [hasMoreTransactions, setHasMoreTransactions] = useState(false);
-
-    useEffect(() => {
-        setHasMoreTransactions(
-            !query &&
-                !transactionsLoading &&
-                transactions.length < transactionsAmount
-        );
-    }, [transactionsLoading, query, transactions.length, transactionsAmount]);
 
     useEffect(() => {
         setFilteredTransactions(
@@ -94,10 +84,6 @@ export const Transactions = ({
     const handleTransfersChipClick = useCallback(() => {
         onTypeFilterChange("transfers");
     }, [onTypeFilterChange]);
-
-    const handleGetScrollParent = useCallback(() => scrollParentRef.current, [
-        scrollParentRef,
-    ]);
 
     return (
         <RootFlex
@@ -178,7 +164,6 @@ export const Transactions = ({
                 flexDirection="column"
                 alignItems="center"
                 width="100%"
-                ref={scrollParentRef}
             >
                 {!loading && (!transactions || transactions.length === 0) && (
                     <Box
@@ -193,31 +178,22 @@ export const Transactions = ({
                 )}
                 {!loading && transactions && transactions.length > 0 ? (
                     filteredTransactions && filteredTransactions.length > 0 ? (
-                        <StyledInfiniteScroll
-                            element="span"
-                            pageStart={0}
-                            loadMore={onLoadTransactions}
-                            hasMore={hasMoreTransactions}
-                            useWindow={false}
-                            getScrollParent={handleGetScrollParent}
-                        >
-                            {filteredTransactions.map((transaction) => (
-                                <Box
-                                    key={transaction.id}
-                                    height={68}
-                                    width="100%"
-                                    alignItems="center"
-                                    display="flex"
-                                >
-                                    <Transaction
-                                        transaction={transaction}
-                                        balances={balances}
-                                        onClick={onChange}
-                                        selectedFiat={selectedFiat}
-                                    />
-                                </Box>
-                            ))}
-                        </StyledInfiniteScroll>
+                        filteredTransactions.map((transaction) => (
+                            <Box
+                                key={transaction.id}
+                                width="100%"
+                                height="68px"
+                                alignItems="center"
+                                display="flex"
+                            >
+                                <Transaction
+                                    transaction={transaction}
+                                    balances={balances}
+                                    onClick={onChange}
+                                    selectedFiat={selectedFiat}
+                                />
+                            </Box>
+                        ))
                     ) : (
                         <Box
                             width="100%"
@@ -230,8 +206,22 @@ export const Transactions = ({
                         </Box>
                     )
                 ) : null}
-                <LoadingOverlay light open={loading} />
+                <Flex width="100%" justifyContent="flex-end">
+                    <Box>
+                        <LoadingOverlay light open={loading} />
+                    </Box>
+                </Flex>
             </ListFlex>
+            <Flex width="100%" justifyContent="flex-end" alignItems="center">
+                <Box py="20px">
+                    <Pagination
+                        page={page}
+                        itemsPerPage={5}
+                        size={transactionsAmount}
+                        onPageChange={onPageChange}
+                    />
+                </Box>
+            </Flex>
         </RootFlex>
     );
 };
@@ -244,6 +234,7 @@ Transactions.propTypes = {
     typeFilter: PropTypes.oneOf(["all", "deposits", "withdrawals", "transfers"])
         .isRequired,
     onTypeFilterChange: PropTypes.func.isRequired,
-    onLoadTransactions: PropTypes.func.isRequired,
+    onPageChange: PropTypes.func.isRequired,
+    page: PropTypes.number.isRequired,
     transactionsAmount: PropTypes.number.isRequired,
 };

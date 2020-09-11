@@ -1,5 +1,5 @@
 import { Box } from "reflexbox";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const RootButton = styled.button`
     background: rgba(0, 0, 0, 0);
@@ -11,13 +11,20 @@ export const RootButton = styled.button`
 
 export const OuterCircle = styled(Box)`
     border-radius: 50%;
-    background: ${(props) =>
-        props.dark ? props.theme.background : props.theme.foreground};
-    transition: background 0.3s ease;
+    background: ${(props) => {
+        if (props.disabled) {
+            return props.theme.disabled;
+        }
+        return props.dark ? props.theme.background : props.theme.foreground;
+    }};
+    transition: background 0.3s ease, transform 0.3s ease;
     color: ${(props) => props.theme.text};
-    transition: transform 0.3s ease;
     :active {
-        transform: scale(0.95);
+        ${(props) =>
+            !props.disabled &&
+            css`
+                transform: scale(0.95);
+            `};
     }
 `;
 

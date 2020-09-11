@@ -62,7 +62,7 @@ const Dashboard = () => {
     const [withdrawing, setWithdrawing] = useState(false);
     const [selectedTransaction, setSelectedTransaction] = useState(null);
     const [transactionsTypeFilter, setTransactionsTypeFilter] = useState("all");
-    const [latestLoadedPage, setLatestLoadedPage] = useState(-1);
+    const [transactionsPage, setTransactionsPage] = useState(0);
 
     const handleTransactionsRefresh = useCallback(() => {
         if (accountId) {
@@ -74,11 +74,11 @@ const Dashboard = () => {
                     apiKey,
                     supportedTokens,
                     0,
-                    10,
+                    5,
                     transactionsTypeFilter
                 )
             );
-            setLatestLoadedPage(0);
+            setTransactionsPage(0);
             dispatch(
                 getUserBalances(
                     web3Instance,
@@ -113,7 +113,6 @@ const Dashboard = () => {
                     balances.find((balance) => balance.id === selectedAsset.id)
                 )
             );
-            setLatestLoadedPage(-1);
         }
     }, [balances, dispatch, selectedAsset]);
 
@@ -142,11 +141,8 @@ const Dashboard = () => {
         setShowingTransaction(true);
     }, []);
 
-    const handleTransactionsLoad = useCallback(
+    const handleTransactionsPageChange = useCallback(
         (page) => {
-            if (page <= latestLoadedPage) {
-                return;
-            }
             dispatch(
                 getTokenTransactions(
                     ethereumAccount,
@@ -154,19 +150,18 @@ const Dashboard = () => {
                     apiKey,
                     supportedTokens,
                     page,
-                    10,
+                    5,
                     transactionsTypeFilter
                 )
             );
-            setLatestLoadedPage(page);
+            setTransactionsPage(page);
         },
         [
             accountId,
             apiKey,
             dispatch,
-            supportedTokens,
             ethereumAccount,
-            latestLoadedPage,
+            supportedTokens,
             transactionsTypeFilter,
         ]
     );
@@ -251,6 +246,7 @@ const Dashboard = () => {
             <Flex
                 flexDirection="column"
                 alignItems="center"
+                justifyContent="center"
                 height="100%"
                 pt={72}
             >
@@ -271,10 +267,7 @@ const Dashboard = () => {
                         asset={selectedAsset}
                     />
                 </Box>
-                <TransactionsContainer
-                    flexGrow="1"
-                    width={["93%", "75%", "65%", "45%"]}
-                >
+                <TransactionsContainer width={["93%", "75%", "65%", "45%"]}>
                     <Transactions
                         balances={balances}
                         transactions={transactions}
@@ -284,8 +277,8 @@ const Dashboard = () => {
                         onTypeFilterChange={handleTypeFilterChange}
                         onRefresh={handleTransactionsRefresh}
                         selectedFiat={selectedFiat}
-                        onLoadTransactions={handleTransactionsLoad}
-                        transactionsLoading={transactionsLoading}
+                        onPageChange={handleTransactionsPageChange}
+                        page={transactionsPage}
                         transactionsAmount={transactionsAmount}
                     />
                 </TransactionsContainer>
@@ -304,18 +297,14 @@ const Dashboard = () => {
                 />
             </BottomUpContainer>
             <BottomUpContainer open={sending} onClose={handleClose}>
-                {sending && (
-                    <Send
-                        asset={selectedAsset}
-                        onConfirm={handleSendConfirm}
-                        exchange={exchange}
-                    />
-                )}
+                <Send
+                    asset={selectedAsset}
+                    onConfirm={handleSendConfirm}
+                    exchange={exchange}
+                />
             </BottomUpContainer>
             <BottomUpContainer open={showingTransaction} onClose={handleClose}>
-                {showingTransaction && (
-                    <TransactionSummary {...selectedTransaction} />
-                )}
+                <TransactionSummary transaction={selectedTransaction} />
             </BottomUpContainer>
             <BottomUpContainer open={depositing} onClose={handleClose}>
                 <DepositFlow open={depositing} asset={selectedAsset} />

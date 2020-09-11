@@ -177,7 +177,7 @@ export const Send = ({ onConfirm, asset, exchange }) => {
                 />
             </Box>
             {feeAmount && !feeAmount.isZero() && (
-                <Box mb="24px">
+                <Box mb="24px" textAlign="center">
                     <ErrorText>
                         <FormattedMessage
                             id="send.form.fee"

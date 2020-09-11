@@ -7,19 +7,24 @@ import { BoldDiv } from "./styled";
 import { Button } from "../../../components/button";
 import { formatBigNumber } from "../../../utils/conversion";
 
-export const TransactionSummary = ({
-    sent,
-    deposit,
-    withdrawal,
-    timestamp,
-    etherAmount,
-    symbol,
-    txHash,
-    etherFeeAmount,
-    progress,
-    senderAddress,
-    receiverAddress,
-}) => {
+export const TransactionSummary = ({ transaction }) => {
+    if (!transaction) {
+        return null;
+    }
+    const {
+        sent,
+        deposit,
+        withdrawal,
+        timestamp,
+        etherAmount,
+        symbol,
+        txHash,
+        etherFeeAmount,
+        progress,
+        senderAddress,
+        receiverAddress,
+    } = transaction;
+
     const getType = () => {
         let id;
         if (deposit) {
@@ -106,13 +111,15 @@ export const TransactionSummary = ({
 };
 
 TransactionSummary.propTypes = {
-    sent: PropTypes.bool,
-    deposit: PropTypes.bool,
-    withdrawal: PropTypes.bool,
-    timestamp: PropTypes.number.isRequired,
-    etherAmount: PropTypes.object.isRequired,
-    symbol: PropTypes.string.isRequired,
-    txHash: PropTypes.string,
-    etherFeeAmount: PropTypes.object.isRequired,
-    progress: PropTypes.string.isRequired,
+    transaction: PropTypes.shape({
+        sent: PropTypes.bool,
+        deposit: PropTypes.bool,
+        withdrawal: PropTypes.bool,
+        timestamp: PropTypes.number.isRequired,
+        etherAmount: PropTypes.object.isRequired,
+        symbol: PropTypes.string.isRequired,
+        txHash: PropTypes.string,
+        etherFeeAmount: PropTypes.object.isRequired,
+        progress: PropTypes.string.isRequired,
+    }),
 };

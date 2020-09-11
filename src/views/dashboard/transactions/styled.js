@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { Flex } from "reflexbox";
-import InfiniteScroll from "react-infinite-scroller";
 
 export const RootFlex = styled(Flex)`
     transition: background 0.3s ease;
@@ -9,9 +8,7 @@ export const RootFlex = styled(Flex)`
 
 export const ListFlex = styled(Flex)`
     position: relative;
+    min-height: 340px;
+    height: 340px;
     overflow-y: auto;
-`;
-
-export const StyledInfiniteScroll = styled(InfiniteScroll)`
-    width: 100%;
 `;

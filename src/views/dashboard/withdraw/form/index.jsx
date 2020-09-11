@@ -94,7 +94,7 @@ export const Form = ({
                 />
             </Box>
             {feeAmount && !feeAmount.isZero() && (
-                <Box mb="24px">
+                <Box mb="24px" textAlign="center">
                     <ErrorText>
                         <FormattedMessage
                             id="withdrawal.form.fee"

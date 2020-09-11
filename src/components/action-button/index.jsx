@@ -10,9 +10,10 @@ export const ActionButton = ({
     title,
     size,
     dark,
+    disabled,
     ...rest
 }) => (
-    <RootButton {...rest}>
+    <RootButton disabled={disabled} {...rest}>
         <Flex flexDirection="column" alignItems="center">
             <OuterCircle
                 width={size}
@@ -21,6 +22,7 @@ export const ActionButton = ({
                 justifyContent="center"
                 alignItems="center"
                 dark={dark}
+                disabled={disabled}
             >
                 <IconContainer faIconSize={faIconSize}>
                     <FontAwesomeIcon icon={faIcon} />
@@ -41,4 +43,5 @@ ActionButton.propTypes = {
     title: PropTypes.node,
     size: PropTypes.oneOfType([PropTypes.number, PropTypes.array]).isRequired,
     dark: PropTypes.bool,
+    disabled: PropTypes.bool,
 };

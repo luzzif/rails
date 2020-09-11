@@ -117,7 +117,7 @@ export const Form = ({ onConfirm, asset, open }) => {
                 />
             </Box>
             {feeAmount && !feeAmount.isZero() && (
-                <Box mb="24px">
+                <Box mb="24px" textAlign="center">
                     <ErrorText>
                         <FormattedMessage
                             id="deposit.form.fee"
