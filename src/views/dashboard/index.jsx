@@ -67,7 +67,6 @@ const Dashboard = () => {
     const [transactionsPage, setTransactionsPage] = useState(0);
 
     const handleTransactionsRefresh = useCallback(() => {
-        console.log(transactionsTypeFilter);
         if (accountId) {
             dispatch(resetTransactions());
             dispatch(
