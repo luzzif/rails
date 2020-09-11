@@ -611,7 +611,7 @@ export const registerAccount = (web3Instance, selectedAccount) => async (
                 dispatch({ type: POST_REGISTRATION_SUCCESS, transactionHash });
             })
             .once("recepit", () => {
-                dispatch(getAuthStatus(selectedAccount));
+                toast.success(<FormattedMessage id="success.registration" />);
             });
     } catch (error) {
         toast.error(<FormattedMessage id="error.rails.register" />);
