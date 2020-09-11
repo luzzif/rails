@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import { Flex, Box } from "reflexbox";
 import { Transaction } from "./transaction";
-import { FormattedMessage, useIntl } from "react-intl";
-import { Searchbar } from "../../../components/searchbar";
+import { FormattedMessage } from "react-intl";
 import { ActionButton } from "../../../components/action-button";
 import { faRedo } from "@fortawesome/free-solid-svg-icons";
 import { ListFlex, RootFlex } from "./styled";
@@ -24,54 +23,9 @@ export const Transactions = ({
     page,
     transactionsAmount,
 }) => {
-    const { formatMessage } = useIntl();
-
-    const [query, setQuery] = useState("");
-    const [filteredTransactions, setFilteredTransactions] = useState(
-        transactions
-    );
-
-    useEffect(() => {
-        setFilteredTransactions(
-            !transactions
-                ? transactions
-                : transactions.filter((transaction) => {
-                      const lowerCasedSearchTerm = query.trim().toLowerCase();
-                      if (transaction.transfer) {
-                          return transaction.memo
-                              .toLowerCase()
-                              .includes(lowerCasedSearchTerm);
-                      }
-                      if (transaction.deposit) {
-                          return formatMessage({
-                              id: "dashboard.transactions.deposit",
-                          })
-                              .toLowerCase()
-                              .includes(lowerCasedSearchTerm);
-                      }
-                      if (transaction.withdrawal) {
-                          return formatMessage({
-                              id: "dashboard.transactions.withdrawal",
-                          })
-                              .toLowerCase()
-                              .includes(lowerCasedSearchTerm);
-                      }
-                      return false;
-                  })
-        );
-    }, [formatMessage, query, transactions]);
-
-    const handleSearchbarChange = useCallback((event) => {
-        setQuery(event.target.value);
-    }, []);
-
     const handleRefresh = useCallback(() => {
         onRefresh();
     }, [onRefresh]);
-
-    const handleAllChipClick = useCallback(() => {
-        onTypeFilterChange("all");
-    }, [onTypeFilterChange]);
 
     const handleDepositsChipClick = useCallback(() => {
         onTypeFilterChange("deposits");
@@ -94,69 +48,44 @@ export const Transactions = ({
             px="16px"
             pt="16px"
         >
-            <Flex width="100%" mb="12px">
-                <Box pr="16px" width="100%">
-                    <Searchbar
-                        dark
-                        placeholder={formatMessage({
-                            id: "dashboard.transactions.search.placeholder",
-                        })}
-                        value={query}
-                        onChange={handleSearchbarChange}
-                    />
-                </Box>
-                <Box minWidth="auto" height={36}>
+            <Flex width="100%" mb="12px" alignItems="center">
+                <Flex mr="16px" flexWrap="nowrap" width="100%" overflowX="auto">
+                    <Box mr={12} minWidth="auto">
+                        <Chip
+                            dark
+                            onClick={handleTransfersChipClick}
+                            active={typeFilter === "transfers"}
+                        >
+                            <FormattedMessage id="dashboard.transactions.chip.transfers" />
+                        </Chip>
+                    </Box>
+                    <Box mr={12} minWidth="auto">
+                        <Chip
+                            dark
+                            onClick={handleDepositsChipClick}
+                            active={typeFilter === "deposits"}
+                        >
+                            <FormattedMessage id="dashboard.transactions.chip.deposits" />
+                        </Chip>
+                    </Box>
+                    <Box minWidth="auto">
+                        <Chip
+                            dark
+                            onClick={handleWithdrawalsChipClick}
+                            active={typeFilter === "withdrawals"}
+                        >
+                            <FormattedMessage id="dashboard.transactions.chip.withdrawals" />
+                        </Chip>
+                    </Box>
+                </Flex>
+                <Box minWidth="auto" mr="16px">
                     <ActionButton
                         faIcon={faRedo}
-                        size={44}
-                        faIconSize={20}
+                        size={32}
+                        faIconSize={16}
                         dark
                         onClick={handleRefresh}
                     />
-                </Box>
-            </Flex>
-            <Flex
-                mb="8px"
-                flexWrap="nowrap"
-                width="100%"
-                overflowX="auto"
-                minHeight={36}
-            >
-                <Box mr={12} minWidth="auto">
-                    <Chip
-                        dark
-                        onClick={handleAllChipClick}
-                        active={typeFilter === "all"}
-                    >
-                        <FormattedMessage id="dashboard.transactions.chip.all" />
-                    </Chip>
-                </Box>
-                <Box mr={12} minWidth="auto">
-                    <Chip
-                        dark
-                        onClick={handleDepositsChipClick}
-                        active={typeFilter === "deposits"}
-                    >
-                        <FormattedMessage id="dashboard.transactions.chip.deposits" />
-                    </Chip>
-                </Box>
-                <Box mr={12} minWidth="auto">
-                    <Chip
-                        dark
-                        onClick={handleWithdrawalsChipClick}
-                        active={typeFilter === "withdrawals"}
-                    >
-                        <FormattedMessage id="dashboard.transactions.chip.withdrawals" />
-                    </Chip>
-                </Box>
-                <Box minWidth="auto">
-                    <Chip
-                        dark
-                        onClick={handleTransfersChipClick}
-                        active={typeFilter === "transfers"}
-                    >
-                        <FormattedMessage id="dashboard.transactions.chip.transfers" />
-                    </Chip>
                 </Box>
             </Flex>
             <ListFlex
@@ -176,44 +105,39 @@ export const Transactions = ({
                         <FormattedMessage id="dashboard.transactions.empty" />
                     </Box>
                 )}
-                {!loading && transactions && transactions.length > 0 ? (
-                    filteredTransactions && filteredTransactions.length > 0 ? (
-                        filteredTransactions.map((transaction) => (
-                            <Box
-                                key={transaction.id}
-                                width="100%"
-                                height="68px"
-                                alignItems="center"
-                                display="flex"
-                            >
-                                <Transaction
-                                    transaction={transaction}
-                                    balances={balances}
-                                    onClick={onChange}
-                                    selectedFiat={selectedFiat}
-                                />
-                            </Box>
-                        ))
-                    ) : (
+                {!loading &&
+                    transactions &&
+                    transactions.length > 0 &&
+                    transactions.map((transaction) => (
                         <Box
+                            key={transaction.id}
                             width="100%"
-                            height="100%"
-                            display="flex"
-                            justifyContent="center"
+                            height="60px"
                             alignItems="center"
+                            display="flex"
                         >
-                            <FormattedMessage id="dashboard.transactions.empty.search" />
+                            <Transaction
+                                transaction={transaction}
+                                balances={balances}
+                                onClick={onChange}
+                                selectedFiat={selectedFiat}
+                            />
                         </Box>
-                    )
-                ) : null}
+                    ))}
                 <Flex width="100%" justifyContent="flex-end">
                     <Box>
                         <LoadingOverlay light open={loading} />
                     </Box>
                 </Flex>
             </ListFlex>
-            <Flex width="100%" justifyContent="flex-end" alignItems="center">
-                <Box py="20px">
+            <Flex
+                width="100%"
+                my="16px"
+                pr="16px"
+                justifyContent="flex-end"
+                alignItems="center"
+            >
+                <Box>
                     <Pagination
                         page={page}
                         itemsPerPage={5}

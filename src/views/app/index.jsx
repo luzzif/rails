@@ -46,7 +46,7 @@ const commonColors = {
 const light = {
     ...commonColors,
     type: "light",
-    background: "#e0e0e0",
+    background: "#d9d9d9",
     disabled: "#bfbfbf",
     textDisabled: "#8c8c8c",
     foreground: "#f2f2f2",

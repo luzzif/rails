@@ -271,18 +271,18 @@ export const getTokenTransactions = (
         const now = Date.now();
         let transactions = [];
         let transactionsAmount = 0;
-        const limit = (page + 1) * itemsPerPage;
-        if (type === "all" || type === "transfers") {
+        const offset = page * itemsPerPage;
+        if (type === "transfers") {
             const transfers = await getTransfers(
                 accountId,
                 null,
-                limit,
-                0,
+                itemsPerPage,
+                offset,
                 apiKey,
                 0,
                 now
             );
-            transactionsAmount += transfers.total;
+            transactionsAmount = transfers.total;
             transactions = transactions.concat(
                 transfers.transactions.map((transfer) => {
                     const bigNumberAmount = new BigNumber(transfer.amount);
@@ -310,8 +310,7 @@ export const getTokenTransactions = (
                     return transfer;
                 })
             );
-        }
-        if (type === "all" || type === "deposits") {
+        } else if (type === "deposits") {
             const deposits = await getDeposits(
                 accountId,
                 apiKey,
@@ -319,10 +318,10 @@ export const getTokenTransactions = (
                 now,
                 false,
                 null,
-                0,
-                limit
+                offset,
+                itemsPerPage
             );
-            transactionsAmount += deposits.totalNum;
+            transactionsAmount = deposits.totalNum;
             transactions = transactions.concat(
                 deposits.transactions.map((deposit) => {
                     const { decimals } = findTokenBySymbol(
@@ -339,19 +338,18 @@ export const getTokenTransactions = (
                     return deposit;
                 })
             );
-        }
-        if (type === "all" || type === "withdrawals") {
+        } else if (type === "withdrawals") {
             const withdrawals = await getWithdrawals(
                 accountId,
                 apiKey,
                 0,
                 now,
                 null,
-                0,
-                limit,
+                offset,
+                itemsPerPage,
                 null
             );
-            transactionsAmount += withdrawals.totalNum;
+            transactionsAmount = withdrawals.totalNum;
             transactions = transactions.concat(
                 withdrawals.transactions.map((withdrawal) => {
                     const { decimals } = findTokenBySymbol(
@@ -381,7 +379,7 @@ export const getTokenTransactions = (
             type: GET_TRANSACTIONS_SUCCESS,
             transactions: transactions
                 .sort((a, b) => b.timestamp - a.timestamp)
-                .slice(0, limit + 1),
+                .slice(0, itemsPerPage),
             transactionsAmount,
         });
     } catch (error) {

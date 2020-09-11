@@ -61,10 +61,13 @@ const Dashboard = () => {
     const [depositing, setDepositing] = useState(false);
     const [withdrawing, setWithdrawing] = useState(false);
     const [selectedTransaction, setSelectedTransaction] = useState(null);
-    const [transactionsTypeFilter, setTransactionsTypeFilter] = useState("all");
+    const [transactionsTypeFilter, setTransactionsTypeFilter] = useState(
+        "transfers"
+    );
     const [transactionsPage, setTransactionsPage] = useState(0);
 
     const handleTransactionsRefresh = useCallback(() => {
+        console.log(transactionsTypeFilter);
         if (accountId) {
             dispatch(resetTransactions());
             dispatch(
@@ -73,12 +76,11 @@ const Dashboard = () => {
                     accountId,
                     apiKey,
                     supportedTokens,
-                    0,
+                    transactionsPage,
                     5,
                     transactionsTypeFilter
                 )
             );
-            setTransactionsPage(0);
             dispatch(
                 getUserBalances(
                     web3Instance,
@@ -98,9 +100,10 @@ const Dashboard = () => {
         supportedTokens,
         transactionsTypeFilter,
         web3Instance,
+        transactionsPage,
     ]);
 
-    // getting transactions history (deposits, transfers and withdrawals)
+    // getting transactions history
     useEffect(() => {
         handleTransactionsRefresh();
     }, [handleTransactionsRefresh]);
@@ -143,26 +146,40 @@ const Dashboard = () => {
 
     const handleTransactionsPageChange = useCallback(
         (page) => {
-            dispatch(
-                getTokenTransactions(
-                    ethereumAccount,
-                    accountId,
-                    apiKey,
-                    supportedTokens,
-                    page,
-                    5,
-                    transactionsTypeFilter
-                )
-            );
-            setTransactionsPage(page);
+            if (accountId) {
+                dispatch(resetTransactions());
+                dispatch(
+                    getTokenTransactions(
+                        ethereumAccount,
+                        accountId,
+                        apiKey,
+                        supportedTokens,
+                        page,
+                        5,
+                        transactionsTypeFilter
+                    )
+                );
+                setTransactionsPage(page);
+                dispatch(
+                    getUserBalances(
+                        web3Instance,
+                        accountId,
+                        apiKey,
+                        supportedTokens,
+                        selectedFiat
+                    )
+                );
+            }
         },
         [
             accountId,
             apiKey,
             dispatch,
             ethereumAccount,
+            selectedFiat,
             supportedTokens,
             transactionsTypeFilter,
+            web3Instance,
         ]
     );
 
@@ -235,10 +252,42 @@ const Dashboard = () => {
 
     const handleTypeFilterChange = useCallback(
         (filter) => {
-            dispatch(resetTransactions());
-            setTransactionsTypeFilter(filter);
+            if (accountId) {
+                dispatch(resetTransactions());
+                dispatch(
+                    getTokenTransactions(
+                        ethereumAccount,
+                        accountId,
+                        apiKey,
+                        supportedTokens,
+                        transactionsPage,
+                        5,
+                        filter
+                    )
+                );
+                setTransactionsPage(transactionsPage);
+                setTransactionsTypeFilter(filter);
+                dispatch(
+                    getUserBalances(
+                        web3Instance,
+                        accountId,
+                        apiKey,
+                        supportedTokens,
+                        selectedFiat
+                    )
+                );
+            }
         },
-        [dispatch]
+        [
+            accountId,
+            apiKey,
+            dispatch,
+            ethereumAccount,
+            selectedFiat,
+            supportedTokens,
+            transactionsPage,
+            web3Instance,
+        ]
     );
 
     return (
@@ -248,9 +297,8 @@ const Dashboard = () => {
                 alignItems="center"
                 justifyContent="center"
                 height="100%"
-                pt={72}
             >
-                <Box mb="24px">
+                <Box mb="16px" mt={["24px"]}>
                     <Summary
                         etherBalance={selectedAsset.etherBalance}
                         symbol={selectedAsset.symbol}
@@ -258,7 +306,7 @@ const Dashboard = () => {
                         selectedFiat={selectedFiat}
                     />
                 </Box>
-                <Box mb="24px" width={["85%", "60%", "50%", "45%"]}>
+                <Box mb="16px" width={["85%", "60%", "50%", "45%"]}>
                     <ButtonsStrip
                         onSend={handleSend}
                         onDeposit={handleDeposit}

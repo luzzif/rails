@@ -109,7 +109,7 @@ const Auth = () => {
                 height="100%"
                 p="24px"
             >
-                <Box mb="20px" width="280px" height="60px">
+                <Box mb="20px" width="220px" height="60px">
                     <LoginIllustration
                         src={
                             selectedTheme.type === "light"

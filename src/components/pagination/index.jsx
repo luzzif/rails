@@ -41,7 +41,9 @@ export const Pagination = ({ page, itemsPerPage, size, onPageChange }) => {
             <Box mr="8px">
                 <Text highlighted>
                     {page * itemsPerPage + 1}-
-                    {page * itemsPerPage + itemsPerPage}
+                    {page * itemsPerPage + itemsPerPage > size
+                        ? size
+                        : page * itemsPerPage + itemsPerPage}
                 </Text>
             </Box>
             <Box mr="8px">

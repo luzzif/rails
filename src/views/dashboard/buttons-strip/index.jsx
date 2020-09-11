@@ -23,7 +23,7 @@ export const ButtonsStrip = ({
                 <ActionButton
                     faIcon={faArrowUp}
                     title={<FormattedMessage id="dashboard.send" />}
-                    size={[52, 56, 60]}
+                    size={[48, 52, 56]}
                     faIconSize={24}
                     onClick={onSend}
                 />
@@ -33,7 +33,7 @@ export const ButtonsStrip = ({
             <ActionButton
                 faIcon={faPlus}
                 title={<FormattedMessage id="dashboard.deposit" />}
-                size={[52, 56, 60]}
+                size={[48, 52, 56]}
                 faIconSize={24}
                 onClick={onDeposit}
             />
@@ -43,8 +43,8 @@ export const ButtonsStrip = ({
                 <ActionButton
                     faIcon={faMinus}
                     title={<FormattedMessage id="dashboard.withdraw" />}
-                    size={[52, 56, 60]}
-                    faIconSize={24}
+                    size={[48, 52, 56]}
+                    faIconSize={20}
                     onClick={onWithdraw}
                 />
             </Box>
@@ -53,8 +53,8 @@ export const ButtonsStrip = ({
             <ActionButton
                 faIcon={faList}
                 title={<FormattedMessage id="dashboard.change.asset" />}
-                size={[52, 56, 60]}
-                faIconSize={24}
+                size={[48, 52, 56]}
+                faIconSize={20}
                 onClick={onAssets}
             />
         </Box>

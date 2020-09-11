@@ -8,7 +8,7 @@ export const RootFlex = styled(Flex)`
 
 export const ListFlex = styled(Flex)`
     position: relative;
-    min-height: 340px;
-    height: 340px;
+    min-height: 300px;
+    height: 300px;
     overflow-y: auto;
 `;

@@ -21,7 +21,6 @@
     "dashboard.assets.search": "Search...",
     "dashboard.assets.empty": "No asset matches the search criteria...",
     "dashboard.transactions.empty": "No transactions so far...",
-    "dashboard.transactions.empty.search": "No transaction matches the search criteria...",
     "dashboard.transactions.deposit": "Deposit",
     "dashboard.transactions.withdrawal": "Withdrawal",
     "dashboard.transactions.search.placeholder": "Search...",
