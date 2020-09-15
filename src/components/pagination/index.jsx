@@ -10,11 +10,13 @@ export const Pagination = ({ page, itemsPerPage, size, onPageChange }) => {
 
     useEffect(() => {
         if (itemsPerPage) {
-            if (size <= itemsPerPage) {
+            if (size === 0) {
+                setPagesAmount(0);
+            } else if (size <= itemsPerPage) {
                 setPagesAmount(1);
-                return;
+            } else {
+                setPagesAmount(Math.ceil(size / itemsPerPage));
             }
-            setPagesAmount(Math.ceil(size / itemsPerPage));
         }
     }, [itemsPerPage, size]);
 
@@ -40,7 +42,7 @@ export const Pagination = ({ page, itemsPerPage, size, onPageChange }) => {
             </Box>
             <Box mr="8px">
                 <Text highlighted>
-                    {page * itemsPerPage + 1}-
+                    {pagesAmount === 0 ? 0 : page * itemsPerPage + 1}-
                     {page * itemsPerPage + itemsPerPage > size
                         ? size
                         : page * itemsPerPage + itemsPerPage}
@@ -57,7 +59,7 @@ export const Pagination = ({ page, itemsPerPage, size, onPageChange }) => {
                     dark
                     size={32}
                     faIconSize={20}
-                    disabled={page + 1 === pagesAmount}
+                    disabled={pagesAmount === 0 || page + 1 === pagesAmount}
                     onClick={handleNextPage}
                     faIcon={faCaretRight}
                 />
