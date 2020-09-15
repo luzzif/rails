@@ -17,8 +17,8 @@ export const Summary = ({ etherBalance, fiatValue, symbol, selectedFiat }) => {
                     {formatBigNumber(etherBalance, 4)}
                 </Box>
                 <Box
-                    fontSize={[24, 36, 44, 52]}
-                    height={[24, 36, 44, 52]}
+                    fontSize={[16, 28, 36, 44]}
+                    height={[16, 28, 36, 44]}
                     fontWeight={700}
                 >
                     {symbol}
