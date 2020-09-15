@@ -6,7 +6,7 @@ export const RootButton = styled.button`
     outline: none;
     border: none;
     padding: 0;
-    cursor: pointer;
+    cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
 `;
 
 export const OuterCircle = styled(Box)`
