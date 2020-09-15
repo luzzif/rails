@@ -1,9 +1,9 @@
 import { Flex, Box } from "reflexbox";
 import React from "react";
 import PropTypes from "prop-types";
-import { StyledInput, Label, Message } from "./styled";
+import { StyledInput, Label, Message, StyledNumericInput } from "./styled";
 
-export const Input = ({ label, message, innerRef, ...rest }) => (
+export const Input = ({ label, message, innerRef, numeric, ...rest }) => (
     <Flex flexDirection="column">
         {label && (
             <Box pl="16px" mb="8px">
@@ -11,7 +11,11 @@ export const Input = ({ label, message, innerRef, ...rest }) => (
             </Box>
         )}
         <Box>
-            <StyledInput {...rest} ref={innerRef} />
+            {numeric ? (
+                <StyledNumericInput {...rest} ref={innerRef} />
+            ) : (
+                <StyledInput {...rest} ref={innerRef} />
+            )}
         </Box>
         {message && (
             <Box pl="16px" mt="8px">

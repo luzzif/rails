@@ -30,6 +30,8 @@ export const Form = ({ onConfirm, asset, open }) => {
     );
     const [amount, setAmount] = useState("");
     const [feeAmount, setFeeAmount] = useState(new BigNumber(0));
+    const [aboveBalanceError, setAboveBalanceError] = useState(false);
+    const [buttonLabelSuffix, setButtonLabelSuffix] = useState("confirm");
 
     // fetch updated asset's on-chain balance
     useEffect(() => {
@@ -69,17 +71,19 @@ export const Form = ({ onConfirm, asset, open }) => {
         }
     }, [open]);
 
+    useEffect(() => {
+        if (aboveBalanceError) {
+            setButtonLabelSuffix("error.balance.maximum");
+        } else {
+            setButtonLabelSuffix("confirm");
+        }
+    }, [aboveBalanceError]);
+
     const handleAmountChange = useCallback(
-        (event) => {
-            let newAmount = event.target.value.replace(",", "");
-            if (/^(\d+)?(\.\d*)?$/.test(newAmount)) {
-                if (parsedUserBalance.isLessThan(newAmount)) {
-                    newAmount = parsedUserBalance.decimalPlaces(4).toFixed();
-                }
-                setAmount(newAmount);
-            } else {
-                setAmount("");
-            }
+        (wrappedAmount) => {
+            const { value } = wrappedAmount;
+            setAboveBalanceError(parsedUserBalance.isLessThan(value));
+            setAmount(wrappedAmount.value);
         },
         [parsedUserBalance]
     );
@@ -101,9 +105,13 @@ export const Form = ({ onConfirm, asset, open }) => {
                     label={
                         <FormattedMessage id="deposit.form.placeholder.amount" />
                     }
+                    numeric
                     placeholder="12.5"
                     value={amount}
-                    onChange={handleAmountChange}
+                    thousandSeparator=","
+                    decimalSeparator="."
+                    decimalScale={asset ? asset.precision : undefined}
+                    onValueChange={handleAmountChange}
                     message={
                         <FormattedMessage
                             id="deposit.form.amount.maximum"
@@ -130,12 +138,15 @@ export const Form = ({ onConfirm, asset, open }) => {
                 <Button
                     disabled={
                         !amount ||
+                        aboveBalanceError ||
                         parseFloat(amount) === 0 ||
                         isNaN(parseFloat(amount))
                     }
                     onClick={handleConfirm}
                 >
-                    <FormattedMessage id="deposit.form.confirm" />
+                    <FormattedMessage
+                        id={`deposit.form.${buttonLabelSuffix}`}
+                    />
                 </Button>
             </Box>
         </Flex>

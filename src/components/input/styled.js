@@ -1,6 +1,7 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import NumberFormat from "react-number-format";
 
-export const StyledInput = styled.input`
+const commonInputStyles = css`
     width: 100%;
     height: 48px;
     font-size: 20px;
@@ -24,6 +25,14 @@ export const StyledInput = styled.input`
     ::placeholder {
         color: ${(props) => props.theme.placeholder};
     }
+`;
+
+export const StyledInput = styled.input`
+    ${commonInputStyles}
+`;
+
+export const StyledNumericInput = styled(NumberFormat)`
+    ${commonInputStyles}
 `;
 
 export const Label = styled.div`

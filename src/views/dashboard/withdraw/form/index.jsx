@@ -21,6 +21,8 @@ export const Form = ({
     const [amount, setAmount] = useState("");
     const [amountError, setAmountError] = useState(false);
     const [feeAmount, setFeeAmount] = useState(new BigNumber(0));
+    const [aboveBalanceError, setAboveBalanceError] = useState(false);
+    const [buttonLabelSuffix, setButtonLabelSuffix] = useState("confirm");
 
     useEffect(() => {
         setParsedUserBalance(weiToEther(asset.balance, asset.decimals));
@@ -45,17 +47,19 @@ export const Form = ({
         }
     }, [loopringExchange]);
 
+    useEffect(() => {
+        if (aboveBalanceError) {
+            setButtonLabelSuffix("error.balance.maximum");
+        } else {
+            setButtonLabelSuffix("confirm");
+        }
+    }, [aboveBalanceError]);
+
     const handleAmountChange = useCallback(
-        (event) => {
-            let newAmount = event.target.value.replace(",", "");
-            if (/^(\d+)?(\.\d*)?$/.test(newAmount)) {
-                if (parsedUserBalance.isLessThan(newAmount)) {
-                    newAmount = parsedUserBalance.decimalPlaces(4).toFixed();
-                }
-                setAmount(newAmount);
-            } else {
-                setAmount("");
-            }
+        (wrappedAmount) => {
+            const { value } = wrappedAmount;
+            setAboveBalanceError(parsedUserBalance.isLessThan(value));
+            setAmount(wrappedAmount.value);
         },
         [parsedUserBalance]
     );
@@ -77,9 +81,13 @@ export const Form = ({
                     label={
                         <FormattedMessage id="withdrawal.form.placeholder.amount" />
                     }
+                    numeric
                     placeholder="1.6"
                     value={amount}
-                    onChange={handleAmountChange}
+                    thousandSeparator=","
+                    decimalSeparator="."
+                    decimalScale={asset ? asset.precision : undefined}
+                    onValueChange={handleAmountChange}
                     message={
                         <FormattedMessage
                             id="withdrawal.form.amount.maximum"
@@ -107,13 +115,16 @@ export const Form = ({
                 <Button
                     disabled={
                         !amount ||
+                        aboveBalanceError ||
                         parseFloat(amount) === 0 ||
                         isNaN(parseFloat(amount)) ||
                         amountError
                     }
                     onClick={handleConfirm}
                 >
-                    <FormattedMessage id="deposit.form.confirm" />
+                    <FormattedMessage
+                        id={`withdrawal.form.${buttonLabelSuffix}`}
+                    />
                 </Button>
             </Box>
         </Flex>

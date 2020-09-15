@@ -42,6 +42,8 @@ export const Send = ({ onConfirm, asset, exchange }) => {
     const [debouncedEnsLookup] = useDebouncedCallback((web3Instance, name) => {
         dispatch(getAddressFromEnsName(web3Instance, name));
     }, 500);
+    const [aboveBalanceError, setAboveBalanceError] = useState(false);
+    const [buttonLabelSuffix, setButtonLabelSuffix] = useState("confirm");
 
     useEffect(() => {
         if (exchange && exchange.transferFees) {
@@ -87,17 +89,21 @@ export const Send = ({ onConfirm, asset, exchange }) => {
         }
     }, [addressFromEns, asset, usingEns]);
 
+    useEffect(() => {
+        if (receiverError) {
+            setButtonLabelSuffix("error.receiver");
+        } else if (aboveBalanceError) {
+            setButtonLabelSuffix("error.balance.maximum");
+        } else {
+            setButtonLabelSuffix("confirm");
+        }
+    }, [aboveBalanceError, receiverError]);
+
     const handleAmountChange = useCallback(
-        (event) => {
-            let newAmount = event.target.value.replace(",", "");
-            if (/^(\d+)?(\.\d*)?$/.test(newAmount)) {
-                if (parsedUserBalance.isLessThan(newAmount)) {
-                    newAmount = parsedUserBalance.decimalPlaces(4).toFixed();
-                }
-                setAmount(newAmount);
-            } else {
-                setAmount("");
-            }
+        (wrappedAmount) => {
+            const { value } = wrappedAmount;
+            setAboveBalanceError(parsedUserBalance.isLessThan(value));
+            setAmount(wrappedAmount.value);
         },
         [parsedUserBalance]
     );
@@ -147,7 +153,6 @@ export const Send = ({ onConfirm, asset, exchange }) => {
                     innerRef={receiverInputRef}
                     value={receiver}
                     onChange={handleReceiverChange}
-                    error={receiverError}
                     message={
                         addressFromEns && (
                             <FormattedMessage
@@ -165,7 +170,11 @@ export const Send = ({ onConfirm, asset, exchange }) => {
                     }
                     placeholder="12.5"
                     value={amount}
-                    onChange={handleAmountChange}
+                    numeric
+                    thousandSeparator=","
+                    decimalSeparator="."
+                    decimalScale={asset ? asset.precision : undefined}
+                    onValueChange={handleAmountChange}
                 />
             </Box>
             <Box mb="24px" width="100%">
@@ -197,11 +206,12 @@ export const Send = ({ onConfirm, asset, exchange }) => {
                         parseFloat(amount) === 0 ||
                         isNaN(parseFloat(amount)) ||
                         receiverError ||
+                        aboveBalanceError ||
                         loadingAddressFromEns
                     }
                     onClick={handleConfirm}
                 >
-                    <FormattedMessage id="send.form.confirm" />
+                    <FormattedMessage id={`send.form.${buttonLabelSuffix}`} />
                 </Button>
             </Box>
             <LoadingOverlay open={loadingAddressFromEns} />
