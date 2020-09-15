@@ -7,7 +7,7 @@ import darkLogo from "../../../images/logo-dark.svg";
 import lightLogo from "../../../images/logo-light.svg";
 import { ActionButton } from "../../action-button";
 
-const ACTION_SIZES = [32, 36, 40];
+const ACTION_SIZES = [28, 32, 36];
 const ACTION_ICON_SIZE = 16;
 
 export const Toolbar = ({
