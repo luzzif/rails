@@ -25,7 +25,7 @@ export const Toolbar = ({
         justifyContent="space-between"
         width="100vw"
     >
-        <Box height={48}>
+        <Box height={36}>
             {logged && <Logo src={lightTheme ? darkLogo : lightLogo} />}
         </Box>
         <Flex alignItems="center" height="100%">

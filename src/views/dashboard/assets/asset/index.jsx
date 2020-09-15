@@ -32,10 +32,10 @@ export const Asset = ({ asset, onClick, selectedFiat }) => {
             >
                 <Box mb="4px">{formatBigNumber(asset.etherBalance)}</Box>
                 <Box fontSize={12}>
+                    {selectedFiat.symbol}
                     {formatBigNumber(
                         asset.etherBalance.multipliedBy(asset.fiatValue)
-                    )}{" "}
-                    {selectedFiat.symbol}
+                    )}
                 </Box>
             </Flex>
         </RootContainer>

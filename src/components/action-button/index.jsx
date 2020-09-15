@@ -29,7 +29,7 @@ export const ActionButton = ({
                 </IconContainer>
             </OuterCircle>
             {title && (
-                <Title mt="16px" fontSize={[12, 16]}>
+                <Title mt="8px" fontSize={[12, 16]}>
                     {title}
                 </Title>
             )}

@@ -7,12 +7,26 @@ import { formatBigNumber } from "../../../utils/conversion";
 export const Summary = ({ etherBalance, fiatValue, symbol, selectedFiat }) => {
     return (
         <Flex flexDirection="column" alignItems="center">
-            <Box fontSize={[36, 48, 56, 64]} fontWeight={700}>
-                {formatBigNumber(etherBalance, 4)} {symbol}
-            </Box>
-            <Box fontSize={[16, 16, 20, 24, 28]}>
-                {formatBigNumber(fiatValue.multipliedBy(etherBalance))}{" "}
+            <Flex alignItems="flex-end" mb="8px">
+                <Box
+                    fontSize={[36, 48, 56, 64]}
+                    height={[36, 48, 56, 64]}
+                    fontWeight={700}
+                    mr="8px"
+                >
+                    {formatBigNumber(etherBalance, 4)}
+                </Box>
+                <Box
+                    fontSize={[24, 36, 44, 52]}
+                    height={[24, 36, 44, 52]}
+                    fontWeight={700}
+                >
+                    {symbol}
+                </Box>
+            </Flex>
+            <Box fontSize={[16, 20, 24, 28, 32]}>
                 {selectedFiat.symbol}
+                {formatBigNumber(fiatValue.multipliedBy(etherBalance))}
             </Box>
         </Flex>
     );

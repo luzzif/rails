@@ -78,7 +78,7 @@ export const Transactions = ({
                         </Chip>
                     </Box>
                 </Flex>
-                <Box minWidth="auto" mr="16px">
+                <Box minWidth="auto">
                     <ActionButton
                         faIcon={faRedo}
                         size={32}
@@ -133,7 +133,6 @@ export const Transactions = ({
             <Flex
                 width="100%"
                 my="16px"
-                pr="16px"
                 justifyContent="flex-end"
                 alignItems="center"
             >

@@ -293,7 +293,7 @@ const Dashboard = () => {
                 justifyContent="center"
                 height="100%"
             >
-                <Box mb="16px" mt={["24px"]}>
+                <Box mb="16px" mt={"36px"}>
                     <Summary
                         etherBalance={selectedAsset.etherBalance}
                         symbol={selectedAsset.symbol}

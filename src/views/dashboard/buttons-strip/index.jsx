@@ -10,6 +10,9 @@ import {
 import { ActionButton } from "../../../components/action-button";
 import { FormattedMessage } from "react-intl";
 
+const BUTTON_SIZE = [40, 52, 56];
+const ICON_SIZE = 20;
+
 export const ButtonsStrip = ({
     asset,
     onSend,
@@ -18,43 +21,41 @@ export const ButtonsStrip = ({
     onAssets,
 }) => (
     <Flex width="100%" justifyContent="space-around">
-        {!asset.balance.isZero() && (
-            <Box>
-                <ActionButton
-                    faIcon={faArrowUp}
-                    title={<FormattedMessage id="dashboard.send" />}
-                    size={[48, 52, 56]}
-                    faIconSize={24}
-                    onClick={onSend}
-                />
-            </Box>
-        )}
+        <Box>
+            <ActionButton
+                faIcon={faArrowUp}
+                title={<FormattedMessage id="dashboard.send" />}
+                size={BUTTON_SIZE}
+                faIconSize={ICON_SIZE}
+                disabled={asset.balance.isZero()}
+                onClick={onSend}
+            />
+        </Box>
         <Box>
             <ActionButton
                 faIcon={faPlus}
                 title={<FormattedMessage id="dashboard.deposit" />}
-                size={[48, 52, 56]}
-                faIconSize={24}
+                size={BUTTON_SIZE}
+                faIconSize={ICON_SIZE}
                 onClick={onDeposit}
             />
         </Box>
-        {!asset.balance.isZero() && (
-            <Box>
-                <ActionButton
-                    faIcon={faMinus}
-                    title={<FormattedMessage id="dashboard.withdraw" />}
-                    size={[48, 52, 56]}
-                    faIconSize={20}
-                    onClick={onWithdraw}
-                />
-            </Box>
-        )}
+        <Box>
+            <ActionButton
+                faIcon={faMinus}
+                title={<FormattedMessage id="dashboard.withdraw" />}
+                size={BUTTON_SIZE}
+                faIconSize={ICON_SIZE}
+                disabled={asset.balance.isZero()}
+                onClick={onWithdraw}
+            />
+        </Box>
         <Box>
             <ActionButton
                 faIcon={faList}
                 title={<FormattedMessage id="dashboard.change.asset" />}
-                size={[48, 52, 56]}
-                faIconSize={20}
+                size={BUTTON_SIZE}
+                faIconSize={ICON_SIZE}
                 onClick={onAssets}
             />
         </Box>
