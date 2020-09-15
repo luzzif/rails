@@ -43,6 +43,12 @@ export const Send = ({ onConfirm, asset, exchange }) => {
         dispatch(getAddressFromEnsName(web3Instance, name));
     }, 500);
     const [aboveBalanceError, setAboveBalanceError] = useState(false);
+    const [aboveMaximumAmountError, setAboveMaximumAmountError] = useState(
+        false
+    );
+    const [belowMinimumAmountError, setBelowMinimumAmountError] = useState(
+        false
+    );
     const [buttonLabelSuffix, setButtonLabelSuffix] = useState("confirm");
 
     useEffect(() => {
@@ -80,8 +86,8 @@ export const Send = ({ onConfirm, asset, exchange }) => {
     }, [loadingAddressFromEns, receiverInputRef]);
 
     useEffect(() => {
-        setParsedUserBalance(weiToEther(asset.balance, asset.decimals));
-    }, [asset, supportedTokens]);
+        setParsedUserBalance(asset.etherBalance);
+    }, [asset]);
 
     useEffect(() => {
         if (usingEns) {
@@ -90,23 +96,39 @@ export const Send = ({ onConfirm, asset, exchange }) => {
     }, [addressFromEns, asset, usingEns]);
 
     useEffect(() => {
+        if (amount) {
+            setAboveBalanceError(parsedUserBalance.isLessThan(amount));
+            setAboveMaximumAmountError(
+                asset.maximumEtherOrderAmount.isLessThan(amount)
+            );
+            setBelowMinimumAmountError(
+                asset.minimumEtherOrderAmount.isGreaterThan(amount)
+            );
+        }
+    }, [amount, parsedUserBalance, asset]);
+
+    useEffect(() => {
         if (receiverError) {
             setButtonLabelSuffix("error.receiver");
         } else if (aboveBalanceError) {
             setButtonLabelSuffix("error.balance.maximum");
+        } else if (aboveMaximumAmountError) {
+            setButtonLabelSuffix("error.maximum.amount");
+        } else if (belowMinimumAmountError) {
+            setButtonLabelSuffix("error.minimum.amount");
         } else {
             setButtonLabelSuffix("confirm");
         }
-    }, [aboveBalanceError, receiverError]);
+    }, [
+        aboveBalanceError,
+        aboveMaximumAmountError,
+        belowMinimumAmountError,
+        receiverError,
+    ]);
 
-    const handleAmountChange = useCallback(
-        (wrappedAmount) => {
-            const { value } = wrappedAmount;
-            setAboveBalanceError(parsedUserBalance.isLessThan(value));
-            setAmount(wrappedAmount.value);
-        },
-        [parsedUserBalance]
-    );
+    const handleAmountChange = useCallback((wrappedAmount) => {
+        setAmount(wrappedAmount.value);
+    }, []);
 
     const handleReceiverChange = useCallback(
         (event) => {
@@ -175,6 +197,16 @@ export const Send = ({ onConfirm, asset, exchange }) => {
                     decimalSeparator="."
                     decimalScale={asset ? asset.precision : undefined}
                     onValueChange={handleAmountChange}
+                    message={
+                        <FormattedMessage
+                            id="send.form.amount.maximum"
+                            values={{
+                                amount: parsedUserBalance
+                                    .decimalPlaces(4)
+                                    .toString(),
+                            }}
+                        />
+                    }
                 />
             </Box>
             <Box mb="24px" width="100%">
