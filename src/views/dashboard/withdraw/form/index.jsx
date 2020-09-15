@@ -5,8 +5,8 @@ import { Button } from "../../../../components/button";
 import { FormattedMessage } from "react-intl";
 import { Input } from "../../../../components/input";
 import BigNumber from "bignumber.js";
-import { weiToEther, formatBigNumber } from "../../../../utils/conversion";
-import { ErrorText } from "../../../../components/error-text/styled";
+import { weiToEther } from "../../../../utils/conversion";
+import { OperationFee } from "../../../../components/operation-fee";
 
 export const Form = ({
     onConfirm,
@@ -101,14 +101,9 @@ export const Form = ({
                     error={amountError}
                 />
             </Box>
-            {feeAmount && !feeAmount.isZero() && (
+            {feeAmount && (
                 <Box mb="24px" textAlign="center">
-                    <ErrorText>
-                        <FormattedMessage
-                            id="withdrawal.form.fee"
-                            values={{ amount: formatBigNumber(feeAmount, 4) }}
-                        />
-                    </ErrorText>
+                    <OperationFee amount={feeAmount} tokenSymbol="ETH" />
                 </Box>
             )}
             <Box>

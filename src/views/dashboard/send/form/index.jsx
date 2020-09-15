@@ -9,9 +9,9 @@ import { Input } from "../../../../components/input";
 import BigNumber from "bignumber.js";
 import { getAddressFromEnsName } from "../../../../actions/ens";
 import { useDebouncedCallback } from "use-debounce";
-import { weiToEther, formatBigNumber } from "../../../../utils/conversion";
+import { weiToEther } from "../../../../utils/conversion";
 import { LoadingOverlay } from "../../../../components/loading-overlay";
-import { ErrorText } from "../../../../components/error-text/styled";
+import { OperationFee } from "../../../../components/operation-fee";
 import { getTokenBySymbol } from "loopring-lightcone/lib/utils";
 
 export const Send = ({ onConfirm, asset, exchange }) => {
@@ -217,17 +217,12 @@ export const Send = ({ onConfirm, asset, exchange }) => {
                     onChange={handleMemoChange}
                 />
             </Box>
-            {feeAmount && !feeAmount.isZero() && (
+            {feeAmount && (
                 <Box mb="24px" textAlign="center">
-                    <ErrorText>
-                        <FormattedMessage
-                            id="send.form.fee"
-                            values={{
-                                amount: formatBigNumber(feeAmount, 4),
-                                tokenSymbol: asset.symbol,
-                            }}
-                        />
-                    </ErrorText>
+                    <OperationFee
+                        amount={feeAmount}
+                        tokenSymbol={asset && asset.symbol}
+                    />
                 </Box>
             )}
             <Box mb="8px">
