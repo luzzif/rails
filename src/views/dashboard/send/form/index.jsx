@@ -14,7 +14,7 @@ import { LoadingOverlay } from "../../../../components/loading-overlay";
 import { OperationFee } from "../../../../components/operation-fee";
 import { getTokenBySymbol } from "loopring-lightcone/lib/utils";
 
-export const Send = ({ onConfirm, asset, exchange }) => {
+export const Send = ({ onConfirm, asset, exchange, open }) => {
     const dispatch = useDispatch();
     const receiverInputRef = useRef(null);
     const {
@@ -33,7 +33,7 @@ export const Send = ({ onConfirm, asset, exchange }) => {
         new BigNumber("0")
     );
     const [amount, setAmount] = useState("");
-    const [feeAmount, setFeeAmount] = useState(new BigNumber(0));
+    const [feeAmount, setFeeAmount] = useState("");
     const [receiver, setReceiver] = useState("");
     const [resolvedReceiver, setResolvedReceiver] = useState("");
     const [usingEns, setUsingEns] = useState(false);
@@ -44,6 +44,19 @@ export const Send = ({ onConfirm, asset, exchange }) => {
     }, 500);
     const [aboveBalanceError, setAboveBalanceError] = useState(false);
     const [buttonLabelSuffix, setButtonLabelSuffix] = useState("confirm");
+
+    useEffect(() => {
+        if (!open) {
+            setAmount("");
+            setReceiver("");
+            setResolvedReceiver("");
+            setUsingEns(false);
+            setMemo("");
+            setReceiverError(false);
+            setAboveBalanceError(false);
+            setButtonLabelSuffix("confirm");
+        }
+    }, [open]);
 
     useEffect(() => {
         if (exchange && exchange.transferFees) {

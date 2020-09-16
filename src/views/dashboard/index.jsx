@@ -375,6 +375,7 @@ const Dashboard = () => {
                     asset={selectedAsset}
                     onConfirm={handleSendConfirm}
                     exchange={exchange}
+                    open={sending}
                 />
             </BottomUpContainer>
             <BottomUpContainer open={showingTransaction} onClose={handleClose}>
