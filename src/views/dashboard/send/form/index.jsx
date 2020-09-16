@@ -43,12 +43,6 @@ export const Send = ({ onConfirm, asset, exchange }) => {
         dispatch(getAddressFromEnsName(web3Instance, name));
     }, 500);
     const [aboveBalanceError, setAboveBalanceError] = useState(false);
-    const [aboveMaximumAmountError, setAboveMaximumAmountError] = useState(
-        false
-    );
-    const [belowMinimumAmountError, setBelowMinimumAmountError] = useState(
-        false
-    );
     const [buttonLabelSuffix, setButtonLabelSuffix] = useState("confirm");
 
     useEffect(() => {
@@ -98,12 +92,6 @@ export const Send = ({ onConfirm, asset, exchange }) => {
     useEffect(() => {
         if (amount) {
             setAboveBalanceError(parsedUserBalance.isLessThan(amount));
-            setAboveMaximumAmountError(
-                asset.maximumEtherOrderAmount.isLessThan(amount)
-            );
-            setBelowMinimumAmountError(
-                asset.minimumEtherOrderAmount.isGreaterThan(amount)
-            );
         }
     }, [amount, parsedUserBalance, asset]);
 
@@ -112,19 +100,10 @@ export const Send = ({ onConfirm, asset, exchange }) => {
             setButtonLabelSuffix("error.receiver");
         } else if (aboveBalanceError) {
             setButtonLabelSuffix("error.balance.maximum");
-        } else if (aboveMaximumAmountError) {
-            setButtonLabelSuffix("error.maximum.amount");
-        } else if (belowMinimumAmountError) {
-            setButtonLabelSuffix("error.minimum.amount");
         } else {
             setButtonLabelSuffix("confirm");
         }
-    }, [
-        aboveBalanceError,
-        aboveMaximumAmountError,
-        belowMinimumAmountError,
-        receiverError,
-    ]);
+    }, [aboveBalanceError, receiverError]);
 
     const handleAmountChange = useCallback((wrappedAmount) => {
         setAmount(wrappedAmount.value);
