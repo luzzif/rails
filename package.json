@@ -2,6 +2,7 @@
     "name": "rails",
     "version": "0.1.0",
     "private": true,
+    "homepage": "./",
     "scripts": {
         "analyze": "source-map-explorer 'build/static/js/*.js'",
         "start": "react-scripts start",

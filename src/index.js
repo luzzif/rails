@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { App } from "./views/app";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { IntlProvider } from "react-intl";
 import en from "./i18n/en.json";
 import { getLanguage } from "./utils/localization";
@@ -22,9 +22,9 @@ if (!(language in messages)) {
 ReactDOM.render(
     <Provider store={store}>
         <IntlProvider locale={language} messages={messages[language]}>
-            <BrowserRouter>
+            <HashRouter>
                 <App />
-            </BrowserRouter>
+            </HashRouter>
         </IntlProvider>
     </Provider>,
     document.getElementById("root")
