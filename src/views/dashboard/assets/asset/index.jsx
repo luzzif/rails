@@ -30,13 +30,19 @@ export const Asset = ({ asset, onClick, selectedFiat }) => {
                 alignItems="flex-end"
                 justifyContent="center"
             >
-                <Box mb="4px">{formatBigNumber(asset.etherBalance)}</Box>
-                <Box fontSize={12}>
-                    {selectedFiat.symbol}
-                    {formatBigNumber(
-                        asset.etherBalance.multipliedBy(asset.fiatValue)
-                    )}
+                <Box mb="4px">
+                    {asset.etherBalance.isZero()
+                        ? "-"
+                        : formatBigNumber(asset.etherBalance)}
                 </Box>
+                {!asset.etherBalance.isZero() && (
+                    <Box fontSize={12}>
+                        {selectedFiat.symbol}
+                        {formatBigNumber(
+                            asset.etherBalance.multipliedBy(asset.fiatValue)
+                        )}
+                    </Box>
+                )}
             </Flex>
         </RootContainer>
     );
