@@ -32,12 +32,12 @@ export const supportedFiats = [
         faIcon: faYenSign,
     },
     {
-        symbol: "¥",
+        symbol: "CN¥",
         name: "CNY",
         faIcon: faYenSign,
     },
     {
-        symbol: "$",
+        symbol: "HK$",
         name: "HKD",
         faIcon: faDollarSign,
     },
