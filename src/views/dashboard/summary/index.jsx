@@ -25,7 +25,7 @@ export const Summary = ({ etherBalance, fiatValue, symbol, selectedFiat }) => {
                 </Box>
             </Flex>
             <Box fontSize={[16, 20, 24, 28, 32]}>
-                {selectedFiat.symbol}
+                {selectedFiat.symbol}{" "}
                 {formatBigNumber(fiatValue.multipliedBy(etherBalance))}
             </Box>
         </Flex>

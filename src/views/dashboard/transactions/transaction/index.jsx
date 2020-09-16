@@ -123,10 +123,11 @@ export const Transaction = ({
                 <Box fontSize={12}>
                     <AmountText color={referenceColor}>
                         {(!withdrawal && (deposit || !sent) ? "+" : "-") +
-                            selectedFiat.symbol +
                             formatBigNumber(
                                 etherAmount.multipliedBy(fiatValue)
-                            )}
+                            ) +
+                            " " +
+                            selectedFiat.symbol}
                     </AmountText>
                 </Box>
             </RightBlockFlex>
