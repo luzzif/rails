@@ -233,10 +233,41 @@ const Dashboard = () => {
     useEffect(() => {
         if (successfulTransferHash) {
             dispatch(deleteTransferHash());
-            dispatch(getTokenTransactions);
+            dispatch(
+                getTokenTransactions(
+                    ethereumAccount,
+                    accountId,
+                    apiKey,
+                    supportedTokens,
+                    transactionsPage,
+                    5,
+                    transactionsTypeFilter
+                )
+            );
+            dispatch(
+                getUserBalances(
+                    web3Instance,
+                    accountId,
+                    apiKey,
+                    supportedTokens,
+                    selectedFiat
+                )
+            );
             handleClose();
         }
-    }, [dispatch, handleClose, successfulTransferHash]);
+    }, [
+        accountId,
+        apiKey,
+        dispatch,
+        ethereumAccount,
+        handleClose,
+        selectedFiat,
+        successfulTransferHash,
+        supportedTokens,
+        transactionsPage,
+        transactionsTypeFilter,
+        web3Instance,
+    ]);
 
     const handleDeposit = useCallback(() => {
         setDepositing(true);
