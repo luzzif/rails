@@ -5,8 +5,8 @@
     "scripts": {
         "analyze": "source-map-explorer 'build/static/js/*.js'",
         "start": "react-scripts start",
-        "build": "react-scripts build && copy _redirects ./build",
-        "test": "react-scripts test",
+        "build": "react-scripts build",
+        "test:build": "http-server build",
         "eject": "react-scripts eject",
         "lint:commit-message": "commitlint -e"
     },
@@ -58,7 +58,7 @@
     "devDependencies": {
         "@commitlint/cli": "^9.1.2",
         "@commitlint/config-conventional": "^9.1.2",
-        "copy": "^0.3.2",
+        "http-server": "^0.12.3",
         "husky": "^4.3.0",
         "rimraf": "^3.0.2",
         "source-map-explorer": "^2.5.0"
