@@ -212,14 +212,6 @@ export const getUserBalances = (
                     fiatValue,
                     depositEnabled: supportedToken.depositEnabled,
                     decimals: supportedToken.decimals,
-                    minimumEtherOrderAmount: weiToEther(
-                        new BigNumber(supportedToken.minOrderAmount),
-                        supportedToken.decimals
-                    ),
-                    maximumEtherOrderAmount: weiToEther(
-                        new BigNumber(supportedToken.maxOrderAmount),
-                        supportedToken.decimals
-                    ),
                 });
                 return allBalances;
             }, [])
