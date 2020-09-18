@@ -6,7 +6,7 @@
     "scripts": {
         "analyze": "source-map-explorer 'build/static/js/*.js'",
         "start": "react-app-rewired start",
-        "build": "react-app-rewired build",
+        "build": "cross-env GENERATE_SOURCEMAP=false react-app-rewired build",
         "test:build": "http-server build",
         "lint:commit-message": "commitlint -e"
     },
@@ -58,6 +58,7 @@
     "devDependencies": {
         "@commitlint/cli": "^9.1.2",
         "@commitlint/config-conventional": "^9.1.2",
+        "cross-env": "^7.0.2",
         "git-revision-webpack-plugin": "^3.0.6",
         "http-server": "^0.12.3",
         "husky": "^4.3.0",
