@@ -10,6 +10,7 @@ module.exports = (config, env) => {
     }
     const gitRevisionPlugin = new GitRevisionPlugin();
     const shortCommitHash = gitRevisionPlugin.commithash().substring(0, 8);
+    config.devtool = false;
     config.output.filename = `static/js/[name].${shortCommitHash}.js`;
     config.output.chunkFilename = `static/js/[name].${shortCommitHash}.chunk.js`;
     config.plugins = config.plugins.filter(
@@ -28,6 +29,9 @@ module.exports = (config, env) => {
     );
     config.module.rules[2].oneOf.find(
         (rule) => rule.loader === require.resolve("file-loader")
+    ).options.name = "static/media/[name].[ext]";
+    config.module.rules[2].oneOf.find(
+        (rule) => rule.loader === require.resolve("url-loader")
     ).options.name = "static/media/[name].[ext]";
     return config;
 };
