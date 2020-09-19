@@ -63,7 +63,6 @@
         "http-server": "^0.12.3",
         "husky": "^4.3.0",
         "react-app-rewired": "^2.1.6",
-        "rimraf": "^3.0.2",
         "source-map-explorer": "^2.5.0"
     }
 }

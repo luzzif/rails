@@ -32,5 +32,6 @@ module.exports = (config, env) => {
     config.module.rules[2].oneOf.find(
         (rule) => rule.loader === require.resolve("url-loader")
     ).options.name = "static/media/[name].[ext]";
+    config.optimization.moduleIds = "hashed";
     return config;
 };
