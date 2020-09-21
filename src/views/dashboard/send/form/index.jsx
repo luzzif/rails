@@ -214,6 +214,7 @@ export const Send = ({ onConfirm, asset, exchange, open }) => {
                     <OperationFee
                         amount={feeAmount}
                         tokenSymbol={asset && asset.symbol}
+                        variant="transfer"
                     />
                 </Box>
             )}

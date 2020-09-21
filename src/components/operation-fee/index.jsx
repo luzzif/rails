@@ -12,15 +12,15 @@ const PositiveText = styled.span`
     color: ${(props) => props.theme.success};
 `;
 
-export const OperationFee = ({ amount, tokenSymbol }) => {
+export const OperationFee = ({ amount, tokenSymbol, variant }) => {
     return amount && amount.isZero() ? (
         <PositiveText>
-            <FormattedMessage id="operation.fee.free" />
+            <FormattedMessage id={`operation.fee.free.${variant}`} />
         </PositiveText>
     ) : (
         <NegativeText>
             <FormattedMessage
-                id="operation.fee.cost"
+                id={`operation.fee.cost.${variant}`}
                 values={{ amount: formatBigNumber(amount, 4), tokenSymbol }}
             />
         </NegativeText>
@@ -30,4 +30,5 @@ export const OperationFee = ({ amount, tokenSymbol }) => {
 OperationFee.propTypes = {
     amount: PropTypes.object.isRequired,
     tokenSymbol: PropTypes.string.isRequired,
+    variant: PropTypes.oneOf(["deposit", "withdrawal", "transfer"]).isRequired,
 };

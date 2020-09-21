@@ -103,7 +103,11 @@ export const Form = ({
             </Box>
             {feeAmount && (
                 <Box mb="24px" textAlign="center">
-                    <OperationFee amount={feeAmount} tokenSymbol="ETH" />
+                    <OperationFee
+                        amount={feeAmount}
+                        tokenSymbol="ETH"
+                        variant="withdrawal"
+                    />
                 </Box>
             )}
             <Box>

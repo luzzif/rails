@@ -126,7 +126,7 @@ export const Form = ({ onConfirm, asset, open }) => {
             </Box>
             {feeAmount && (
                 <Box mb="24px" textAlign="center">
-                    <OperationFee amount={feeAmount} tokenSymbol="ETH" />
+                    <OperationFee amount={feeAmount} tokenSymbol="ETH" variant="deposit" />
                 </Box>
             )}
             <Box>
