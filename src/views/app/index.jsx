@@ -40,7 +40,7 @@ const LazyDashboard = lazy(() => import("../dashboard"));
 
 const commonColors = {
     error: "#c62828",
-    success: "#009940",
+    success: "#008035",
     warning: "#FF6F00",
 };
 
