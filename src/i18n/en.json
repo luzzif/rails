@@ -56,7 +56,7 @@
     "send.form.confirmation.button.close": "Close",
     "operation.fee.free.transfer": "Rails keeps this transfer 100% free of any fees. Enjoy your gasless transaction!",
     "operation.fee.free.deposit": "Rails will not charge any additional fees on this deposit (Ethereum gas fees still apply).",
-    "operation.fee.free.withdraw": "Rails will not charge any additional fees on this withdrawal (Ethereum gas fees still apply).",
+    "operation.fee.free.withdrawal": "Rails will not charge any additional fees on this withdrawal (Ethereum gas fees still apply).",
     "operation.fee.cost.transfer": "Rails will charge a fee of {amount} {tokenSymbol} on the transfer.",
     "operation.fee.cost.deposit": "Rails will charge a fee of {amount} {tokenSymbol} on the deposit (Ethereum gas fees still apply).",
     "operation.fee.cost.withdrawal": "Rails will charge a fee of {amount} {tokenSymbol} on the withdrawal (Ethereum gas fees still apply).",

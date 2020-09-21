@@ -17,7 +17,6 @@ import { GlobalStyle } from "./styled.js";
 import { useDispatch } from "react-redux";
 import MewConnect from "@myetherwallet/mewconnect-web-client";
 import Web3Modal from "web3modal";
-import { INFURA_ID } from "../../env";
 import Helmet from "react-helmet";
 import {
     getSupportedTokens,
@@ -90,19 +89,21 @@ const darkWeb3ModalTheme = {
     hover: dark.foreground,
 };
 
+const infuraId = "0ebf4dd05d6740f482938b8a80860d13";
+
 const web3ModalOptions = {
     cacheProvider: true,
     providerOptions: {
         mewconnect: {
             package: MewConnect,
             options: {
-                infuraId: INFURA_ID,
+                infuraId,
             },
         },
         walletconnect: {
             package: WalletConnectProvider,
             options: {
-                infuraId: INFURA_ID,
+                infuraId,
             },
         },
         authereum: {
