@@ -9,16 +9,16 @@ export const Summary = ({ etherBalance, fiatValue, symbol, selectedFiat }) => {
         <Flex flexDirection="column" alignItems="center">
             <Flex alignItems="flex-end" mb="8px">
                 <Box
-                    fontSize={[36, 48, 56, 64]}
-                    height={[36, 48, 56, 64]}
+                    fontSize={[40, 48, 56, 64]}
+                    height={[40, 48, 56, 64]}
                     fontWeight={700}
                     mr="8px"
                 >
                     {formatBigNumber(etherBalance, 4)}
                 </Box>
                 <Box
-                    fontSize={[16, 28, 36, 44]}
-                    height={[16, 28, 36, 44]}
+                    fontSize={[20, 28, 36, 44]}
+                    height={[20, 28, 36, 44]}
                     fontWeight={700}
                 >
                     {symbol}
