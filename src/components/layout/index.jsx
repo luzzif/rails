@@ -2,7 +2,6 @@ import React from "react";
 import { Toolbar } from "./toolbar";
 import PropTypes from "prop-types";
 import { Root } from "./styled";
-import { Footer } from "./footer";
 
 export const Layout = ({
     lightTheme,
@@ -23,7 +22,6 @@ export const Layout = ({
             onLogoutClick={onLogoutClick}
         />
         {children}
-        <Footer />
     </Root>
 );
 
