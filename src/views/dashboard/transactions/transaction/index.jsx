@@ -85,52 +85,50 @@ export const Transaction = ({
                     color={referenceColor}
                 />
             </Box>
-            <Flex
-                flexDirection="column"
-                justifyContent="center"
-                flexGrow="2"
-                pr="16px"
-            >
-                <Box mb="4px">
-                    <OneLineText>
-                        {getText()}{" "}
-                        {progress &&
-                            progress !== "100%" &&
-                            `(${formatMessage({
-                                id: "dashboard.transactions.progress",
-                            })})`}
-                    </OneLineText>
-                </Box>
-                <Box>
-                    <OneLineText fontSize={12}>
-                        {DateTime.fromMillis(timestamp).toLocaleString(
-                            DateTime.DATETIME_SHORT
-                        )}
-                    </OneLineText>
-                </Box>
-            </Flex>
-            <RightBlockFlex
-                flexDirection="column"
-                alignItems="flex-end"
-                justifyContent="center"
-                minWidth="auto"
-            >
-                <Box color={referenceColor} mb="4px">
-                    {(!withdrawal && (deposit || !sent) ? "+" : "-") +
-                        formatBigNumber(etherAmount)}{" "}
-                    {symbol}
-                </Box>
-                <Box fontSize={12}>
-                    <AmountText color={referenceColor}>
+            <Flex justifyContent="space-between" width="100%">
+                <Flex flexDirection="column">
+                    <Box mb="4px">
+                        <OneLineText>
+                            {getText()}{" "}
+                            {progress &&
+                                progress !== "100%" &&
+                                `(${formatMessage({
+                                    id: "dashboard.transactions.progress",
+                                })})`}
+                        </OneLineText>
+                    </Box>
+                    <Box>
+                        <OneLineText fontSize={12}>
+                            {DateTime.fromMillis(timestamp).toLocaleString(
+                                DateTime.DATETIME_SHORT
+                            )}
+                        </OneLineText>
+                    </Box>
+                </Flex>
+                <RightBlockFlex
+                    pl="8px"
+                    flexDirection="column"
+                    alignItems="flex-end"
+                    justifyContent="center"
+                    minWidth="min-content"
+                >
+                    <Box color={referenceColor} mb="4px">
                         {(!withdrawal && (deposit || !sent) ? "+" : "-") +
-                            formatBigNumber(
-                                etherAmount.multipliedBy(fiatValue)
-                            ) +
-                            " " +
-                            selectedFiat.symbol}
-                    </AmountText>
-                </Box>
-            </RightBlockFlex>
+                            formatBigNumber(etherAmount)}{" "}
+                        {symbol}
+                    </Box>
+                    <Box fontSize={12}>
+                        <AmountText color={referenceColor}>
+                            {(!withdrawal && (deposit || !sent) ? "+" : "-") +
+                                formatBigNumber(
+                                    etherAmount.multipliedBy(fiatValue)
+                                ) +
+                                " " +
+                                selectedFiat.symbol}
+                        </AmountText>
+                    </Box>
+                </RightBlockFlex>
+            </Flex>
         </HoverableContainer>
     );
 };
