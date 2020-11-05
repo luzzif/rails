@@ -100,7 +100,7 @@ export const Form = ({ onConfirm, asset, open }) => {
             alignItems="center"
             justifyContent="center"
         >
-            <Box mb="24px" width="100%">
+            <Box mb="16px" width="100%">
                 <Input
                     label={
                         <FormattedMessage id="deposit.form.placeholder.amount" />

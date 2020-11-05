@@ -3,8 +3,8 @@ import NumberFormat from "react-number-format";
 
 const commonInputStyles = css`
     width: 100%;
-    height: 48px;
-    font-size: 20px;
+    height: 40px;
+    font-size: 16px;
     background: ${(props) =>
         props.dark ? props.theme.background : props.theme.foreground};
     color: ${(props) => props.theme.text};
@@ -12,8 +12,7 @@ const commonInputStyles = css`
     outline: none;
     box-sizing: border-box;
     border-radius: 24px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 0 16px;
     /* TODO: remove this nested ternary */
     border: solid 1px
         ${(props) =>
@@ -37,8 +36,7 @@ export const StyledNumericInput = styled(NumberFormat)`
 
 export const Label = styled.div`
     color: ${(props) => props.theme.text};
-    font-size: 16px;
-    font-weight: 700;
+    font-weight: 600;
 `;
 
 export const Message = styled.div`

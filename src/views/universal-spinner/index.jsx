@@ -8,7 +8,7 @@ import { useDebouncedCallback } from "use-debounce/lib";
 export const UniversalSpinner = ({ timeout, open }) => {
     const [locallyOpen, setLocallyOpen] = useState(false);
 
-    const [debouncedSetLocallyOpen] = useDebouncedCallback(
+    const { callback: debouncedSetLocallyOpen } = useDebouncedCallback(
         setLocallyOpen,
         timeout
     );

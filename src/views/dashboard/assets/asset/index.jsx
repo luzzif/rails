@@ -15,14 +15,14 @@ export const Asset = ({ asset, onClick, selectedFiat }) => {
             width="100%"
             justifyContent="space-between"
             alignItems="center"
-            minHeight={68}
-            maxHeight={68}
+            minHeight={60}
+            maxHeight={60}
             pl={["16px", "20px"]}
             pr="24px"
             onClick={handleLocalClick}
         >
             <Box pr="16px">
-                <TokenIcon address={asset.address} size={48} />
+                <TokenIcon address={asset.address} size={40} />
             </Box>
             <Box flexGrow="1">{asset.symbol}</Box>
             <Flex

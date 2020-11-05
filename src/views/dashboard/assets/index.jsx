@@ -51,7 +51,7 @@ export const Assets = ({ assets, onChange, onRefresh, open, selectedFiat }) => {
 
     return (
         <Flex flexDirection="column" width="100%">
-            <Flex mb="24px">
+            <Flex mb="16px">
                 <Box width="100%" mr="16px">
                     <Searchbar
                         placeholder={formatMessage({
@@ -64,8 +64,8 @@ export const Assets = ({ assets, onChange, onRefresh, open, selectedFiat }) => {
                 <Box minWidth="auto">
                     <ActionButton
                         faIcon={faRedo}
-                        size={44}
-                        faIconSize={20}
+                        size={40}
+                        faIconSize={16}
                         onClick={onRefresh}
                     />
                 </Box>

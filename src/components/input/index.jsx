@@ -6,7 +6,7 @@ import { StyledInput, Label, Message, StyledNumericInput } from "./styled";
 export const Input = ({ label, message, innerRef, numeric, ...rest }) => (
     <Flex flexDirection="column">
         {label && (
-            <Box pl="16px" mb="8px">
+            <Box pl="8px" mb="8px">
                 <Label>{label}</Label>
             </Box>
         )}
@@ -18,7 +18,7 @@ export const Input = ({ label, message, innerRef, numeric, ...rest }) => (
             )}
         </Box>
         {message && (
-            <Box pl="16px" mt="8px">
+            <Box pl="8px" mt="8px">
                 <Message>{message}</Message>
             </Box>
         )}

@@ -7,7 +7,7 @@ const commonsStyles = css`
     white-space: nowrap;
     padding: ${(props) => (props.secondary ? "9px 17px" : "12px 20px")};
     justify-content: center;
-    font-size: 20px;
+    font-size: 16px;
     font-family: "Montserrat";
     background: ${(props) => (props.secondary ? "none" : props.theme.primary)};
     color: ${(props) =>

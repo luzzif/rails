@@ -39,9 +39,12 @@ export const Send = ({ onConfirm, asset, exchange, open }) => {
     const [usingEns, setUsingEns] = useState(false);
     const [memo, setMemo] = useState("");
     const [receiverError, setReceiverError] = useState(false);
-    const [debouncedEnsLookup] = useDebouncedCallback((web3Instance, name) => {
-        dispatch(getAddressFromEnsName(web3Instance, name));
-    }, 500);
+    const { callback: debouncedEnsLookup } = useDebouncedCallback(
+        (web3Instance, name) => {
+            dispatch(getAddressFromEnsName(web3Instance, name));
+        },
+        500
+    );
     const [aboveBalanceError, setAboveBalanceError] = useState(false);
     const [buttonLabelSuffix, setButtonLabelSuffix] = useState("confirm");
 
@@ -201,7 +204,7 @@ export const Send = ({ onConfirm, asset, exchange, open }) => {
                     }
                 />
             </Box>
-            <Box mb="24px" width="100%">
+            <Box mb="16px" width="100%">
                 <Input
                     label={<FormattedMessage id="send.form.placeholder.memo" />}
                     placeholder="Foo Bar"
