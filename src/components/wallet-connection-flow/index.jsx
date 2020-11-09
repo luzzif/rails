@@ -15,7 +15,6 @@ export const WalletConnectionFlow = ({ open }) => {
         connectorName,
         setConnector,
         unsetConnector,
-        error,
     } = useWeb3Context();
     const metamaskEnabled = "ethereum" in window || "web3" in window;
 
