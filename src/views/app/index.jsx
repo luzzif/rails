@@ -15,8 +15,6 @@ import { useSelector } from "react-redux";
 import { UniversalSpinner } from "../universal-spinner";
 import { GlobalStyle } from "./styled.js";
 import { useDispatch } from "react-redux";
-import MewConnect from "@myetherwallet/mewconnect-web-client";
-import Web3Modal from "web3modal";
 import Helmet from "react-helmet";
 import {
     getSupportedTokens,
@@ -30,8 +28,6 @@ import { FiatChooser, supportedFiats } from "../fiat-chooser";
 import { ToastContainer, Slide } from "react-toastify";
 import darkLogo from "../../images/logo-dark.svg";
 import lightLogo from "../../images/logo-light.svg";
-import WalletConnectProvider from "@walletconnect/web3-provider";
-import Authereum from "authereum";
 import "react-toastify/dist/ReactToastify.css";
 
 const LazyAuth = lazy(() => import("../auth"));
@@ -75,45 +71,6 @@ const dark = {
     loader: "#595959",
 };
 
-const lightWeb3ModalTheme = {
-    background: light.background,
-    main: light.text,
-    secondary: light.text,
-    hover: light.foreground,
-};
-
-const darkWeb3ModalTheme = {
-    background: dark.background,
-    main: dark.text,
-    secondary: dark.text,
-    hover: dark.foreground,
-};
-
-const infuraId = "0ebf4dd05d6740f482938b8a80860d13";
-
-const web3ModalOptions = {
-    cacheProvider: true,
-    providerOptions: {
-        mewconnect: {
-            package: MewConnect,
-            options: {
-                infuraId,
-            },
-        },
-        walletconnect: {
-            package: WalletConnectProvider,
-            options: {
-                infuraId,
-            },
-        },
-        authereum: {
-            package: Authereum,
-        },
-    },
-};
-
-export const getWeb3Modal = () => new Web3Modal(web3ModalOptions);
-
 export let selectedTheme = light;
 
 export const App = () => {
@@ -154,9 +111,6 @@ export const App = () => {
         const lightTheme = cachedTheme === "light";
         setLightTheme(lightTheme);
         selectedTheme = lightTheme ? light : dark;
-        web3ModalOptions.theme = lightTheme
-            ? lightWeb3ModalTheme
-            : darkWeb3ModalTheme;
     }, [dispatch]);
 
     // setting up selected fiat on boot and logout
@@ -257,9 +211,6 @@ export const App = () => {
         const newLightTheme = !lightTheme;
         const textTheme = newLightTheme ? "light" : "dark";
         localStorage.setItem("rails-theme", textTheme);
-        web3ModalOptions.theme = newLightTheme
-            ? lightWeb3ModalTheme
-            : darkWeb3ModalTheme;
         setLightTheme(newLightTheme);
         selectedTheme = newLightTheme ? light : dark;
     }, [lightTheme]);

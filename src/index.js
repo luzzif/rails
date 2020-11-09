@@ -10,6 +10,13 @@ import { createStore, compose, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { reducers } from "./reducers";
 import { version } from "../package.json";
+import Web3Provider from "web3-react";
+import Web3 from "web3";
+import {
+    injectedConnector,
+    walletConnectProvider,
+    authereumConnector,
+} from "./connectors";
 
 console.log(`Welcome to Rails version ${version}`);
 
@@ -25,9 +32,19 @@ if (!(language in messages)) {
 ReactDOM.render(
     <Provider store={store}>
         <IntlProvider locale={language} messages={messages[language]}>
-            <HashRouter>
-                <App />
-            </HashRouter>
+            <Web3Provider
+                connectors={{
+                    injected: injectedConnector,
+                    walletConnect: walletConnectProvider,
+                    authereum: authereumConnector,
+                }}
+                libraryName="web3.js"
+                web3Api={Web3}
+            >
+                <HashRouter>
+                    <App />
+                </HashRouter>
+            </Web3Provider>
         </IntlProvider>
     </Provider>,
     document.getElementById("root")

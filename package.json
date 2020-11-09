@@ -36,8 +36,8 @@
         "reflexbox": "^4.0.6",
         "styled-components": "^5.2.1",
         "use-debounce": "^5.0.1",
-        "web3": "^1.3.0",
-        "web3modal": "^1.9.1"
+        "web3": "^1.2.11",
+        "web3-react": "^5.0.5"
     },
     "eslintConfig": {
         "extends": "react-app"

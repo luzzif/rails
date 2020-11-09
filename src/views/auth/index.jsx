@@ -12,7 +12,6 @@ import {
     InvalidChainText,
 } from "./styled";
 import { BottomUpContainer } from "../../components/bottom-up-container";
-import { initializeWeb3, initializeCachedWeb3 } from "../../actions/web3";
 import { RegistrationFlow } from "./registration-flow";
 import { selectedTheme } from "../app";
 import { getShortenedEthereumAddress } from "../../utils/conversion";
@@ -20,8 +19,8 @@ import {
     disableTestMode,
     enableTestMode,
 } from "loopring-lightcone/lib/request";
-
-const VALID_CHAIN_IDS = [1, 5];
+import { WalletConnectionFlow } from "../../components/wallet-connection-flow";
+import { SUPPORTED_CHAIN_IDS } from "../../commons";
 
 const Auth = () => {
     const dispatch = useDispatch();
@@ -40,17 +39,12 @@ const Auth = () => {
     const [invalidChainId, setInvalidChainId] = useState(false);
     const [loggingIn, setLoggingIn] = useState(false);
     const [registering, setRegistering] = useState(false);
+    const [connectingWallet, setConnectingWallet] = useState(false);
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
-        if (!web3Instance) {
-            dispatch(initializeCachedWeb3());
-        }
-    }, [chainId, dispatch, web3Instance]);
-
-    useEffect(() => {
         if (chainId) {
-            setInvalidChainId(VALID_CHAIN_IDS.indexOf(chainId) < 0);
+            setInvalidChainId(SUPPORTED_CHAIN_IDS.indexOf(chainId) < 0);
             if (chainId === 1) {
                 console.log("enabling production mode...");
                 disableTestMode();
@@ -68,35 +62,32 @@ const Auth = () => {
     }, [dispatch, selectedAccount, chainId]);
 
     const handleConnectClick = useCallback(() => {
-        if (!web3Instance) {
-            dispatch(initializeWeb3());
-        }
-    }, [dispatch, web3Instance]);
+        setRegistering(false);
+        setLoggingIn(false);
+        setConnectingWallet(true);
+    }, []);
 
     const handleLoginClick = useCallback(() => {
-        if (!web3Instance) {
-            dispatch(initializeWeb3());
-        }
         setRegistering(false);
+        setConnectingWallet(false);
         setLoggingIn(true);
         dispatch(login(web3Instance, selectedAccount));
     }, [dispatch, selectedAccount, web3Instance]);
 
     const handleRegisterClick = useCallback(() => {
-        if (!web3Instance) {
-            dispatch(initializeWeb3());
-        }
         setLoggingIn(false);
+        setConnectingWallet(false);
         setRegistering(true);
-    }, [dispatch, web3Instance]);
+    }, []);
 
     useEffect(() => {
-        setOpen(web3Instance && (loggingIn || registering));
-    }, [loggingIn, registering, web3Instance]);
+        setOpen(web3Instance ? loggingIn || registering : connectingWallet);
+    }, [loggingIn, registering, web3Instance, connectingWallet]);
 
     const handleClose = useCallback(() => {
         setLoggingIn(false);
         setRegistering(false);
+        setConnectingWallet(false);
     }, []);
 
     return (
@@ -194,6 +185,12 @@ const Auth = () => {
             </BottomUpContainer>
             <BottomUpContainer open={open && registering} onClose={handleClose}>
                 <RegistrationFlow open={open && registering} />
+            </BottomUpContainer>
+            <BottomUpContainer
+                open={open && connectingWallet}
+                onClose={handleClose}
+            >
+                <WalletConnectionFlow open={open && connectingWallet} />
             </BottomUpContainer>
         </>
     );
