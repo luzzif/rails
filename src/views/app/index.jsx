@@ -29,7 +29,7 @@ import { ToastContainer, Slide } from "react-toastify";
 import darkLogo from "../../images/logo-dark.svg";
 import lightLogo from "../../images/logo-light.svg";
 import "react-toastify/dist/ReactToastify.css";
-import { useWeb3React, Web3ReactProvider } from "@web3-react/core";
+import { Web3ReactProvider } from "@web3-react/core";
 import { initializeWeb3 } from "../../actions/web3";
 
 const LazyAuth = lazy(() => import("../auth"));
