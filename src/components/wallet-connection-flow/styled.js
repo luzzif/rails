@@ -2,7 +2,6 @@ import styled, { css } from "styled-components";
 import metamaskIcon from "../../images/metamask.svg";
 import walletConnectIcon from "../../images/wallet-connect.svg";
 import authereumIcon from "../../images/authereum.svg";
-import { Box } from "reflexbox";
 
 export const icon = css`
     background-position: 50% 50%;
