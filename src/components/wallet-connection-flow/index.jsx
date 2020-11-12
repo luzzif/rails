@@ -1,48 +1,46 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { Box, Flex } from "reflexbox";
-import { useWeb3Context } from "web3-react";
-import { initializeWeb3 } from "../../actions/web3";
+import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core";
 import { MetamaskIcon, WalletConnectIcon, AuthereumIcon } from "./styled";
 import { Wallet } from "./wallet";
 import dxDaoLogo from "../../images/dxdao-blue.svg";
+import {
+    authereumConnector,
+    injectedConnector,
+    walletConnectConnector,
+} from "../../connectors";
+import { toast } from "react-toastify";
+import { FormattedMessage } from "react-intl";
 
 export const WalletConnectionFlow = ({ open }) => {
-    const dispatch = useDispatch();
-    const {
-        active,
-        library,
-        connectorName,
-        setConnector,
-        unsetConnector,
-    } = useWeb3Context();
-    const metamaskEnabled = "ethereum" in window || "web3" in window;
+    const { connector, activate, deactivate, error } = useWeb3React();
+    const injectedEnabled = "ethereum" in window || "web3" in window;
 
     useEffect(() => {
         if (!open) {
-            unsetConnector();
+            deactivate();
         }
-    }, [open, unsetConnector]);
+    }, [open, deactivate]);
 
     useEffect(() => {
-        if (active && library) {
-            dispatch(initializeWeb3(library, connectorName));
+        if (error && error instanceof UnsupportedChainIdError) {
+            toast.error(<FormattedMessage id="auth.chain.invalid" />);
         }
-    }, [active, library, dispatch, connectorName]);
+    }, [open, error]);
 
-    const getWalletClickHandler = (wallet) => () => {
-        if (connectorName !== wallet) {
-            setConnector(wallet);
+    const getWalletClickHandler = (newConnector) => () => {
+        if (connector !== newConnector) {
+            activate(newConnector);
         }
     };
 
     return (
         <Flex flexDirection="column" width="100%">
-            {metamaskEnabled && (
+            {injectedEnabled && (
                 <Box>
                     <Wallet
                         icon={<MetamaskIcon />}
-                        onClick={getWalletClickHandler("injected")}
+                        onClick={getWalletClickHandler(injectedConnector)}
                         name="Metamask"
                     />
                 </Box>
@@ -50,18 +48,18 @@ export const WalletConnectionFlow = ({ open }) => {
             <Box>
                 <Wallet
                     icon={<WalletConnectIcon />}
-                    onClick={getWalletClickHandler("walletConnect")}
+                    onClick={getWalletClickHandler(walletConnectConnector)}
                     name="WalletConnect"
                 />
             </Box>
             <Box>
                 <Wallet
                     icon={<AuthereumIcon />}
-                    onClick={getWalletClickHandler("authereum")}
+                    onClick={getWalletClickHandler(authereumConnector)}
                     name="Authereum"
                 />
             </Box>
-            <Flex justifyContent="center" alignItems="center" mt="16px">
+            <Flex justifyContent="center" alignItems="center" mt="24px">
                 <Flex mr="8px">
                     <img
                         src={dxDaoLogo}

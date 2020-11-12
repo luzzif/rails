@@ -80,15 +80,19 @@ const Auth = () => {
         setRegistering(true);
     }, []);
 
-    useEffect(() => {
-        setOpen(web3Instance ? loggingIn || registering : connectingWallet);
-    }, [loggingIn, registering, web3Instance, connectingWallet]);
-
     const handleClose = useCallback(() => {
         setLoggingIn(false);
         setRegistering(false);
         setConnectingWallet(false);
     }, []);
+
+    useEffect(() => {
+        const open = web3Instance ? loggingIn || registering : connectingWallet;
+        setOpen(open);
+        if (!open) {
+            handleClose();
+        }
+    }, [loggingIn, registering, web3Instance, handleClose, connectingWallet]);
 
     return (
         <>

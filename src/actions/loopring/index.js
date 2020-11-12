@@ -421,6 +421,7 @@ export const submitTransfer = (
             web3Instance,
             selectedAccount,
             keys.secretKey,
+            token.decimals,
             token.id,
             token.id,
             etherToWei(new BigNumber(amount), token.decimals).toFixed(),

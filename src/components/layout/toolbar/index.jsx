@@ -8,7 +8,7 @@ import lightLogo from "../../../images/logo-light.svg";
 import { ActionButton } from "../../action-button";
 
 const ACTION_SIZES = [28, 32, 36];
-const ACTION_ICON_SIZE = 16;
+const ACTION_ICON_SIZE = 14;
 
 export const Toolbar = ({
     lightTheme,

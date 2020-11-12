@@ -1,50 +1,22 @@
-import AuthereumApi from "authereum";
-import WalletConnectProvider from "@walletconnect/web3-provider";
-import { Connectors } from "web3-react";
-import { INFURA_PROJECT_ID } from "../commons";
+import { InjectedConnector } from "@web3-react/injected-connector";
+import { AuthereumConnector } from "@web3-react/authereum-connector";
+import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 
-export const injectedConnector = new Connectors.InjectedConnector();
+export const INFURA_PROJECT_ID = "0ebf4dd05d6740f482938b8a80860d13";
 
-class WalletConnectConnector extends Connectors.Connector {
-    walletConnect;
+export const injectedConnector = new InjectedConnector({
+    supportedChainIds: [1, 5],
+});
 
-    onActivation() {
-        this.walletConnect = new WalletConnectProvider({
-            infuraId: INFURA_PROJECT_ID,
-        });
-        return this.walletConnect.enable();
-    }
+// mainnet only
+export const walletConnectConnector = new WalletConnectConnector({
+    rpc: {
+        1: `https://mainnet.infura.io/v3/${INFURA_PROJECT_ID}`,
+    },
+    bridge: "https://bridge.walletconnect.org",
+    qrcode: true,
+    pollingInterval: 15000,
+});
 
-    getProvider() {
-        return this.walletConnect;
-    }
-
-    changeNetwork(network) {
-        this.walletConnect = new WalletConnectProvider({
-            infuraId: INFURA_PROJECT_ID,
-        });
-    }
-}
-
-export const walletConnectProvider = new WalletConnectConnector();
-
-class AuthereumConnector extends Connectors.Connector {
-    authereum;
-
-    onActivation() {
-        this.authereum = new AuthereumApi();
-        return this.authereum.login();
-    }
-
-    getProvider() {
-        return this.authereum.getProvider();
-    }
-
-    changeNetwork(network) {
-        this.authereum = new AuthereumApi({
-            networkId: network,
-        });
-    }
-}
-
-export const authereumConnector = new AuthereumConnector();
+// mainnet only
+export const authereumConnector = new AuthereumConnector({ chainId: 1 });

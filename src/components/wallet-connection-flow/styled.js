@@ -2,14 +2,15 @@ import styled, { css } from "styled-components";
 import metamaskIcon from "../../images/metamask.svg";
 import walletConnectIcon from "../../images/wallet-connect.svg";
 import authereumIcon from "../../images/authereum.svg";
+import { Box } from "reflexbox";
 
 export const icon = css`
     background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: contain;
     display: block;
-    height: 40px;
-    width: 40px;
+    height: 36px;
+    width: 36px;
     margin: 0 15px 0 0;
 `;
 
