@@ -30,7 +30,6 @@ import darkLogo from "../../images/logo-dark.svg";
 import lightLogo from "../../images/logo-light.svg";
 import "react-toastify/dist/ReactToastify.css";
 import { Web3ReactProvider } from "@web3-react/core";
-import { initializeWeb3 } from "../../actions/web3";
 import Web3 from "web3";
 
 const LazyAuth = lazy(() => import("../auth"));
