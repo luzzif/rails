@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Box, Flex } from "reflexbox";
 import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core";
-import { MetamaskIcon, WalletConnectIcon, AuthereumIcon } from "./styled";
+import { Web3JsIcon, WalletConnectIcon, AuthereumIcon } from "./styled";
 import { Wallet } from "./wallet";
 import dxDaoLogo from "../../images/dxdao-blue.svg";
 import {
@@ -39,9 +39,9 @@ export const WalletConnectionFlow = ({ open }) => {
             {injectedEnabled && (
                 <Box>
                     <Wallet
-                        icon={<MetamaskIcon />}
+                        icon={<Web3JsIcon />}
                         onClick={getWalletClickHandler(injectedConnector)}
-                        name="Metamask"
+                        name="Injected Web3 (Metamask, Status, ...)"
                     />
                 </Box>
             )}

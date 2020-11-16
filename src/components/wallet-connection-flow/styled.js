@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import metamaskIcon from "../../images/metamask.svg";
+import web3JsIcon from "../../images/web3js.svg";
 import walletConnectIcon from "../../images/wallet-connect.svg";
 import authereumIcon from "../../images/authereum.svg";
 
@@ -13,9 +13,9 @@ export const icon = css`
     margin: 0 15px 0 0;
 `;
 
-export const MetamaskIcon = styled.span`
+export const Web3JsIcon = styled.span`
     ${icon}
-    background-image: url('${metamaskIcon}');
+    background-image: url('${web3JsIcon}');
 `;
 
 export const WalletConnectIcon = styled.span`

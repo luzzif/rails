@@ -1,3 +1,4 @@
+import WalletConnectProvider from "@walletconnect/web3-provider";
 import Web3 from "web3";
 import { postLogout } from "../loopring";
 
@@ -16,7 +17,7 @@ export const initializeWeb3 = (provider, connectorName) => async (dispatch) => {
     });
     const web3Instance = new Web3(provider);
     let chainId, selectedAccount;
-    if (connectorName === "walletConnect") {
+    if (provider instanceof WalletConnectProvider) {
         chainId = provider.chainId;
         selectedAccount = provider.accounts[0];
     } else {
