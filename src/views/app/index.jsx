@@ -31,6 +31,7 @@ import lightLogo from "../../images/logo-light.svg";
 import "react-toastify/dist/ReactToastify.css";
 import { Web3ReactProvider } from "@web3-react/core";
 import { initializeWeb3 } from "../../actions/web3";
+import Web3 from "web3";
 
 const LazyAuth = lazy(() => import("../auth"));
 const LazyDashboard = lazy(() => import("../dashboard"));
@@ -238,8 +239,8 @@ export const App = () => {
         dispatch(postLogout());
     }, [dispatch]);
 
-    const handleGetLibrary = (provider, connector) => {
-        dispatch(initializeWeb3(provider, connector.name));
+    const handleGetLibrary = (provider) => {
+        return new Web3(provider);
     };
 
     return (

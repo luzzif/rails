@@ -1,7 +1,12 @@
 import React, { useEffect } from "react";
 import { Box, Flex } from "reflexbox";
 import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core";
-import { Web3JsIcon, WalletConnectIcon, AuthereumIcon } from "./styled";
+import {
+    MetamaskIcon,
+    StatusIcon,
+    WalletConnectIcon,
+    AuthereumIcon,
+} from "./styled";
 import { Wallet } from "./wallet";
 import dxDaoLogo from "../../images/dxdao-blue.svg";
 import {
@@ -11,10 +16,15 @@ import {
 } from "../../connectors";
 import { toast } from "react-toastify";
 import { FormattedMessage } from "react-intl";
+import { useDispatch } from "react-redux";
+import { initializeWeb3 } from "../../actions/web3";
 
 export const WalletConnectionFlow = ({ open }) => {
-    const { connector, activate, deactivate, error } = useWeb3React();
-    const injectedEnabled = "ethereum" in window || "web3" in window;
+    const { connector, activate, deactivate, error, library } = useWeb3React();
+    const dispatch = useDispatch();
+
+    const injectedEnabled = window.ethereum || window.web3;
+    const isStatus = window.ethereum && window.ethereum.isStatus;
 
     useEffect(() => {
         if (!open) {
@@ -23,13 +33,20 @@ export const WalletConnectionFlow = ({ open }) => {
     }, [open, deactivate]);
 
     useEffect(() => {
+        if (library) {
+            dispatch(initializeWeb3(library));
+        }
+    }, [library, dispatch]);
+
+    useEffect(() => {
         if (error && error instanceof UnsupportedChainIdError) {
             toast.error(<FormattedMessage id="auth.chain.invalid" />);
         }
     }, [open, error]);
 
     const getWalletClickHandler = (newConnector) => () => {
-        if (connector !== newConnector) {
+        if (connector.getProvider() === newConnector.getProvider()) {
+            console.log("activating");
             activate(newConnector);
         }
     };
@@ -39,9 +56,9 @@ export const WalletConnectionFlow = ({ open }) => {
             {injectedEnabled && (
                 <Box>
                     <Wallet
-                        icon={<Web3JsIcon />}
+                        icon={isStatus ? <StatusIcon /> : <MetamaskIcon />}
                         onClick={getWalletClickHandler(injectedConnector)}
-                        name="Injected Web3 (Metamask, Status, ...)"
+                        name={isStatus ? "Status" : "Metamask"}
                     />
                 </Box>
             )}
