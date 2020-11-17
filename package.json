@@ -6,7 +6,8 @@
     "scripts": {
         "analyze": "source-map-explorer 'build/static/js/*.js'",
         "start": "react-app-rewired start",
-        "build": "cross-env GENERATE_SOURCEMAP=false react-app-rewired build",
+        "build": "cross-env GENERATE_SOURCEMAP=false PUBLIC_URL='.' react-app-rewired build",
+        "analysis:build": "cross-env PUBLIC_URL='.' react-app-rewired build",
         "test:build": "http-server build",
         "lint:commit-message": "commitlint -e"
     },
@@ -40,7 +41,7 @@
         "reflexbox": "^4.0.6",
         "styled-components": "^5.2.1",
         "use-debounce": "^5.1.0",
-        "web3": "^1.2.11"
+        "web3": "^1.3.0"
     },
     "eslintConfig": {
         "extends": "react-app"

@@ -238,9 +238,7 @@ export const App = () => {
         dispatch(postLogout());
     }, [dispatch]);
 
-    const handleGetLibrary = (provider) => {
-        return new Web3(provider);
-    };
+    const handleGetLibrary = (provider) => new Web3(provider);
 
     return (
         <Web3ReactProvider getLibrary={handleGetLibrary}>

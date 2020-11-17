@@ -20,7 +20,7 @@ import { useDispatch } from "react-redux";
 import { initializeWeb3 } from "../../actions/web3";
 
 export const WalletConnectionFlow = ({ open }) => {
-    const { connector, activate, deactivate, error, library } = useWeb3React();
+    const { activate, deactivate, error, library } = useWeb3React();
     const dispatch = useDispatch();
 
     const injectedEnabled = window.ethereum || window.web3;
@@ -45,10 +45,7 @@ export const WalletConnectionFlow = ({ open }) => {
     }, [open, error]);
 
     const getWalletClickHandler = (newConnector) => () => {
-        if (connector.getProvider() === newConnector.getProvider()) {
-            console.log("activating");
-            activate(newConnector);
-        }
+        activate(newConnector);
     };
 
     return (
