@@ -75,6 +75,7 @@ export const Assets = ({ assets, onChange, onRefresh, open, selectedFiat }) => {
                 flexDirection="column"
                 overflowY="auto"
                 pb="24px"
+                height="300px"
             >
                 {filteredAssets && filteredAssets.length > 0 ? (
                     filteredAssets.map((asset, index) => (

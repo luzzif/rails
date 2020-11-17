@@ -12,7 +12,7 @@ export const Container = styled(Flex)`
     left: 0;
     right: 0;
     padding-top: 32px;
-    max-height: 72vh;
+    max-height: 90vh;
 `;
 
 export const Overlay = styled.div`
