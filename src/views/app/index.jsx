@@ -6,7 +6,6 @@ import React, {
     Suspense,
     lazy,
 } from "react";
-import logoDark from "../../images/logo-dark.svg";
 import { Layout } from "../../components/layout";
 import { ThemeProvider } from "styled-components";
 import { PrivateRoute } from "../../components/private-route";
@@ -248,10 +247,6 @@ export const App = () => {
                     <meta
                         name="theme-color"
                         content={selectedTheme.background}
-                    />
-                    <meta
-                        name="twitter:image"
-                        content={`${window.location.origin}${logoDark}`}
                     />
                 </Helmet>
                 <GlobalStyle />
