@@ -46,7 +46,7 @@ export const Transactions = ({
             flexDirection="column"
             alignItems="center"
             px="16px"
-            pt="16px"
+            pt="12px"
         >
             <Flex width="100%" mb="12px" alignItems="center">
                 <Flex mr="16px" flexWrap="nowrap" width="100%" overflowX="auto">
@@ -132,7 +132,8 @@ export const Transactions = ({
             </ListFlex>
             <Flex
                 width="100%"
-                my="16px"
+                mt="16px"
+                mb="12px"
                 justifyContent="flex-end"
                 alignItems="center"
             >
