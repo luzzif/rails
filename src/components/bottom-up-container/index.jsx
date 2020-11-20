@@ -38,9 +38,9 @@ export const BottomUpContainer = ({
                 open={open}
                 ref={container}
                 m="0 auto"
-                px="24px"
-                pt="24px"
-                pb={noBottomPadding ? "0px" : "24px"}
+                px="20px"
+                pt="20px"
+                pb={noBottomPadding ? "0px" : "20px"}
                 {...rest}
             >
                 {children}
