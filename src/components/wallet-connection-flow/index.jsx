@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useCallback } from "react";
 import { Box, Flex } from "reflexbox";
-import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core";
 import {
     MetamaskIcon,
     StatusIcon,
@@ -9,44 +8,42 @@ import {
 } from "./styled";
 import { Wallet } from "./wallet";
 import dxDaoLogo from "../../images/dxdao-blue.svg";
-import {
-    authereumConnector,
-    injectedConnector,
-    walletConnectConnector,
-} from "../../connectors";
 import { toast } from "react-toastify";
 import { FormattedMessage } from "react-intl";
 import { useDispatch } from "react-redux";
 import { initializeWeb3 } from "../../actions/web3";
+import WalletConnectWeb3Provider from "@walletconnect/web3-provider";
+import Authereum from "authereum";
+import { INFURA_PROJECT_ID } from "../../commons";
 
-export const WalletConnectionFlow = ({ open }) => {
-    const { activate, deactivate, error, library } = useWeb3React();
+export const WalletConnectionFlow = () => {
     const dispatch = useDispatch();
 
     const injectedEnabled = window.ethereum || window.web3;
     const isStatus = window.ethereum && window.ethereum.isStatus;
 
-    useEffect(() => {
-        if (!open) {
-            deactivate();
+    const handleInjectedClick = useCallback(() => {
+        if (!injectedEnabled) {
+            toast.error(<FormattedMessage id="error.wallet.connect" />);
         }
-    }, [open, deactivate]);
+        delete window.send;
+        const provider = window.ethereum;
+        dispatch(initializeWeb3(provider));
+    }, [dispatch, injectedEnabled]);
 
-    useEffect(() => {
-        if (library) {
-            dispatch(initializeWeb3(library));
-        }
-    }, [library, dispatch]);
+    const handleWalletConnectClick = useCallback(() => {
+        const provider = new WalletConnectWeb3Provider({
+            infuraId: INFURA_PROJECT_ID,
+        });
+        // FIXME: hack. See https://github.com/WalletConnect/walletconnect-monorepo/issues/384
+        window.send = (e, t) => provider.send(e, t);
+        dispatch(initializeWeb3(provider));
+    }, [dispatch]);
 
-    useEffect(() => {
-        if (error && error instanceof UnsupportedChainIdError) {
-            toast.error(<FormattedMessage id="auth.chain.invalid" />);
-        }
-    }, [open, error]);
-
-    const getWalletClickHandler = (newConnector) => () => {
-        activate(newConnector);
-    };
+    const handleAuthereumClick = useCallback(() => {
+        delete window.send;
+        dispatch(initializeWeb3(new Authereum().getProvider()));
+    }, [dispatch]);
 
     return (
         <Flex flexDirection="column" width="100%">
@@ -54,7 +51,7 @@ export const WalletConnectionFlow = ({ open }) => {
                 <Box>
                     <Wallet
                         icon={isStatus ? <StatusIcon /> : <MetamaskIcon />}
-                        onClick={getWalletClickHandler(injectedConnector)}
+                        onClick={handleInjectedClick}
                         name={isStatus ? "Status" : "Metamask"}
                     />
                 </Box>
@@ -62,14 +59,14 @@ export const WalletConnectionFlow = ({ open }) => {
             <Box>
                 <Wallet
                     icon={<WalletConnectIcon />}
-                    onClick={getWalletClickHandler(walletConnectConnector)}
+                    onClick={handleWalletConnectClick}
                     name="WalletConnect"
                 />
             </Box>
             <Box>
                 <Wallet
                     icon={<AuthereumIcon />}
-                    onClick={getWalletClickHandler(authereumConnector)}
+                    onClick={handleAuthereumClick}
                     name="Authereum"
                 />
             </Box>

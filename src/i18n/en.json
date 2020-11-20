@@ -89,6 +89,7 @@
     "error.rails.withdrawal": "There was an error performing the on-chain withdrawal. Please try again later.",
     "error.web3.initialization": "There was an error initializing web3. Please try again later.",
     "error.rails.auth": "There was an error checking your auth status. Please try again later.",
+    "error.wallet.connect": "Could not connect wallet. Please try again later.",
     "warn.account.not.found": "Seems like this account is not yet on our platform. Please register first.",
     "warn.register.existing.account": "Seems like you already own a Rails account. Please login to start using it.",
     "success.allowance": "Allowance request confirmed. You can now deposit your {tokenSymbol}.",

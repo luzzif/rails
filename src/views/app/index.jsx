@@ -28,8 +28,6 @@ import { ToastContainer, Slide } from "react-toastify";
 import darkLogo from "../../images/logo-dark.svg";
 import lightLogo from "../../images/logo-light.svg";
 import "react-toastify/dist/ReactToastify.css";
-import { Web3ReactProvider } from "@web3-react/core";
-import Web3 from "web3";
 
 const LazyAuth = lazy(() => import("../auth"));
 const LazyDashboard = lazy(() => import("../dashboard"));
@@ -237,58 +235,51 @@ export const App = () => {
         dispatch(postLogout());
     }, [dispatch]);
 
-    const handleGetLibrary = (provider) => new Web3(provider);
-
     return (
-        <Web3ReactProvider getLibrary={handleGetLibrary}>
-            <ThemeProvider theme={lightTheme ? light : dark}>
-                <Helmet>
-                    <link rel="icon" href={lightTheme ? darkLogo : lightLogo} />
-                    <meta
-                        name="theme-color"
-                        content={selectedTheme.background}
-                    />
-                </Helmet>
-                <GlobalStyle />
-                <Layout
-                    lightTheme={lightTheme}
-                    onThemeChange={handleThemeChange}
-                    // show fiat selector only if actually logged in
-                    fiat={logged ? selectedFiat : null}
-                    onFiatClick={handleFiatClick}
-                    logged={logged}
-                    onLogoutClick={handleLogoutClick}
+        <ThemeProvider theme={lightTheme ? light : dark}>
+            <Helmet>
+                <link rel="icon" href={lightTheme ? darkLogo : lightLogo} />
+                <meta name="theme-color" content={selectedTheme.background} />
+            </Helmet>
+            <GlobalStyle />
+            <Layout
+                lightTheme={lightTheme}
+                onThemeChange={handleThemeChange}
+                // show fiat selector only if actually logged in
+                fiat={logged ? selectedFiat : null}
+                onFiatClick={handleFiatClick}
+                logged={logged}
+                onLogoutClick={handleLogoutClick}
+            >
+                <Suspense fallback={<UniversalSpinner open />}>
+                    <Switch>
+                        <PrivateRoute
+                            path="/dashboard"
+                            condition={logged}
+                            component={LazyDashboard}
+                            redirectTo="/auth"
+                        />
+                        <Route path="/auth" component={LazyAuth} />
+                        <Redirect to="/dashboard" />
+                    </Switch>
+                </Suspense>
+                <BottomUpContainer
+                    open={changingFiat}
+                    onClose={handleFiatBottomUpContainerClose}
                 >
-                    <Suspense fallback={<UniversalSpinner open />}>
-                        <Switch>
-                            <PrivateRoute
-                                path="/dashboard"
-                                condition={logged}
-                                component={LazyDashboard}
-                                redirectTo="/auth"
-                            />
-                            <Route path="/auth" component={LazyAuth} />
-                            <Redirect to="/dashboard" />
-                        </Switch>
-                    </Suspense>
-                    <BottomUpContainer
-                        open={changingFiat}
-                        onClose={handleFiatBottomUpContainerClose}
-                    >
-                        <FiatChooser onChange={handleFiatChange} />
-                    </BottomUpContainer>
-                </Layout>
-                <UniversalSpinner open={universallyLoading} />
-                <ToastContainer
-                    className="custom-toast-root"
-                    toastClassName="custom-toast-container"
-                    bodyClassName="custom-toast-body"
-                    position="top-right"
-                    closeButton={false}
-                    transition={Slide}
-                    limit="24px"
-                />
-            </ThemeProvider>
-        </Web3ReactProvider>
+                    <FiatChooser onChange={handleFiatChange} />
+                </BottomUpContainer>
+            </Layout>
+            <UniversalSpinner open={universallyLoading} />
+            <ToastContainer
+                className="custom-toast-root"
+                toastClassName="custom-toast-container"
+                bodyClassName="custom-toast-body"
+                position="top-right"
+                closeButton={false}
+                transition={Slide}
+                limit="24px"
+            />
+        </ThemeProvider>
     );
 };
