@@ -17,18 +17,18 @@ export const Fiat = ({ fiat, onClick }) => {
             pl="16px"
             width="100%"
             height="100%"
-            minHeight={68}
-            maxHeight={68}
+            minHeight={60}
+            maxHeight={60}
             onClick={handleLocalClick}
         >
             <Box
                 pr="16px"
-                height={48}
-                width={48}
+                height={40}
+                width={40}
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                fontSize={20}
+                fontSize={24}
             >
                 <FontAwesomeIcon icon={faIcon} />
             </Box>
