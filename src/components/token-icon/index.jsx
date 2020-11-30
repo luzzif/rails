@@ -7,7 +7,7 @@ export const TokenIcon = ({ address, size }) => {
         <StyledImage
             alt="Icon"
             size={size}
-            src={`https://loopring.io/assets/images/ethereum/assets/${
+            src={`https://v1.loopring.io/assets/images/ethereum/assets/${
                 address === "0x0000000000000000000000000000000000000000"
                     ? "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
                     : address
