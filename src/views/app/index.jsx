@@ -25,8 +25,6 @@ import {
 import { BottomUpContainer } from "../../components/bottom-up-container";
 import { FiatChooser, supportedFiats } from "../fiat-chooser";
 import { ToastContainer, Slide } from "react-toastify";
-import darkLogo from "../../images/logo-dark.svg";
-import lightLogo from "../../images/logo-light.svg";
 import "react-toastify/dist/ReactToastify.css";
 
 const LazyAuth = lazy(() => import("../auth"));
@@ -70,8 +68,6 @@ const dark = {
     loader: "#595959",
 };
 
-export let selectedTheme = light;
-
 export const App = () => {
     const dispatch = useDispatch();
     const history = useHistory();
@@ -109,7 +105,6 @@ export const App = () => {
         const cachedTheme = localStorage.getItem("rails-theme") || "light";
         const lightTheme = cachedTheme === "light";
         setLightTheme(lightTheme);
-        selectedTheme = lightTheme ? light : dark;
     }, [dispatch]);
 
     // setting up selected fiat on boot and logout
@@ -211,7 +206,6 @@ export const App = () => {
         const textTheme = newLightTheme ? "light" : "dark";
         localStorage.setItem("rails-theme", textTheme);
         setLightTheme(newLightTheme);
-        selectedTheme = newLightTheme ? light : dark;
     }, [lightTheme]);
 
     const handleFiatClick = useCallback(() => {
@@ -238,8 +232,10 @@ export const App = () => {
     return (
         <ThemeProvider theme={lightTheme ? light : dark}>
             <Helmet>
-                <link rel="icon" href={lightTheme ? darkLogo : lightLogo} />
-                <meta name="theme-color" content={selectedTheme.background} />
+                <meta
+                    name="theme-color"
+                    content={(lightTheme ? light : dark).background}
+                />
             </Helmet>
             <GlobalStyle />
             <Layout

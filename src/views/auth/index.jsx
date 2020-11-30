@@ -14,7 +14,6 @@ import {
 } from "./styled";
 import { BottomUpContainer } from "../../components/bottom-up-container";
 import { RegistrationFlow } from "./registration-flow";
-import { selectedTheme } from "../app";
 import { getShortenedEthereumAddress } from "../../utils/conversion";
 import {
     disableTestMode,
@@ -22,6 +21,7 @@ import {
 } from "loopring-lightcone/lib/request";
 import { WalletConnectionFlow } from "../../components/wallet-connection-flow";
 import { SUPPORTED_CHAIN_IDS } from "../../commons";
+import { useTheme } from "styled-components";
 
 const Auth = () => {
     const dispatch = useDispatch();
@@ -36,6 +36,7 @@ const Auth = () => {
         selectedAccount: state.web3.selectedAccount,
         needsRegistration: state.loopring.authStatus.needsRegistration,
     }));
+    const theme = useTheme();
 
     const [invalidChainId, setInvalidChainId] = useState(false);
     const [loggingIn, setLoggingIn] = useState(false);
@@ -115,9 +116,7 @@ const Auth = () => {
                 <Box mb="20px" width="220px" height="60px">
                     <LoginIllustration
                         src={
-                            selectedTheme.type === "light"
-                                ? darkLogoBig
-                                : lightLogoBig
+                            theme.type === "light" ? darkLogoBig : lightLogoBig
                         }
                     />
                 </Box>
