@@ -7,6 +7,7 @@
     "auth.signin.button": "...",
     "auth.signin": "Click the button below to proceed",
     "auth.login.button": "Unlock layer-2 account",
+    "auth.login.switch.wallet": "Switch wallet",
     "auth.register.button": "Activate layer-2 account",
     "auth.login.proceed.message": "Please pay attention to pending requests in Metamask. In some cases a popup won't appear.",
     "auth.login.proceed.button.title": "Continue",

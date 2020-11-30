@@ -10,6 +10,7 @@ import {
     WelcomeTextBox,
     FullWidthButton,
     InvalidChainText,
+    LinkLikeButton,
 } from "./styled";
 import { BottomUpContainer } from "../../components/bottom-up-container";
 import { RegistrationFlow } from "./registration-flow";
@@ -86,8 +87,14 @@ const Auth = () => {
         setConnectingWallet(false);
     }, []);
 
+    const handleSwitchWalletClick = useCallback(() => {
+        setLoggingIn(false);
+        setRegistering(false);
+        setConnectingWallet(true);
+    }, []);
+
     useEffect(() => {
-        const open = web3Instance ? loggingIn || registering : connectingWallet;
+        const open = loggingIn || registering || connectingWallet;
         setOpen(open);
         if (!open) {
             handleClose();
@@ -176,6 +183,13 @@ const Auth = () => {
                             >
                                 <FormattedMessage id="auth.login.button" />
                             </FullWidthButton>
+                        </Box>
+                    )}
+                    {web3Instance && (
+                        <Box mt="16px" textAlign="center">
+                            <LinkLikeButton onClick={handleSwitchWalletClick}>
+                                <FormattedMessage id="auth.login.switch.wallet" />
+                            </LinkLikeButton>
                         </Box>
                     )}
                 </Flex>

@@ -20,3 +20,14 @@ export const InvalidChainText = styled.span`
 export const FullWidthButton = styled(Button)`
     width: 100%;
 `;
+
+export const LinkLikeButton = styled.button`
+    border: none;
+    outline: none;
+    text-decoration: underline;
+    background: transparent;
+    color: ${({ theme }) => theme.text};
+    font-family: Montserrat;
+    font-size: 16px;
+    cursor: pointer;
+`;
