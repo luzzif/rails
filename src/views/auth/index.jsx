@@ -2,7 +2,7 @@ import React, { useCallback, useState, useEffect } from "react";
 import { Flex, Box } from "reflexbox";
 import { FormattedMessage } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
-import { login, getAuthStatus } from "../../actions/loopring";
+import { login, getAuthStatus, postLogout } from "../../actions/loopring";
 import darkLogoBig from "../../images/logo-dark-big.svg";
 import lightLogoBig from "../../images/logo-light-big.svg";
 import {
@@ -90,11 +90,12 @@ const Auth = () => {
     const handleSwitchWalletClick = useCallback(() => {
         setLoggingIn(false);
         setRegistering(false);
+        dispatch(postLogout());
         setConnectingWallet(true);
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
-        const open = loggingIn || registering || connectingWallet;
+        const open = web3Instance ? loggingIn || registering : connectingWallet;
         setOpen(open);
         if (!open) {
             handleClose();
