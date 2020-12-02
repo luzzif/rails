@@ -146,12 +146,9 @@ const Auth = () => {
                     <Box mb="16px" width="100%">
                         <FullWidthButton
                             onClick={handleConnectClick}
-                            disabled={
-                                invalidChainId ||
-                                (needsRegistration !== null && selectedAccount)
-                            }
+                            disabled={web3Instance && selectedAccount}
                         >
-                            {needsRegistration !== null && selectedAccount ? (
+                            {web3Instance && selectedAccount ? (
                                 getShortenedEthereumAddress(selectedAccount)
                             ) : (
                                 <FormattedMessage id="auth.connect.button" />
@@ -165,23 +162,23 @@ const Auth = () => {
                             </FullWidthButton>
                         </Box>
                     )}
-                    {!invalidChainId && needsRegistration === true && (
+                    {needsRegistration !== null && !invalidChainId && (
                         <Box>
                             <FullWidthButton
-                                disabled={invalidChainId}
-                                onClick={handleRegisterClick}
+                                disabled={!web3Instance}
+                                onClick={
+                                    needsRegistration === false
+                                        ? handleLoginClick
+                                        : handleRegisterClick
+                                }
                             >
-                                <FormattedMessage id="auth.register.button" />
-                            </FullWidthButton>
-                        </Box>
-                    )}
-                    {!invalidChainId && needsRegistration === false && (
-                        <Box>
-                            <FullWidthButton
-                                disabled={invalidChainId}
-                                onClick={handleLoginClick}
-                            >
-                                <FormattedMessage id="auth.login.button" />
+                                <FormattedMessage
+                                    id={
+                                        needsRegistration === false
+                                            ? "auth.login.button"
+                                            : "auth.register.button"
+                                    }
+                                />
                             </FullWidthButton>
                         </Box>
                     )}
