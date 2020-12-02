@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import NumberFormat from "react-number-format";
+import { Box } from "reflexbox";
 
 const commonInputStyles = css`
     width: 100%;
@@ -42,4 +43,14 @@ export const Label = styled.div`
 export const Message = styled.div`
     color: ${(props) => props.theme.text};
     font-size: 12px;
+`;
+
+export const MaxSelectorContainer = styled.div`
+    position: absolute;
+    top: 4px;
+    right: 4px;
+`;
+
+export const RelativeBox = styled(Box)`
+    position: relative;
 `;

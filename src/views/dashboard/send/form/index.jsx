@@ -154,6 +154,10 @@ export const Send = ({ onConfirm, asset, exchange, open }) => {
         onConfirm(resolvedReceiver, amount, memo);
     }, [amount, memo, onConfirm, resolvedReceiver]);
 
+    const handleMaxClick = useCallback(() => {
+        setAmount(parsedUserBalance.toString());
+    }, [parsedUserBalance]);
+
     return (
         <Flex
             width="100%"
@@ -202,6 +206,8 @@ export const Send = ({ onConfirm, asset, exchange, open }) => {
                             }}
                         />
                     }
+                    maxSelector
+                    onMaxClick={handleMaxClick}
                 />
             </Box>
             <Box mb="16px" width="100%">

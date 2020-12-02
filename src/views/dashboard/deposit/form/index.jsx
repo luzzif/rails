@@ -92,6 +92,10 @@ export const Form = ({ onConfirm, asset, open }) => {
         onConfirm(amount);
     }, [amount, onConfirm]);
 
+    const handleMaxClick = useCallback(() => {
+        setAmount(parsedUserBalance.toString());
+    }, [parsedUserBalance]);
+
     return (
         <Flex
             width="100%"
@@ -122,11 +126,17 @@ export const Form = ({ onConfirm, asset, open }) => {
                             }}
                         />
                     }
+                    maxSelector
+                    onMaxClick={handleMaxClick}
                 />
             </Box>
             {feeAmount && (
                 <Box mb="24px" textAlign="center">
-                    <OperationFee amount={feeAmount} tokenSymbol="ETH" variant="deposit" />
+                    <OperationFee
+                        amount={feeAmount}
+                        tokenSymbol="ETH"
+                        variant="deposit"
+                    />
                 </Box>
             )}
             <Box>

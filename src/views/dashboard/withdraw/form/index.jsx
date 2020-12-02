@@ -68,6 +68,10 @@ export const Form = ({
         onConfirm(amount);
     }, [amount, onConfirm]);
 
+    const handleMaxClick = useCallback(() => {
+        setAmount(parsedUserBalance.toString());
+    }, [parsedUserBalance]);
+
     return (
         <Flex
             width="100%"
@@ -99,6 +103,8 @@ export const Form = ({
                         />
                     }
                     error={amountError}
+                    maxSelector
+                    onMaxClick={handleMaxClick}
                 />
             </Box>
             {feeAmount && (

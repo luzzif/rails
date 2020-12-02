@@ -4,16 +4,16 @@ import { UndecoratedLink } from "../undecorated-link";
 
 const commonsStyles = css`
     display: flex;
+    height: ${(props) => (props.small ? "32px" : "40px")};
+    padding: 0 16px;
     white-space: nowrap;
-    padding: ${(props) => (props.secondary ? "9px 17px" : "12px 20px")};
     justify-content: center;
-    font-size: 16px;
+    align-items: center;
+    font-size: ${(props) => (props.small ? "14px" : "16px")};
     font-family: "Montserrat";
-    background: ${(props) => (props.secondary ? "none" : props.theme.primary)};
-    color: ${(props) =>
-        props.secondary ? props.theme.primary : props.theme.textInverted};
-    border: ${(props) =>
-        props.secondary ? `solid 3px ${props.theme.primary}` : "none"};
+    background: ${(props) => props.theme.primary};
+    color: ${(props) => props.theme.textInverted};
+    border: none;
     border-radius: 24px;
     font-weight: 600;
     transition: all 0.3s ease;
@@ -21,26 +21,13 @@ const commonsStyles = css`
     outline: none;
     cursor: pointer;
     text-decoration: none;
-    :hover:not(:disabled) {
-        ${(props) =>
-            props.secondary &&
-            css`
-                background: ${props.theme.secondaryButtonBackground};
-            `}
-    }
     :active {
         transform: scale(0.95);
     }
     :disabled {
         cursor: not-allowed;
-        background: ${(props) =>
-            props.secondary ? "none" : props.theme.disabled};
+        background: ${(props) => props.theme.disabled};
         color: ${(props) => props.theme.textDisabled};
-        ${(props) =>
-            props.secondary &&
-            css`
-                border: solid 3px ${(props) => props.theme.textDisabled};
-            `}
     }
 `;
 

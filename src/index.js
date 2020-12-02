@@ -10,6 +10,7 @@ import { createStore, compose, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { reducers } from "./reducers";
 import { version } from "../package.json";
+import BigNumber from "bignumber.js";
 
 console.log(`Welcome to Rails version ${version}`);
 
@@ -21,6 +22,10 @@ let language = getLanguage();
 if (!(language in messages)) {
     language = "en";
 }
+
+BigNumber.config({
+    ROUNDING_MODE: BigNumber.ROUND_FLOOR,
+});
 
 ReactDOM.render(
     <Provider store={store}>
